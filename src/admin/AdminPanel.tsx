@@ -33,6 +33,7 @@ import { SK, p2e, digits, uid, getLS, setLS, faNum, relTime, fmtWhen, subTime, l
 import { defaultSettings as configDefaultSettings } from '../config/defaultSettings';
 import ContentManager from './ContentManager';
 import SettingsManager from './SettingsManager';
+import HomeAvatarSlot from './HomeAvatarSlot';
 
 type Any=Record<string,any>;
 // Phase 3: VITE_ADMIN_PASSWORD removed — admin password lives only in Supabase Edge Function secrets.
@@ -1039,14 +1040,7 @@ function ImagesEditor(){
      <input dir="ltr" style={{...S.inp,marginBottom:6}} defaultValue={imgs.courseDefault?.url||''} onBlur={e=>upImg('courseDefault',{url:e.target.value.trim()})} placeholder="https://... یا /images/course-default.webp"/>
      <label className="zkad-drop" onDragOver={e=>e.preventDefault()} onDrop={async e=>{e.preventDefault();const f=e.dataTransfer.files?.[0];if(f){try{const url=await fileToData(f,imgs.courseDefault?.url,'images');upImg('courseDefault',{url})}catch(err:any){alert(err?.message||'آپلود انجام نشد')}}}}><ZkUploadIcon size={22}/><span>برای آپلود تصویر کلیک کنید یا فایل را اینجا بکشید</span><input type="file" accept="image/jpeg,image/png,image/webp" onChange={async e=>{const f=e.target.files?.[0];if(f){try{const url=await fileToData(f,imgs.courseDefault?.url,'images');upImg('courseDefault',{url})}catch(err:any){alert(err?.message||'آپلود انجام نشد')}}}}/></label>
     </div>
-    <div className="zkad-media-slot">
-     <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
-      <b style={{fontSize:13,color:T.ttl}}><ZkStethoscopeIcon size={14} color={T.ttl}/> عکس کارشناس صفحه اصلی</b>
-      <label style={{marginInlineStart:'auto',display:'flex',alignItems:'center',gap:6,fontSize:12,cursor:'pointer'}}><input type="checkbox" checked={imgs.homeAvatar?.enabled!==false} onChange={e=>upImg('homeAvatar',{enabled:e.target.checked})}/> فعال</label>
-     </div>
-     {imgs.homeAvatar?.url&&<img src={imgs.homeAvatar.url} alt={imgs.homeAvatar?.alt||''} style={{width:80,height:80,objectFit:'cover',objectPosition:'center 18%',borderRadius:'50%',border:'2px solid '+T.brd,display:'block',marginBottom:8}} onError={(e:any)=>{e.currentTarget.style.display='none'}}/>}
-     <label className="zkad-drop" onDragOver={e=>e.preventDefault()} onDrop={async e=>{e.preventDefault();const f=e.dataTransfer.files?.[0];if(f){try{const url=await fileToData(f,imgs.homeAvatar?.url,'images');upImg('homeAvatar',{url,enabled:true})}catch(err:any){alert(err?.message||'آپلود انجام نشد')}}}}><ZkUploadIcon size={22}/><span>آپلود تصویر از گوشی</span><input type="file" accept="image/jpeg,image/png,image/webp" onChange={async e=>{const f=e.target.files?.[0];if(f){try{const url=await fileToData(f,imgs.homeAvatar?.url,'images');upImg('homeAvatar',{url,enabled:true})}catch(err:any){alert(err?.message||'آپلود انجام نشد')}}}}/></label>
-    </div>
+    <HomeAvatarSlot imgs={imgs} editCfg={editCfg} setEditCfg={setEditCfg} fileToData={fileToData} T={T} AdminBtn={AdminBtn}/>
     {/* تصویر کارشناس */}
     <div className="zkad-media-slot">
      <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
