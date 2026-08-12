@@ -1,0 +1,904 @@
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { getAdminSessionToken } from '../utils/adminSession';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+
+const isPlaceholder = (value?: string) =>
+  !value ||
+  value.trim() === '' ||
+  value.includes('your_supabase_project_url') ||
+  value.includes('your_supabase_anon_key');
+
+export const isSupabaseConfigured = !isPlaceholder(supabaseUrl) && !isPlaceholder(supabaseAnonKey);
+
+export const supabase: SupabaseClient | null = isSupabaseConfigured
+  ? createClient(supabaseUrl!, supabaseAnonKey!, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    })
+  : null;
+
+const requireSupabase = (): SupabaseClient => {
+  if (!supabase) {
+    throw new Error(
+      'Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file.',
+    );
+  }
+  return supabase;
+};
+
+export type Submission = Record<string, any> & {
+  id?: string | number;
+  created_at?: string;
+  updated_at?: string;
+  fullPhone?: string;
+  full_phone?: string;
+};
+
+export type AppSettings = Record<string, any> & {
+  id?: string | number;
+  key?: string;
+  settings?: Record<string, any>;
+};
+
+const SUBMISSIONS_TABLE = 'submissions';
+
+const RECEIPT_BUCKET = 'images';
+const storagePathFromPublicUrl = (u: string): string | null => {
+  try {
+    const m = new URL(u).pathname.match(/\/storage\/v1\/object\/public\/images\/(.+)$/);
+    return m ? decodeURIComponent(m[1]) : null;
+  } catch {
+    return null;
+  }
+};
+const removeStoredImageByUrl = async (client: SupabaseClient, url?: string): Promise<void> => {
+  if (!url) return;
+  const path = storagePathFromPublicUrl(url);
+  if (!path) return;
+  try {
+    await client.storage.from(RECEIPT_BUCKET).remove([path]);
+  } catch (err) {
+    console.warn('Could not delete receipt image:', err);
+  }
+};
+const voicePathFromUrl = (u: string): string | null => {
+  try { const m = new URL(u).pathname.match(/\/storage\/v1\/object\/public\/voice-notes\/(.+)$/); return m ? decodeURIComponent(m[1]) : null; } catch { return null; }
+};
+const tonguePathFromUrl = (u: string): string | null => {
+  try { const m = new URL(u).pathname.match(/\/storage\/v1\/object\/public\/tongue-photos\/(.+)$/); return m ? decodeURIComponent(m[1]) : null; } catch { return null; }
+};
+const removeVoiceByUrl = async (client: SupabaseClient, url?: string): Promise<void> => {
+  if (!url) return;
+  const p = voicePathFromUrl(url);
+  if (!p) return;
+  try { await client.storage.from('voice-notes').remove([p]); } catch (e) { console.warn('Could not delete voice note:', e); }
+};
+const removeTongueByUrl = async (client: SupabaseClient, url?: string): Promise<void> => {
+  if (!url) return;
+  const p = tonguePathFromUrl(url);
+  if (!p) return;
+  try { await client.storage.from('tongue-photos').remove([p]); } catch (e) { console.warn('Could not delete tongue photo:', e); }
+};
+
+const SETTINGS_TABLE = 'settings';
+const SETTINGS_KEY = 'app_settings';
+
+export const dbRowToSubmission = (row: Record<string, any> | null): Submission | null => {
+  if (!row) return null;
+  const payload = row.payload && typeof row.payload === 'object' ? row.payload : {};
+  return {
+    ...payload,
+    ...row,
+    fullPhone: row.full_phone ?? payload.fullPhone ?? payload.full_phone,
+  };
+};
+
+export const submissionToDbRow = (submission: Submission): Record<string, any> => {
+  const { id, created_at, updated_at, fullPhone, full_phone, ...payload } = submission || {};
+  return {
+    ...(id != null ? { id } : {}),
+    full_phone: fullPhone ?? full_phone ?? payload?.fullPhone ?? null,
+    payload: {
+      ...payload,
+      ...(fullPhone || full_phone ? { fullPhone: fullPhone ?? full_phone } : {}),
+    },
+    updated_at: new Date().toISOString(),
+  };
+};
+
+export const dbRowToSettings = (row: Record<string, any> | null): AppSettings | null => {
+  if (!row) return null;
+  if (row.settings && typeof row.settings === 'object') return row.settings;
+  if (row.payload && typeof row.payload === 'object') return row.payload;
+  return row as AppSettings;
+};
+
+export const settingsToDbRow = (settings: AppSettings): Record<string, any> => ({
+  key: SETTINGS_KEY,
+  settings,
+  updated_at: new Date().toISOString(),
+});
+
+export const fetchSubmissions = async (): Promise<Submission[]> => {
+  // Phase 3: route through admin-api (no direct Supabase access from admin panel)
+  const { adminFetchSubmissions } = await import('./adminApi');
+  const result = await adminFetchSubmissions({ limit: 1000 });
+  return result.submissions;
+};
+
+export const fetchDeletedSubmissions = async (): Promise<Submission[]> => {
+  // Phase 3: route through admin-api
+  const { adminFetchDeletedSubmissions } = await import('./adminApi');
+  const result = await adminFetchDeletedSubmissions({ limit: 1000 });
+  return result.submissions;
+};
+
+export const softDeleteSubmission = async (id: string | number): Promise<void> => {
+  // Phase 3: route through admin-api for the DB update.
+  // Phase 5: storage cleanup now goes through admin-api too (delete_storage_files with
+  // service_role) — anon storage DELETE will be revoked, so client-side anon remove is gone.
+  const { adminGetSubmission, adminUpdateSubmission, adminSoftDeleteSubmission, adminDeleteStorageFiles } = await import('./adminApi');
+  // 1) Get current payload to find file URLs
+  const sub = await adminGetSubmission(id);
+  const payload = (sub as any) ?? {};
+  const receiptUrl = payload?.payment?.receipt;
+  const voiceUrl = payload?.voice_note_url || payload?.voiceNoteUrl;
+  const tongueArr: string[] = Array.isArray(payload?.tonguePhotos) ? payload.tonguePhotos : [];
+  // 2) Optionally clear receipt URL in payload (so admin panel doesn't show stale link)
+  if (receiptUrl) {
+    try {
+      await adminUpdateSubmission(id, {
+        payment: { ...(payload.payment || {}), receipt: '', receipt_image: '', receiptDeletedAt: new Date().toISOString() },
+      } as any);
+    } catch { /* admin-api whitelist will accept payment field; ignore if fails */ }
+  }
+  // 3) Delete storage files via admin-api (server-side service_role, whitelisted buckets)
+  const urls = [receiptUrl, voiceUrl, ...tongueArr].filter(Boolean) as string[];
+  if (urls.length) {
+    try {
+      await adminDeleteStorageFiles(urls);
+    } catch (e) {
+      console.warn('Could not delete submission files via admin-api:', e);
+    }
+  }
+  // 4) Set deleted_at via admin-api
+  await adminSoftDeleteSubmission(id);
+};
+
+export const softDeleteMultipleSubmissions = async (ids: Array<string | number>): Promise<void> => {
+  if (!ids.length) return;
+  // Phase 3: loop client-side using the single-row softDeleteSubmission
+  for (const id of ids) {
+    await softDeleteSubmission(id);
+  }
+};
+
+export const restoreSubmission = async (id: string | number): Promise<void> => {
+  // Phase 3: route through admin-api
+  const { adminRestoreSubmission } = await import('./adminApi');
+  await adminRestoreSubmission(id);
+};
+
+export const permanentDeleteSubmission = async (id: string | number): Promise<void> => {
+  // Phase 3: route through admin-api
+  const { adminPermanentDeleteSubmission } = await import('./adminApi');
+  await adminPermanentDeleteSubmission(id);
+};
+
+export const permanentDeleteMultipleSubmissions = async (ids: Array<string | number>): Promise<void> => {
+  if (!ids.length) return;
+  // Phase 3: route through admin-api (loop client-side)
+  const { adminPermanentDeleteMultipleSubmissions } = await import('./adminApi');
+  await adminPermanentDeleteMultipleSubmissions(ids);
+};
+
+export const createSubmission = async (submission: Submission): Promise<Submission> => {
+  const client = requireSupabase();
+  const row = submissionToDbRow(submission);
+  // Keep the id (Date.now() + random) — submissions table has BIGINT PRIMARY KEY without auto-increment
+  // Phase 5: no `.select()` after insert — RLS allows anon INSERT only, so PostgREST
+  // cannot return the inserted row (would 401). The caller already has the full
+  // submission object; we simply return it on success.
+  const { error } = await client
+    .from(SUBMISSIONS_TABLE)
+    .insert(row);
+
+  if (error) throw error;
+  return submission;
+};
+
+export const updateSubmission = async (
+  id: string | number,
+  updates: Partial<Submission>,
+): Promise<Submission> => {
+  // Phase 3: route through admin-api (whitelist-enforced).
+  // admin-api returns only { updated, changedFields }, so we re-fetch to get the full row.
+  const { adminUpdateSubmission, adminGetSubmission } = await import('./adminApi');
+  await adminUpdateSubmission(id, updates);
+  const updated = await adminGetSubmission(id);
+  return updated as Submission;
+};
+
+export const deleteMultipleSubmissions = async (ids: Array<string | number>): Promise<void> => {
+  if (!ids.length) return;
+  // Phase 3: route through admin-api (permanent delete)
+  const { adminPermanentDeleteMultipleSubmissions } = await import('./adminApi');
+  await adminPermanentDeleteMultipleSubmissions(ids);
+};
+
+export const updateMultipleSubmissions = async (
+  ids: Array<string | number>,
+  updates: Partial<Submission>,
+): Promise<Submission[]> => {
+  if (!ids.length) return [];
+  // Phase 3: route through admin-api (loop client-side)
+  const { adminUpdateMultipleSubmissions } = await import('./adminApi');
+  await adminUpdateMultipleSubmissions(ids, updates);
+  // Return empty array — caller (admin panel) will refetch the list anyway
+  return [];
+};
+
+// Phase 4.5: checkDuplicatePhone REMOVED — it was an enumeration risk (anyone with anon key
+// could check if a phone number exists in submissions). The duplicate-checking logic in
+// ConsultationPage now uses localStorage cache only, and the server-side duplicate prevention
+// happens via the unique trackingCode generation + createSubmission's insert-or-fail behavior.
+
+export const fetchSettings = async (): Promise<AppSettings | null> => {
+  // Phase 4.5: split settings fetching by context:
+  // - Admin context (has sessionToken): use admin-api (returns full settings with sensitive keys masked)
+  // - Public context (no sessionToken): use public-settings edge function (returns only whitelisted keys)
+  try {
+    if (getAdminSessionToken()) {
+      const { adminFetchSettings } = await import('./adminApi');
+      const s = await adminFetchSettings();
+      if (s) return s;
+    }
+  } catch { /* fall through to public-settings */ }
+
+  // Public context: use public-settings edge function (sanitized, no sensitive data)
+  const base = (import.meta.env.VITE_SUPABASE_URL as string || '').replace(/\/$/, '');
+  try {
+    const resp = await fetch(`${base}/functions/v1/public-settings`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (resp.ok) {
+      const body = await resp.json();
+      if (body.settings) return body.settings;
+    }
+  } catch { /* public-settings unavailable — fall through to null (caller uses defaults) */ }
+
+  // Phase 5: direct anon read of settings REMOVED (RLS blocks anon on settings).
+  // Public context receives settings ONLY via the sanitized public-settings edge function.
+  return null;
+};
+
+export const saveSettings = async (settings: AppSettings): Promise<AppSettings> => {
+  // Phase 3: route through admin-api (blocklist prevents saving adminPassword etc.)
+  const { adminSaveSettings } = await import('./adminApi');
+  await adminSaveSettings(settings);
+  // Return the input settings (caller doesn't use the return value beyond success/failure)
+  return settings;
+};
+
+// ===== آمار بازدید صفحات (page_views) — اصلاح جدید =====
+// اصلاح ۳۱: ثبت بازدید بسیار سبک و بی‌صدا — هرگز نباید در تجربه کاربری اختلال ایجاد کند.
+const PAGE_VIEWS_TABLE = 'page_views';
+
+export const trackPageView = (path: string): void => {
+  if (!isSupabaseConfigured || !supabase) return;
+  try {
+    supabase
+      .from(PAGE_VIEWS_TABLE)
+      .insert({
+        page_path: path,
+        referrer: (typeof document !== 'undefined' && document.referrer) || null,
+        user_agent: (typeof navigator !== 'undefined' && navigator.userAgent) || null,
+      })
+      .then(
+        () => {},
+        () => {},
+      );
+  } catch {
+    // کاملاً بی‌صدا — هیچ خطایی نباید به بیرون درز کند.
+  }
+};
+
+export type PageViewStats = {
+  total: number;
+  thisMonth: number;
+  today: number;
+  topPages: { page_path: string; count: number }[];
+};
+
+export const fetchPageViewStats = async (): Promise<PageViewStats> => {
+  // Phase 4.5: route ONLY through admin-api — no direct Supabase fallback.
+  // If admin-api fails (e.g. no admin session), throw an error. The caller
+  // (AnalyticsPanel) should catch and show an error/retry message.
+  const { adminFetchPageViewStats } = await import('./adminApi');
+  const stats = await adminFetchPageViewStats(30);
+  // Map admin-api response to the PageViewStats shape used by the frontend
+  const now = new Date();
+  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString().slice(0, 10);
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+  const todayCount = (stats.dailyCounts || [])
+    .filter((d: any) => d.date === startOfDay)
+    .reduce((sum: number, d: any) => sum + d.views, 0);
+  const thisMonthCount = (stats.dailyCounts || [])
+    .filter((d: any) => d.date >= startOfMonth)
+    .reduce((sum: number, d: any) => sum + d.views, 0);
+  return {
+    total: stats.totalViews || 0,
+    today: todayCount,
+    thisMonth: thisMonthCount,
+    topPages: (stats.topPages || []).slice(0, 5).map((p: any) => ({ page_path: p.page_path, count: p.views })),
+  };
+};
+
+
+export interface UserQuestion {
+  id: number;
+  question: string;
+  question_en?: string;
+  phone?: string;
+  answer?: string;
+  answer_en?: string;
+  voice_note_url?: string;
+  page_source?: string;
+  status: 'pending' | 'answered' | 'archived';
+  created_at: string;
+  answered_at?: string;
+}
+
+const QUESTIONS_TABLE = 'user_questions';
+const LS_QUESTIONS_KEY = 'zk_user_questions';
+
+function getLSQuestions(): UserQuestion[] {
+  try {
+    const raw = localStorage.getItem(LS_QUESTIONS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return [];
+}
+
+function setLSQuestions(list: UserQuestion[]) {
+  try {
+    localStorage.setItem(LS_QUESTIONS_KEY, JSON.stringify(list));
+  } catch {}
+}
+
+export const submitUserQuestion = async (
+  question: string,
+  voiceNoteUrl?: string,
+  pageSource?: string,
+  phone?: string
+): Promise<UserQuestion> => {
+  const cleanPhone = (phone || '').trim();
+  const rawQ = (question || '').trim();
+  const fullText = cleanPhone
+    ? (rawQ ? `[شماره تماس: ${cleanPhone}]\n${rawQ}` : `[شماره تماس: ${cleanPhone}]\nدرخواست تماس تلفنی جهت پاسخ به سؤال`)
+    : (rawQ || 'درخواست تماس تلفنی');
+
+  const newQ: UserQuestion = {
+    id: Date.now(),
+    question: fullText,
+    phone: cleanPhone,
+    voice_note_url: voiceNoteUrl || '',
+    page_source: pageSource || 'faq',
+    status: 'pending',
+    created_at: new Date().toISOString(),
+  };
+
+  if (!isSupabaseConfigured || !supabase) {
+    const list = getLSQuestions();
+    setLSQuestions([newQ, ...list]);
+    return newQ;
+  }
+
+  try {
+    const insertPayload: any = {
+      question: newQ.question,
+      voice_note_url: newQ.voice_note_url,
+      page_source: newQ.page_source,
+      status: 'pending',
+      created_at: newQ.created_at,
+    };
+    if (cleanPhone) {
+      insertPayload.phone = cleanPhone;
+    }
+    // Phase 5: no `.select()` after insert (anon INSERT-only RLS — reading back would 401).
+    const { error } = await supabase
+      .from(QUESTIONS_TABLE)
+      .insert([insertPayload]);
+    if (error) {
+      if (error.message?.includes('phone') || error.code === 'PGRST204') {
+        delete insertPayload.phone;
+        const { error: e2 } = await supabase
+          .from(QUESTIONS_TABLE)
+          .insert([insertPayload]);
+        if (e2) throw e2;
+        return newQ;
+      }
+      throw error;
+    }
+    return newQ;
+  } catch (err) {
+    console.warn('Could not insert question to Supabase, saving to localStorage:', err);
+    const list = getLSQuestions();
+    setLSQuestions([newQ, ...list]);
+    return newQ;
+  }
+};
+
+export const fetchUserQuestions = async (status?: string): Promise<UserQuestion[]> => {
+  // Admin context (has session): full access via admin-api.
+  if (getAdminSessionToken()) {
+    try {
+      const { adminFetchUserQuestions } = await import('./adminApi');
+      const result = await adminFetchUserQuestions({
+        status: status && status !== 'all' ? status : undefined,
+        limit: 1000,
+      });
+      return result.questions;
+    } catch { /* fall through to public read below */ }
+  }
+
+  // Public context (no session): sanitized answered questions via public-questions edge function.
+  // The function strips "[شماره تماس: ...]" from the question text — no PII leaks publicly.
+  // Phase 5 RLS: anon has no SELECT on user_questions, so this is the only public read path.
+  try {
+    const base = (import.meta.env.VITE_SUPABASE_URL as string || '').replace(/\/$/, '');
+    const resp = await fetch(`${base}/functions/v1/public-questions`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (resp.ok) {
+      const body = await resp.json();
+      const list = Array.isArray(body.questions) ? (body.questions as UserQuestion[]) : [];
+      if (status && status !== 'all') {
+        return list.filter((q) => q.status === status);
+      }
+      return list;
+    }
+  } catch { /* ignore — fall through to LS */ }
+
+  // Local fallback for offline support
+  const list = getLSQuestions();
+  if (status && status !== 'all') {
+    return list.filter((q) => q.status === status);
+  }
+  return list;
+};
+
+export const answerUserQuestion = async (
+  id: number,
+  answer: string,
+  answerEn?: string
+): Promise<UserQuestion | null> => {
+  // Phase 3: route through admin-api
+  try {
+    const { adminAnswerUserQuestion } = await import('./adminApi');
+    await adminAnswerUserQuestion(id, answer.trim(), answerEn?.trim() || undefined);
+    // Return a partial UserQuestion (caller will refetch the list)
+    return { id, answer: answer.trim(), answer_en: answerEn?.trim() || '', status: 'answered', answered_at: new Date().toISOString() } as UserQuestion;
+  } catch (err) {
+    // Fall back to LS if admin-api unavailable
+    const list = getLSQuestions();
+    const answeredAt = new Date().toISOString();
+    const updated = list.map((q) =>
+      q.id === id
+        ? { ...q, answer: answer.trim(), answer_en: answerEn?.trim() || '', status: 'answered' as const, answered_at: answeredAt }
+        : q
+    );
+    setLSQuestions(updated);
+    return updated.find((q) => q.id === id) || null;
+  }
+};
+
+export const archiveUserQuestion = async (id: number): Promise<boolean> => {
+  // Phase 3: route through admin-api
+  try {
+    const { adminArchiveUserQuestion } = await import('./adminApi');
+    await adminArchiveUserQuestion(id);
+    return true;
+  } catch {
+    const list = getLSQuestions();
+    const updated = list.map((q) => (q.id === id ? { ...q, status: 'archived' as const } : q));
+    setLSQuestions(updated);
+    return true;
+  }
+};
+
+export const deleteUserQuestion = async (id: number): Promise<boolean> => {
+  // Phase 3: route through admin-api
+  try {
+    const { adminDeleteUserQuestion } = await import('./adminApi');
+    await adminDeleteUserQuestion(id);
+    return true;
+  } catch {
+    const list = getLSQuestions();
+    const updated = list.filter((q) => q.id !== id);
+    setLSQuestions(updated);
+    return true;
+  }
+};
+
+
+const VOICE_BUCKET = 'voice-notes';
+export const uploadVoiceNote = async (blob: Blob): Promise<string | null> => {
+  if (!isSupabaseConfigured || !supabase) return null;
+  try {
+    const ext = blob.type.includes('webm') ? 'webm'
+              : blob.type.includes('mp4') ? 'mp4'
+              : blob.type.includes('ogg') ? 'ogg'
+              : 'webm';
+    const path = `voice-notes/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error } = await supabase.storage
+      .from(VOICE_BUCKET)
+      .upload(path, blob, { contentType: blob.type, upsert: false });
+    if (error) {
+      console.warn('Voice note upload failed:', error.message);
+      return null;
+    }
+    const { data } = supabase.storage.from(VOICE_BUCKET).getPublicUrl(path);
+    return data.publicUrl;
+  } catch (e) {
+    console.warn('Voice note upload error:', e);
+    return null;
+  }
+};
+
+
+export interface ReviewItem {
+  id: number;
+  course_id?: string;
+  reviewer_name: string;
+  rating: number;
+  comment?: string;
+  status: 'pending' | 'approved' | 'rejected';
+  placements?: string[]; // محل‌های نمایش در بخش‌های سایت: 'home', 'courses', 'course_detail', 'consultation', 'faq', 'about', 'track', 'all_places'
+  course_ids?: string[]; // شناسه‌های دوره‌هایی که نظر باید در آن‌ها نمایش داده شود (خالی = فقط بر اساس course_id)
+  phone?: string; // شماره تماس ثبت‌کننده (فقط برای پنل ادمین — هرگز در نمایش عمومی پخش نمی‌شود)
+  created_at: string;
+}
+
+export const REVIEW_PLACEMENT_OPTIONS = [
+  { id: 'all_places', label: 'همه بخش‌ها (سراسری)', color: '#4f46e5', desc: 'نمایش سراسری در کلیه بخش‌های مرتبط سایت' },
+  { id: 'home', label: 'صفحه اصلی', color: '#0284c7', desc: 'نمایش در بخش نظرات صفحه اول سایت' },
+  { id: 'courses', label: 'صفحه دوره‌ها', color: '#0d9488', desc: 'نمایش در صفحه کاتالوگ دوره‌های رشد و تغذیه' },
+  { id: 'course_detail', label: 'جزئیات اختصاصی دوره', color: '#7c3aed', desc: 'نمایش در تب نظرات جزئیات همان دوره انتخابی' },
+  { id: 'consultation', label: 'فرم مشاوره', color: '#ea580c', desc: 'نمایش در باکس‌های اعتمادساز فرم مشاوره تخصصی' },
+  { id: 'faq', label: 'سوالات و تجربیات', color: '#16a34a', desc: 'نمایش در صفحه سوالات متداول و رضایت والدین' },
+  { id: 'about', label: 'درباره ما و متد TC', color: '#db2777', desc: 'نمایش در صفحه معرفی دکتر افرادی و متد TC' },
+  { id: 'track', label: 'صفحه پیگیری نوبت', color: '#6366f1', desc: 'نمایش در صفحه پیگیری نوبت و نتایج' },
+];
+
+const REVIEWS_TABLE = 'reviews';
+const LS_REVIEWS_KEY = 'zk_reviews';
+
+function getLSReviews(): ReviewItem[] {
+  try {
+    const raw = localStorage.getItem(LS_REVIEWS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return [];
+}
+
+function setLSReviews(list: ReviewItem[]) {
+  try {
+    localStorage.setItem(LS_REVIEWS_KEY, JSON.stringify(list));
+  } catch {}
+}
+
+export const submitReview = async (
+  courseId: string,
+  name: string,
+  rating: number,
+  comment?: string,
+  placements?: string[],
+  phone?: string,
+  courseIds?: string[]
+): Promise<ReviewItem> => {
+  const defaultPlacements = placements && placements.length > 0
+    ? placements
+    : ['course_detail', 'courses', 'home'];
+
+  const newR: ReviewItem = {
+    id: Date.now(),
+    course_id: courseId,
+    reviewer_name: name.trim(),
+    rating: Math.min(5, Math.max(1, rating)),
+    comment: comment?.trim() || '',
+    status: 'pending',
+    placements: defaultPlacements,
+    phone: phone?.trim() || '',
+    course_ids: Array.isArray(courseIds) ? courseIds.filter(Boolean) : [],
+    created_at: new Date().toISOString(),
+  };
+  if (!isSupabaseConfigured || !supabase) {
+    const list = getLSReviews();
+    setLSReviews([newR, ...list]);
+    return newR;
+  }
+  try {
+    // Phase 5: no `.select()` after insert (anon INSERT-only RLS — reading back would 401).
+    const { error } = await supabase
+      .from(REVIEWS_TABLE)
+      .insert([
+        {
+          course_id: newR.course_id,
+          reviewer_name: newR.reviewer_name,
+          rating: newR.rating,
+          comment: newR.comment,
+          status: 'pending',
+          placements: newR.placements,
+          phone: newR.phone || '',
+          course_ids: newR.course_ids || [],
+          created_at: newR.created_at,
+        },
+      ]);
+    if (error) throw error;
+    return newR;
+  } catch {
+    const list = getLSReviews();
+    setLSReviews([newR, ...list]);
+    return newR;
+  }
+};
+
+export const fetchReviews = async (status?: string): Promise<ReviewItem[]> => {
+  // Admin context (has session): full access via admin-api.
+  if (getAdminSessionToken()) {
+    try {
+      const { adminFetchReviews } = await import('./adminApi');
+      const result = await adminFetchReviews({
+        status: status && status !== 'all' ? status : undefined,
+        limit: 1000,
+      });
+      return result.reviews;
+    } catch { /* fall through to public read below */ }
+  }
+
+  // Public context (no session): only approved reviews via anon SELECT.
+  // Phase 5 RLS: anon can SELECT only status='approved' on reviews.
+  // This keeps public ReviewSection working without an admin session (no redirect).
+  // Privacy: phone is STRIPPED here — it is only for the admin panel and
+  // must never be published on the public site.
+  try {
+    if (isSupabaseConfigured && supabase) {
+      let query = supabase.from(REVIEWS_TABLE).select('*').limit(1000);
+      if (status && status !== 'all') query = query.eq('status', status);
+      const { data, error } = await query;
+      if (!error && data) {
+        return (data as ReviewItem[]).map((r) => {
+          const { phone: _phone, ...rest } = r;
+          return rest as ReviewItem;
+        });
+      }
+    }
+  } catch { /* ignore — fall through to LS */ }
+
+  const list = getLSReviews();
+  if (status && status !== 'all') {
+    return list.filter((r) => r.status === status);
+  }
+  return list;
+};
+
+export const approveReview = async (id: number): Promise<boolean> => {
+  // Phase 3: route through admin-api
+  try {
+    const { adminApproveReview } = await import('./adminApi');
+    await adminApproveReview(id);
+    return true;
+  } catch {
+    const list = getLSReviews();
+    setLSReviews(list.map((r) => (r.id === id ? { ...r, status: 'approved' as const } : r)));
+    return true;
+  }
+};
+
+export const rejectReview = async (id: number): Promise<boolean> => {
+  // Phase 3: route through admin-api
+  try {
+    const { adminRejectReview } = await import('./adminApi');
+    await adminRejectReview(id);
+    return true;
+  } catch {
+    const list = getLSReviews();
+    setLSReviews(list.map((r) => (r.id === id ? { ...r, status: 'rejected' as const } : r)));
+    return true;
+  }
+};
+
+export const deleteReview = async (id: number): Promise<boolean> => {
+  // Phase 3: route through admin-api
+  try {
+    const { adminDeleteReview } = await import('./adminApi');
+    await adminDeleteReview(id);
+    return true;
+  } catch {
+    const list = getLSReviews();
+    setLSReviews(list.filter((r) => r.id !== id));
+    return true;
+  }
+};
+
+export const updateReview = async (
+  id: number,
+  updates: Partial<ReviewItem>
+): Promise<boolean> => {
+  // Phase 3: route through admin-api
+  try {
+    const { adminUpdateReview } = await import('./adminApi');
+    await adminUpdateReview(id, updates);
+    return true;
+  } catch {
+    const list = getLSReviews();
+    setLSReviews(list.map((r) => (r.id === id ? { ...r, ...updates } : r)));
+    return true;
+  }
+};
+
+/**
+ * عملیات گروهی و دسته‌جمعی نظرات
+ */
+export const bulkApproveReviews = async (ids: number[]): Promise<boolean> => {
+  if (!ids || ids.length === 0) return true;
+  // Phase 3: loop client-side via admin-api
+  try {
+    const { adminApproveReview } = await import('./adminApi');
+    await Promise.all(ids.map(id => adminApproveReview(id)));
+    return true;
+  } catch {
+    const list = getLSReviews();
+    const idSet = new Set(ids);
+    setLSReviews(list.map((r) => (idSet.has(r.id) ? { ...r, status: 'approved' as const } : r)));
+    return true;
+  }
+};
+
+export const bulkRejectReviews = async (ids: number[]): Promise<boolean> => {
+  if (!ids || ids.length === 0) return true;
+  // Phase 3: loop client-side via admin-api
+  try {
+    const { adminRejectReview } = await import('./adminApi');
+    await Promise.all(ids.map(id => adminRejectReview(id)));
+    return true;
+  } catch {
+    const list = getLSReviews();
+    const idSet = new Set(ids);
+    setLSReviews(list.map((r) => (idSet.has(r.id) ? { ...r, status: 'rejected' as const } : r)));
+    return true;
+  }
+};
+
+export const bulkDeleteReviews = async (ids: number[]): Promise<boolean> => {
+  if (!ids || ids.length === 0) return true;
+  // Phase 3: loop client-side via admin-api
+  try {
+    const { adminDeleteReview } = await import('./adminApi');
+    await Promise.all(ids.map(id => adminDeleteReview(id)));
+    return true;
+  } catch {
+    const list = getLSReviews();
+    const idSet = new Set(ids);
+    setLSReviews(list.filter((r) => !idSet.has(r.id)));
+    return true;
+  }
+};
+
+export const bulkUpdateReviewPlacements = async (ids: number[], placements: string[]): Promise<boolean> => {
+  if (!ids || ids.length === 0) return true;
+  // Phase 3: route through admin-api (loop client-side)
+  try {
+    const { adminBulkUpdateReviewPlacements } = await import('./adminApi');
+    await adminBulkUpdateReviewPlacements(ids, placements);
+    return true;
+  } catch {
+    const list = getLSReviews();
+    const idSet = new Set(ids);
+    setLSReviews(list.map((r) => (idSet.has(r.id) ? { ...r, placements } : r)));
+    return true;
+  }
+};
+
+/**
+ * توابع دانلود و خروجی نظرات به فرمت CSV اکسل و JSON با پشتیبانی کامل از UTF-8 BOM
+ */
+export const downloadReviewsAsCSV = (reviews: ReviewItem[], filename = 'afradikid-reviews.csv') => {
+  if (!reviews || reviews.length === 0) {
+    alert('هیچ نظری برای دانلود وجود ندارد.');
+    return;
+  }
+
+  const getPlacementLabels = (places?: string[]) => {
+    if (!places || places.length === 0) return 'پیش‌فرض (جزئیات دوره، دوره‌ها، خانه)';
+    return places
+      .map((p) => {
+        const found = REVIEW_PLACEMENT_OPTIONS.find((opt) => opt.id === p);
+        return found ? found.label : p;
+      })
+      .join(' | ');
+  };
+
+  const getStatusLabel = (status: string) => {
+    if (status === 'approved') return 'تأیید شده (قابل پخش)';
+    if (status === 'rejected') return 'رد شده (غیرقابل پخش)';
+    return 'در انتظار بررسی';
+  };
+
+  const escapeCSV = (val: any) => {
+    if (val === null || val === undefined) return '""';
+    const str = String(val).replace(/"/g, '""');
+    return `"${str}"`;
+  };
+
+  const headers = [
+    'شناسه نظر',
+    'نام والد / ثبت‌کننده',
+    'دوره یا بخش مربوطه',
+    'امتیاز (از ۵ ستاره)',
+    'وضعیت انتشار',
+    'محل‌های نمایش در سایت',
+    'متن نظر والد',
+    'تاریخ ثبت (میلادی)',
+    'تاریخ ثبت (شمسی)',
+  ];
+
+  const rows = reviews.map((r) => {
+    let faDate = '—';
+    try {
+      faDate = new Date(r.created_at).toLocaleDateString('fa-IR');
+    } catch {}
+
+    return [
+      escapeCSV(r.id),
+      escapeCSV(r.reviewer_name),
+      escapeCSV(r.course_id || 'عمومی'),
+      escapeCSV(r.rating || 5),
+      escapeCSV(getStatusLabel(r.status)),
+      escapeCSV(getPlacementLabels(r.placements)),
+      escapeCSV(r.comment || ''),
+      escapeCSV(r.created_at || ''),
+      escapeCSV(faDate),
+    ].join(',');
+  });
+
+  // افزودن UTF-8 BOM برای نمایش درست کاراکترهای فارسی در اکسل
+  const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
+export const downloadReviewsAsJSON = (reviews: ReviewItem[], filename = 'afradikid-reviews.json') => {
+  if (!reviews || reviews.length === 0) {
+    alert('هیچ نظری برای دانلود وجود ندارد.');
+    return;
+  }
+  const jsonContent = JSON.stringify(reviews, null, 2);
+  const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
+export const downloadSingleReview = (review: ReviewItem) => {
+  downloadReviewsAsCSV([review], `review-${review.id}-${(review.reviewer_name || 'user').replace(/\s+/g, '_')}.csv`);
+};
