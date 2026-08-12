@@ -197,14 +197,11 @@ export const defaultSettings = {
       enabled: true,
       storagePath: '',
     },
-    specialistHome: {
-      selectedId: '1',
-      options: [
-        { id: '1', url: '/images/specialist/home-avatar-1.webp' },
-        { id: '2', url: '/images/specialist/home-avatar-2.webp' },
-        { id: '3', url: '/images/specialist/home-avatar-3.webp' },
-        { id: '4', url: '/images/specialist/home-avatar-4.webp' },
-      ],
+    homeAvatar: {
+      url: '/images/specialist/specialist-about.webp',
+      alt: 'کارشناس رشد و تغذیه',
+      enabled: true,
+      storagePath: '',
     },
   },
 
@@ -461,17 +458,18 @@ export function migrateSettings(settings: any): any {
     if (migrated.images.hero && !migrated.images.hero.storagePath) migrated.images.hero.storagePath = '';
     if (migrated.images.trustBox && !migrated.images.trustBox.storagePath) migrated.images.trustBox.storagePath = '';
     if (migrated.images.specialist && !migrated.images.specialist.storagePath) migrated.images.specialist.storagePath = '';
-    if (!migrated.images.specialistHome || !Array.isArray(migrated.images.specialistHome.options) || migrated.images.specialistHome.options.length !== 4) {
-      migrated.images.specialistHome = {
-        selectedId: migrated.images.specialistHome?.selectedId || '1',
-        options: [
-          { id: '1', url: '/images/specialist/home-avatar-1.webp' },
-          { id: '2', url: '/images/specialist/home-avatar-2.webp' },
-          { id: '3', url: '/images/specialist/home-avatar-3.webp' },
-          { id: '4', url: '/images/specialist/home-avatar-4.webp' },
-        ],
+    if (!migrated.images.homeAvatar) {
+      const oldPick = Array.isArray(migrated.images.specialistHome?.options)
+        ? migrated.images.specialistHome.options.find((o: any) => String(o?.id) === String(migrated.images.specialistHome?.selectedId))?.url
+        : '';
+      migrated.images.homeAvatar = {
+        url: oldPick || '/images/specialist/specialist-about.webp',
+        alt: 'کارشناس رشد و تغذیه',
+        enabled: true,
+        storagePath: '',
       };
     }
+    delete migrated.images.specialistHome;
   }
 
   // ─── مهاجرت trustBoxes: اطمینان از وجود ۴ دسته جملات اعتمادساز (health/height/appetite/mind) با ۶۳ جمله
