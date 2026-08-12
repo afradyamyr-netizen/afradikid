@@ -65,8 +65,8 @@ CREATE INDEX IF NOT EXISTS idx_submissions_deleted_at ON public.submissions(dele
 -- ۷) اصلاح ۶ (و مرحله ۶ اصلاح ۲): باکت "files" برای آپلود فایل PDF (طریقه مصرف / برنامه غذایی)
 -- این دستور باکت را می‌سازد (اگر با دستور SQL Editor اجرا شود؛ در غیر این صورت از Storage > New bucket بسازید، Public را روشن کنید):
 insert into storage.buckets (id, name, public)
-values ('files','files', true)
-on conflict (id) do update set public = true;
+values ('files','files', false)
+on conflict (id) do update set public = false;
 
 -- همچنین باکت "images" (فیش واریزی، تصاویر پروفایل و...) باید وجود داشته باشد:
 insert into storage.buckets (id, name, public)
@@ -90,8 +90,8 @@ CREATE POLICY "public delete files" ON storage.objects
 
 -- ۹) اصلاح ۳۰ (مرحله ۷): باکت "tongue-photos" برای آپلود عکس زبان فرزند (صفحه اطلاعات فرزند)
 insert into storage.buckets (id, name, public)
-values ('tongue-photos','tongue-photos', true)
-on conflict (id) do update set public = true;
+values ('tongue-photos','tongue-photos', false)
+on conflict (id) do update set public = false;
 
 -- ۱۰) اصلاح ۳۰ (مرحله ۷): Policyهای Storage برای باکت "tongue-photos"
 DROP POLICY IF EXISTS "public read tongue" ON storage.objects;
@@ -206,8 +206,8 @@ CREATE POLICY "admin delete reviews" ON public.reviews FOR DELETE USING (true);
 -- ۱۴) بخش B (مرحله ۴): باکت voice-notes برای یادداشت صوتی
 -- =========================================================
 insert into storage.buckets (id, name, public)
-values ('voice-notes','voice-notes', true)
-on conflict (id) do update set public = true;
+values ('voice-notes','voice-notes', false)
+on conflict (id) do update set public = false;
 
 DROP POLICY IF EXISTS "public read voice-notes" ON storage.objects;
 CREATE POLICY "public read voice-notes" ON storage.objects

@@ -81,8 +81,8 @@ create policy "public delete media" on storage.objects for delete using (bucket_
 
 -- باکت storage "receipts" (فیش واریزی — آپلود و پیش‌نمایش در فرم پرداخت)
 insert into storage.buckets (id, name, public)
-values ('receipts','receipts', true)
-on conflict (id) do update set public = true;
+values ('receipts','receipts', false)
+on conflict (id) do update set public = false;
 
 drop policy if exists "public read receipts" on storage.objects;
 create policy "public read receipts" on storage.objects for select using (bucket_id='receipts');
