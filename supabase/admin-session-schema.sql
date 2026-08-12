@@ -78,3 +78,17 @@ drop policy if exists "public update media" on storage.objects;
 create policy "public update media" on storage.objects for update using (bucket_id='media');
 drop policy if exists "public delete media" on storage.objects;
 create policy "public delete media" on storage.objects for delete using (bucket_id='media');
+
+-- باکت storage "receipts" (فیش واریزی — آپلود و پیش‌نمایش در فرم پرداخت)
+insert into storage.buckets (id, name, public)
+values ('receipts','receipts', true)
+on conflict (id) do update set public = true;
+
+drop policy if exists "public read receipts" on storage.objects;
+create policy "public read receipts" on storage.objects for select using (bucket_id='receipts');
+drop policy if exists "public insert receipts" on storage.objects;
+create policy "public insert receipts" on storage.objects for insert with check (bucket_id='receipts');
+drop policy if exists "public update receipts" on storage.objects;
+create policy "public update receipts" on storage.objects for update using (bucket_id='receipts');
+drop policy if exists "public delete receipts" on storage.objects;
+create policy "public delete receipts" on storage.objects for delete using (bucket_id='receipts');
