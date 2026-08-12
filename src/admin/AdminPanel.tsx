@@ -33,6 +33,7 @@ import { SK, p2e, digits, uid, getLS, setLS, faNum, relTime, fmtWhen, subTime, l
 import { defaultSettings as configDefaultSettings } from '../config/defaultSettings';
 import ContentManager from './ContentManager';
 import SettingsManager from './SettingsManager';
+import HomeAvatarSlots from './HomeAvatarSlots';
 
 type Any=Record<string,any>;
 // Phase 3: VITE_ADMIN_PASSWORD removed — admin password lives only in Supabase Edge Function secrets.
@@ -1039,47 +1040,7 @@ function ImagesEditor(){
      <input dir="ltr" style={{...S.inp,marginBottom:6}} defaultValue={imgs.courseDefault?.url||''} onBlur={e=>upImg('courseDefault',{url:e.target.value.trim()})} placeholder="https://... یا /images/course-default.webp"/>
      <label className="zkad-drop" onDragOver={e=>e.preventDefault()} onDrop={async e=>{e.preventDefault();const f=e.dataTransfer.files?.[0];if(f){try{const url=await fileToData(f,imgs.courseDefault?.url,'images');upImg('courseDefault',{url})}catch(err:any){alert(err?.message||'آپلود انجام نشد')}}}}><ZkUploadIcon size={22}/><span>برای آپلود تصویر کلیک کنید یا فایل را اینجا بکشید</span><input type="file" accept="image/jpeg,image/png,image/webp" onChange={async e=>{const f=e.target.files?.[0];if(f){try{const url=await fileToData(f,imgs.courseDefault?.url,'images');upImg('courseDefault',{url})}catch(err:any){alert(err?.message||'آپلود انجام نشد')}}}}/></label>
     </div>
-    {/* آواتار دایره‌ای صفحه اصلی — ۴ اسلات قابل انتخاب/حذف/آپلود */}
-    {(()=>{
-      const DEFAULT_HOME=[
-        {id:'1',url:'/images/specialist/home-avatar-1.webp'},
-        {id:'2',url:'/images/specialist/home-avatar-2.webp'},
-        {id:'3',url:'/images/specialist/home-avatar-3.webp'},
-        {id:'4',url:'/images/specialist/home-avatar-4.webp'},
-      ];
-      const rawHome=(imgs as any).specialistHome||{};
-      const options:any[]=Array.isArray(rawHome.options)&&rawHome.options.length===4?rawHome.options:DEFAULT_HOME;
-      const selectedId=String(rawHome.selectedId||options.find((o:any)=>o?.url)?.id||'1');
-      const setHome=(next:any)=>setEditCfg({...editCfg,images:{...imgs,specialistHome:next}});
-      const isAllowed=(f:File)=>['image/jpeg','image/png','image/webp'].includes(f.type)&&f.size<=8*1024*1024;
-      const patchOpt=async(id:string,url:string)=>{
-        const nextOpts=options.map((o:any)=>String(o.id)===id?{...o,url}:o);
-        setHome({selectedId,options:nextOpts});
-      };
-      return <div className="zkad-media-slot">
-       <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
-        <b style={{fontSize:13,color:T.ttl}}><ZkStethoscopeIcon size={14} color={T.ttl}/> عکس کارشناس صفحه اصلی (آواتار دایره‌ای)</b>
-       </div>
-       <p style={{fontSize:11,color:T.mut,margin:'0 0 12px',lineHeight:1.8}}>یکی از چهار عکس را برای نمایش در هوم انتخاب کنید. هر اسلات را می‌توانید حذف یا از گوشی جایگزین کنید. بعد از تغییر، «ذخیره تنظیمات تصاویر» را بزنید.</p>
-       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
-        {options.map((opt:any,idx:number)=>{
-          const on=String(opt.id)===selectedId&&!!opt.url;
-          return <div key={opt.id||idx} style={{border:`2px solid ${on?T.acc:T.brd}`,borderRadius:14,padding:10,background:on?`${T.acc}10`:T.card}}>
-           <label style={{display:'flex',alignItems:'center',gap:8,cursor:opt.url?'pointer':'default',marginBottom:8,fontSize:12,fontWeight:800}}>
-            <input type="radio" name="home-avatar-pick" disabled={!opt.url} checked={on} onChange={()=>opt.url&&setHome({selectedId:opt.id,options})}/>
-            عکس {idx+1}{on?' — فعال در هوم':''}
-           </label>
-           {opt.url?<img src={opt.url} alt="" style={{width:72,height:72,objectFit:'cover',objectPosition:'center 18%',borderRadius:'50%',border:`2px solid ${T.brd}`,display:'block',marginBottom:8}} onError={(e:any)=>{e.currentTarget.style.display='none'}}/>:<div style={{width:72,height:72,borderRadius:'50%',border:`1px dashed ${T.brd}`,marginBottom:8,display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,color:T.mut}}>خالی</div>}
-           <label className="zkad-drop" style={{padding:'8px 6px',marginBottom:6}} onDragOver={e=>e.preventDefault()} onDrop={async e=>{e.preventDefault();const f=e.dataTransfer.files?.[0];if(!f)return;if(!isAllowed(f)){alert('فقط JPG / PNG / WEBP تا ۸ مگابایت');return;}try{const prev=opt.url;const url=await fileToData(f, prev && /^https:\/\//i.test(prev)?prev:undefined,'images');await patchOpt(opt.id,url);if(!selectedId||!options.find((o:any)=>o.id===selectedId&&o.url))setHome({selectedId:opt.id,options:options.map((o:any)=>o.id===opt.id?{...o,url}:o)});}catch(err:any){alert(err?.message||'آپلود انجام نشد')}}}>
-            <ZkUploadIcon size={16}/><span style={{fontSize:11}}>آپلود از گوشی</span>
-            <input type="file" accept="image/jpeg,image/png,image/webp" onChange={async e=>{const f=e.target.files?.[0];e.currentTarget.value='';if(!f)return;if(!isAllowed(f)){alert('فقط JPG / PNG / WEBP تا ۸ مگابایت');return;}try{const prev=opt.url;const url=await fileToData(f, prev && /^https:\/\//i.test(prev)?prev:undefined,'images');const nextOpts=options.map((o:any)=>String(o.id)===String(opt.id)?{...o,url}:o);setHome({selectedId:opt.id,options:nextOpts});}catch(err:any){alert(err?.message||'آپلود انجام نشد')}}}/>
-           </label>
-           {opt.url&&<button type="button" style={{...AdminBtn(),color:T.err,width:'100%',padding:'7px 8px'}} onClick={async()=>{if(!confirm('این عکس از لیست هوم حذف شود؟'))return;const prev=opt.url;if(prev&&/^https:\/\//i.test(prev)){try{await deleteStoredImage(prev)}catch{}} const nextOpts=options.map((o:any)=>String(o.id)===String(opt.id)?{...o,url:''}:o); const still=nextOpts.find((o:any)=>o.url); setHome({selectedId:still?still.id:opt.id,options:nextOpts});}}>حذف این عکس</button>}
-          </div>;
-        })}
-       </div>
-      </div>;
-    })()}
+    <HomeAvatarSlots imgs={imgs} editCfg={editCfg} setEditCfg={setEditCfg} fileToData={fileToData} deleteStoredImage={deleteStoredImage} T={T} AdminBtn={AdminBtn}/>
     {/* تصویر کارشناس */}
     <div className="zkad-media-slot">
      <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
