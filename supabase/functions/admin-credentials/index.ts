@@ -34,7 +34,7 @@ import {
 const projectRefFromUrl = (): string => {
   const url = Deno.env.get("SUPABASE_URL") || "";
   const m = url.match(/https:\/\/([^.]+)\.supabase\.co/);
-  return m ? m[1] : "kkdrvexwzuuumjezipnd";
+  return m ? m[1] : "doikoqzarsuprcwkghsq";
 };
 const MGMT_BASE = "https://api.supabase.com";
 

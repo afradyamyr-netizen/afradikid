@@ -55,3 +55,26 @@ create policy "admin_sessions_service_role" on public.admin_sessions
 drop policy if exists "admin_devices_service_role" on public.admin_devices;
 create policy "admin_devices_service_role" on public.admin_devices
   for all to service_role using (true) with check (true);
+
+-- =========================================================
+-- Afradikid — افزودن‌های بعدی (Reviews columns + media bucket)
+-- =========================================================
+
+-- ستون‌های لازم برای reviews (کد admin-api / فرانت می‌خواند و می‌نویسد)
+alter table public.reviews add column if not exists placements text[] default array['home','courses','course_detail'];
+alter table public.reviews add column if not exists course_ids text[] default '{}';
+alter table public.reviews add column if not exists updated_at timestamptz default now();
+
+-- باکت storage "media" (برای آپلود تصاویر محتوا در ImageUploader)
+insert into storage.buckets (id, name, public)
+values ('media','media', true)
+on conflict (id) do update set public = true;
+
+drop policy if exists "public read media" on storage.objects;
+create policy "public read media" on storage.objects for select using (bucket_id='media');
+drop policy if exists "public insert media" on storage.objects;
+create policy "public insert media" on storage.objects for insert with check (bucket_id='media');
+drop policy if exists "public update media" on storage.objects;
+create policy "public update media" on storage.objects for update using (bucket_id='media');
+drop policy if exists "public delete media" on storage.objects;
+create policy "public delete media" on storage.objects for delete using (bucket_id='media');
