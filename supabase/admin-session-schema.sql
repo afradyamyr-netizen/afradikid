@@ -92,3 +92,13 @@ drop policy if exists "public update receipts" on storage.objects;
 create policy "public update receipts" on storage.objects for update using (bucket_id='receipts');
 drop policy if exists "public delete receipts" on storage.objects;
 create policy "public delete receipts" on storage.objects for delete using (bucket_id='receipts');
+
+-- =========================================================
+-- Afradikid — ستون‌های لازم برای سازگاری کامل کد (منطبق بر Zeynalikid)
+-- =========================================================
+
+-- reviews.phone (پنل ادمین می‌خواند؛ در نمایش عمومی strip می‌شود)
+alter table public.reviews add column if not exists phone text default '';
+
+-- user_questions.phone (فرم سؤال با شماره تماس)
+alter table public.user_questions add column if not exists phone text default '';
