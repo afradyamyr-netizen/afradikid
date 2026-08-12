@@ -197,6 +197,15 @@ export const defaultSettings = {
       enabled: true,
       storagePath: '',
     },
+    specialistHome: {
+      selectedId: '1',
+      options: [
+        { id: '1', url: '/images/specialist/home-avatar-1.webp' },
+        { id: '2', url: '/images/specialist/home-avatar-2.webp' },
+        { id: '3', url: '/images/specialist/home-avatar-3.webp' },
+        { id: '4', url: '/images/specialist/home-avatar-4.webp' },
+      ],
+    },
   },
 
   // ─── باکس جملات اعتمادساز جدید (TrustBoxNew) ───
@@ -452,6 +461,17 @@ export function migrateSettings(settings: any): any {
     if (migrated.images.hero && !migrated.images.hero.storagePath) migrated.images.hero.storagePath = '';
     if (migrated.images.trustBox && !migrated.images.trustBox.storagePath) migrated.images.trustBox.storagePath = '';
     if (migrated.images.specialist && !migrated.images.specialist.storagePath) migrated.images.specialist.storagePath = '';
+    if (!migrated.images.specialistHome || !Array.isArray(migrated.images.specialistHome.options) || migrated.images.specialistHome.options.length !== 4) {
+      migrated.images.specialistHome = {
+        selectedId: migrated.images.specialistHome?.selectedId || '1',
+        options: [
+          { id: '1', url: '/images/specialist/home-avatar-1.webp' },
+          { id: '2', url: '/images/specialist/home-avatar-2.webp' },
+          { id: '3', url: '/images/specialist/home-avatar-3.webp' },
+          { id: '4', url: '/images/specialist/home-avatar-4.webp' },
+        ],
+      };
+    }
   }
 
   // ─── مهاجرت trustBoxes: اطمینان از وجود ۴ دسته جملات اعتمادساز (health/height/appetite/mind) با ۶۳ جمله
