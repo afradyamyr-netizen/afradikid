@@ -19,6 +19,10 @@ export default function HomeAvatarCropper({ src, onCancel, onDone, T }: Props) {
   const pointers = useRef<Map<number, { x: number; y: number }>>(new Map());
   const pinch = useRef<{ dist: number; scale: number } | null>(null);
   const drag = useRef<{ x: number; y: number; px: number; py: number } | null>(null);
+  const scaleRef = useRef(1);
+  const minRef = useRef(1);
+  useEffect(() => { scaleRef.current = scale; }, [scale]);
+  useEffect(() => { minRef.current = minScale; }, [minScale]);
 
   useEffect(() => {
     const el = new Image();
@@ -41,7 +45,7 @@ export default function HomeAvatarCropper({ src, onCancel, onDone, T }: Props) {
     if (pointers.current.size === 2) {
       const pts = [...pointers.current.values()];
       const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-      pinch.current = { dist: dist || 1, scale };
+      pinch.current = { dist: dist || 1, scale: scaleRef.current };
       drag.current = null;
     } else if (pointers.current.size === 1) {
       drag.current = { x: e.clientX, y: e.clientY, px: pos.x, py: pos.y };
@@ -113,6 +117,7 @@ export default function HomeAvatarCropper({ src, onCancel, onDone, T }: Props) {
         onClick={(e) => e.stopPropagation()}
         style={{ width: 'min(420px,100%)', background: T.card || '#fff', borderRadius: 18, padding: 16, boxShadow: '0 20px 50px rgba(0,0,0,.25)' }}
       >
+        <style>{`.zk-avatar-crop-img{max-width:none!important;max-height:none!important;width:${img ? img.naturalWidth : 0}px!important;height:${img ? img.naturalHeight : 0}px!important;object-fit:fill!important;border-radius:0!important;}`}</style>
         <b style={{ display: 'block', marginBottom: 8, color: T.ttl }}>تنظیم کادر آواتار</b>
         <p style={{ fontSize: 12, color: T.mut, lineHeight: 1.7, margin: '0 0 12px' }}>
           با یک انگشت عکس را جابه‌جا کنید. برای نزدیک/دور شدن از دو انگشت روی عکس استفاده کنید.
@@ -140,13 +145,18 @@ export default function HomeAvatarCropper({ src, onCancel, onDone, T }: Props) {
               src={src}
               alt=""
               draggable={false}
+              className="zk-avatar-crop-img"
               style={{
                 position: 'absolute',
                 left: '50%',
                 top: '50%',
-                width: img.naturalWidth * scale,
-                height: img.naturalHeight * scale,
-                transform: `translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px))`,
+                width: img.naturalWidth,
+                height: img.naturalHeight,
+                maxWidth: 'none',
+                maxHeight: 'none',
+                objectFit: 'fill',
+                transform: `translate(-50%, -50%) translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
+                transformOrigin: 'center center',
                 userSelect: 'none',
                 pointerEvents: 'none',
               }}
