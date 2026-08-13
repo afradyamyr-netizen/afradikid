@@ -100,7 +100,7 @@ export default function CourseDetailView({ course, T, lang, onClose, onRegister,
         <img 
           src={course.image || '/images/asset13c-topic-growth.webp'} 
           alt={title} 
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: (course as any).objectPosition || 'center' }} 
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(15,23,42,0.35))' }} />
 
