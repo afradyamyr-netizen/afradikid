@@ -203,6 +203,14 @@ export const defaultSettings = {
       enabled: true,
       storagePath: '',
     },
+    // ─── کتابخانهٔ تصاویر بخش‌ها (گالری مدیریت تصاویر) ───
+    // هر بخش تب و پوشهٔ مجزای خودش را دارد؛ عکس‌های هر بخش فقط در همان بخش دیده می‌شوند.
+    library: {
+      licenses: [],   // { id, url, alt, aspectRatio, objectPosition, storagePath, enabled }
+      products: [],
+      courses: [],
+      general: [],
+    },
   },
 
   // ─── باکس جملات اعتمادساز جدید (TrustBoxNew) ───
@@ -470,6 +478,14 @@ export function migrateSettings(settings: any): any {
       };
     }
     delete migrated.images.specialistHome;
+    // اطمینان از وجود کتابخانهٔ تصاویر بخش‌ها
+    if (!migrated.images.library) {
+      migrated.images.library = { licenses: [], products: [], courses: [], general: [] };
+    } else {
+      for (const k of ['licenses', 'products', 'courses', 'general']) {
+        if (!Array.isArray(migrated.images.library[k])) migrated.images.library[k] = [];
+      }
+    }
   }
 
   // ─── مهاجرت trustBoxes: اطمینان از وجود ۴ دسته جملات اعتمادساز (health/height/appetite/mind) با ۶۳ جمله
