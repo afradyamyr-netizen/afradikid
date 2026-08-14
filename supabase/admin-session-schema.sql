@@ -61,7 +61,7 @@ create policy "admin_devices_service_role" on public.admin_devices
 -- =========================================================
 
 -- ستون‌های لازم برای reviews (کد admin-api / فرانت می‌خواند و می‌نویسد)
-alter table public.reviews add column if not exists placements text[] default array['home','courses','course_detail'];
+alter table public.reviews add column if not exists placements text[] default array['course_detail'];
 alter table public.reviews add column if not exists course_ids text[] default '{}';
 alter table public.reviews add column if not exists updated_at timestamptz default now();
 
