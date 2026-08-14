@@ -99,32 +99,78 @@ serve(async (req) => {
     }
 
     const info = deviceInfoFromBody(body);
-    const deviceId = randomToken();
     const sessionToken = randomToken();
     const tokenHash = await sha256(sessionToken);
     const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
     const now = new Date().toISOString();
 
-    // Insert device
-    const { data: deviceData, error: deviceErr } = await supabase
-      .from("admin_devices")
-      .insert({
-        id: deviceId,
-        device_name: info.device_name,
-        platform: info.platform,
-        browser: info.browser,
-        user_agent: info.user_agent,
-        owner_phone: phone,
-        is_revoked: false,
-        is_active: true,
-        last_seen_at: now,
-      })
-      .select("id")
-      .limit(1)
-      .maybeSingle();
-    if (deviceErr || !deviceData) {
-      console.error("admin-session login device insert error:", deviceErr);
-      return jsonResponse({ error: "خطا در برقراری نشست" }, 500, origin);
+    // ── کاهش نشست‌های تکراری: اگر همان فرد با همان دستگاه (امضای دستگاه یکسان و معتبر)
+    //    دوباره وارد شود، دستگاه قبلی را دوباره استفاده می‌کنیم و نشست‌های قدیمی همان
+    //    دستگاه را می‌بندیم؛ به‌جای اینکه هر ورود یک دستگاه/نشست جدید بسازد.
+    //    امضای دستگاه = device_name + platform + browser + user_agent (مستقل از تاریخ/تصادفی).
+    const deviceSignatureKey = [
+      info.device_name,
+      info.platform,
+      info.browser,
+      info.user_agent,
+    ].join("|");
+    let deviceId = randomToken();
+    let deviceExists = false;
+    try {
+      const { data: existing, error: existingErr } = await supabase
+        .from("admin_devices")
+        .select("id, device_name, platform, browser, user_agent")
+        .eq("owner_phone", phone)
+        .eq("is_revoked", false)
+        .order("last_seen_at", { ascending: false })
+        .limit(20);
+      if (!existingErr && Array.isArray(existing)) {
+        const match = existing.find((d: any) =>
+          [String(d?.device_name || ""), String(d?.platform || ""), String(d?.browser || ""), String(d?.user_agent || "")].join("|") === deviceSignatureKey
+        );
+        if (match?.id) {
+          deviceId = match.id;
+          deviceExists = true;
+          // بستن نشست‌های قبلی همین دستگاه تا فقط یک نشست فعال برای آن بماند
+          await supabase
+            .from("admin_sessions")
+            .update({ is_revoked: true, revoked_at: now })
+            .eq("device_id", deviceId)
+            .eq("owner_phone", phone)
+            .eq("is_revoked", false);
+          // به‌روزرسانی زمان آخرین فعالیت دستگاه
+          await supabase
+            .from("admin_devices")
+            .update({ is_active: true, is_revoked: false, last_seen_at: now })
+            .eq("id", deviceId);
+        }
+      }
+    } catch (e) {
+      console.error("admin-session login device-dedup error:", e);
+    }
+
+    // اگر دستگاهی با این امضا نبود، یک دستگاه جدید می‌سازیم
+    if (!deviceExists) {
+      const { data: deviceData, error: deviceErr } = await supabase
+        .from("admin_devices")
+        .insert({
+          id: deviceId,
+          device_name: info.device_name,
+          platform: info.platform,
+          browser: info.browser,
+          user_agent: info.user_agent,
+          owner_phone: phone,
+          is_revoked: false,
+          is_active: true,
+          last_seen_at: now,
+        })
+        .select("id")
+        .limit(1)
+        .maybeSingle();
+      if (deviceErr) {
+        console.error("admin-session login device insert error:", deviceErr);
+        return jsonResponse({ error: "خطا در برقراری نشست" }, 500, origin);
+      }
     }
 
     // Insert session
@@ -138,8 +184,6 @@ serve(async (req) => {
     });
     if (sessionErr) {
       console.error("admin-session login session insert error:", sessionErr);
-      // best-effort: remove the created device row
-      await supabase.from("admin_devices").delete().eq("id", deviceId);
       return jsonResponse({ error: "خطا در برقراری نشست" }, 500, origin);
     }
 
