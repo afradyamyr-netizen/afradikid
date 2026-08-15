@@ -38,6 +38,9 @@ export default function ConsultantsEditor(props: any) {
       <p style={{ fontSize: 11, color: T.mut, margin: '0 0 10px', lineHeight: 1.8 }}>
         برای هر مشاور یک لینک ارجاع اختصاصی و کوتاه بسازید. نام انگلیسی مشاور برای ساخت کد الزامی است؛ کد از ۳ حرف اولِ نام انگلیسی ساخته می‌شود و قابل تغییر است. وقتی مخاطب از این لینک وارد سایت شود، کارت مشاور در صفحهٔ هوم نمایش داده می‌شود و اطلاعات بانکی/کیف پول همان مشاور در مرحلهٔ پرداخت در نظر گرفته می‌شود.
       </p>
+      <div style={{ marginBottom: 12, padding: 10, borderRadius: 10, background: '#FEF3C7', border: '1px solid #F59E0B55', fontSize: 11.5, color: '#713F12', lineHeight: 1.8 }}>
+        مشاورینی که در «درباره ما» اضافه می‌کنید به‌صورت خودکار همین‌جا هم دیده می‌شوند (عکسشان از همان‌جا استفاده می‌شود). شما فقط کافی است اطلاعات بانکی/کیف پول هر مشاور را در همین بخش تکمیل کنید.
+      </div>
 
       {/* تنظیمات سراسری ارجاع */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginBottom: 14, padding: 10, background: T.soft, borderRadius: 10 }}>
