@@ -405,9 +405,9 @@ const defTabs=[
  ]}
 ];
 const defaultSettings:Any={
- theme:'light',publicThemeMode:'auto',siteTitle:'افرادیکید',browserTitle:'افرادیکید',specialistName:'کارشناس رشد و تغذیه کودک و نوجوان افرادیکید',showSpecialistPhoto:true,photoUrl:PROFILE_PHOTO,showProductsPage:true,showLicensesPage:true,adminLoginText:'ورود به پنل مدیریت',adminPhone:'',emergencyToken:'',
+ theme:'light',publicThemeMode:'auto',siteTitle:'فرزند من',browserTitle:'فرزند من',specialistName:'کارشناس رشد و تغذیه کودک و نوجوان فرزند من',showSpecialistPhoto:true,photoUrl:PROFILE_PHOTO,showProductsPage:true,showLicensesPage:true,adminLoginText:'ورود به پنل مدیریت',adminPhone:'',emergencyToken:'',
  // اصلاح ۱-۶ (مرحله ۴): عناوین کنار عکس پروفایل — دو زبانه، قابل ویرایش از پنل مدیریت
- specialistTitle:'کارشناس رشد و تغذیه کودک و نوجوان افرادیکید',specialistTitleEn:'Child and Adolescent Growth and Nutrition Specialist at Afradikid',heroSubtitle:'ضمن آرزوی اوقاتی خوش برای شما',heroSubtitleEn:'Wishing you a pleasant time',
+ specialistTitle:'کارشناس رشد و تغذیه کودک و نوجوان فرزند من',specialistTitleEn:'Child and Adolescent Growth and Nutrition Specialist at Farzandman',heroSubtitle:'ضمن آرزوی اوقاتی خوش برای شما',heroSubtitleEn:'Wishing you a pleasant time',
  heroTitle:'ضمن آرزوی اوقاتی خوش برای شما',heroDesc:'این فرم برای بررسی شرایط فرزند شما و تعیین نوبت مشاوره خصوصی طراحی شده است.',noticeText:'این مشاوره فقط به والدین یا سرپرست قانونی فرزند ارائه می‌شود. لطفاً اطلاعات را با دقت تکمیل فرمایید.',phoneNote:'مشاوره فقط به‌صورت تلفنی',submitBtnText:'ثبت درخواست مشاوره',successMsg:'اطلاعات فرزند شما با موفقیت ثبت شد',successSubMsg:'طی ۲۴ الی ۴۸ ساعت آینده با شما تماس می‌گیریم',timeSlotLabel:'بازه زمانی مناسب برای تماس (اختیاری)',
  directCourseBtn:'معرفی و ثبت مستقیم دوره',newFormBtn:'ثبت فرم جدید',contactBtn:'ارتباط با ما',backToConsultation:'بازگشت به فرم مشاوره',currencyUnit:'تومان',
  // اصلاح ۲: چیدمان (ترتیب + نمایش/پنهان) میانبرهای صفحه هوم و آیتم‌های منوی همبرگری — قابل تنظیم از پنل مدیریت
@@ -469,17 +469,17 @@ const defaultSettings:Any={
   education:{showIntro:true,order:'contentFirst'},
   about:{showIntro:true,order:'contentFirst'}
  },
- coursesIntroText:'در این بخش، دوره‌های تخصصی افرادیکید برای حمایت از رشد قد، افزایش اشتها و همراهی بدغذایی، و حمایت از تمرکز و یادگیری کودکان و نوجوانان معرفی شده‌اند. هر دوره بر اساس روش TC و با توجه به طبع و شرایط منحصربه‌فرد فرزند شما طراحی می‌شود. برای دریافت مشاوره رایگان، فرم مشاوره را تکمیل کنید.',
- coursesIntroTextEn:"In this section, Afradikid's specialized courses for improving height growth, increasing appetite, addressing picky eating, and boosting children's intelligence and focus are introduced. Each course is designed based on the TC method and according to your child's unique temperament and condition. For a free consultation, please complete the consultation form.",
+ coursesIntroText:'در این بخش، دوره‌های تخصصی فرزند من برای حمایت از رشد قد، افزایش اشتها و همراهی بدغذایی، و حمایت از تمرکز و یادگیری کودکان و نوجوانان معرفی شده‌اند. هر دوره بر اساس روش TC و با توجه به طبع و شرایط منحصربه‌فرد فرزند شما طراحی می‌شود. برای دریافت مشاوره رایگان، فرم مشاوره را تکمیل کنید.',
+ coursesIntroTextEn:"In this section, Farzandman's specialized courses for improving height growth, increasing appetite, addressing picky eating, and boosting children's intelligence and focus are introduced. Each course is designed based on the TC method and according to your child's unique temperament and condition. For a free consultation, please complete the consultation form.",
  // اصلاح ۳: متن سئوی کامل (پایین صفحه دوره‌ها، بین سوالات متداول و ارتباط با ما)
- coursesSeoFullText:'در افرادیکید، هر دوره ترکیبی از مشاوره تخصصی، برنامه مکمل و تغذیه اختصاصی، پشتیبانی مرحله‌ای و پیگیری رشد فرزند شماست. هدف ما کمک به والدین برای تصمیم‌گیری آگاهانه در مسیر رشد قد، همراهی بی‌اشتهایی و حمایت از تمرکز کودکان است.',
- coursesSeoFullTextEn:"At Afradikid, every course combines specialized consultation, a personalized supplement and nutrition plan, step-by-step support, and growth tracking for your child. Our goal is to help parents make informed decisions on the path of height growth, addressing picky eating, and boosting children's intelligence.",
+ coursesSeoFullText:'در فرزند من، هر دوره ترکیبی از مشاوره تخصصی، برنامه مکمل و تغذیه اختصاصی، پشتیبانی مرحله‌ای و پیگیری رشد فرزند شماست. هدف ما کمک به والدین برای تصمیم‌گیری آگاهانه در مسیر رشد قد، همراهی بی‌اشتهایی و حمایت از تمرکز کودکان است.',
+ coursesSeoFullTextEn:"At Farzandman, every course combines specialized consultation, a personalized supplement and nutrition plan, step-by-step support, and growth tracking for your child. Our goal is to help parents make informed decisions on the path of height growth, addressing picky eating, and boosting children's intelligence.",
  experienceIntroText:'در این بخش، تجربه‌های واقعی والدین از دوره‌های رشد قد، همراهی بی‌اشتهایی و حمایت از تمرکز کودکان را مشاهده می‌کنید. این تجربه‌ها با رضایت والدین منتشر شده‌اند و نشان‌دهنده تأثیر مثبت روش TC بر سلامت و رشد فرزندان است.',
  experienceIntroTextEn:'In this section, real experiences of parents from height growth, appetite guidance, and intelligence boosting courses are shared. These experiences are published with parental consent and reflect the positive impact of the TC method on children\'s health and growth.',
  educationIntroText:'در این بخش، آموزش‌های تخصصی در زمینه تغذیه کودک، افزایش رشد قد، بهبود اشتها، تقویت تمرکز و هوش کودکان گردآوری شده است. محتوای این صفحه شامل ویدیو، ویس، عکس و مقالات آموزشی است.',
  educationIntroTextEn:"In this section, specialized educational content about child nutrition, height growth, appetite improvement, focus and learning support is collected. This page's content includes video, voice, photo, and educational articles.",
- aboutIntroText:'افرادیکید یک سامانه مشاوره تخصصی در حوزه رشد و تغذیه کودکان و نوجوانان است. تیم ما با استفاده از روش TC و علم زبان‌شناسی، برنامه‌های اختصاصی برای همراهی بی‌اشتهایی، حمایت از رشد قد و تمرکز فرزندان طراحی می‌کند.',
- aboutIntroTextEn:"Afradikid is a specialized consultation system in the field of children's growth and nutrition. Our team, using the TC method and linguistics science, designs customized programs to treat picky eating, increase height growth, and boost children's intelligence and focus.",
+ aboutIntroText:'فرزند من یک سامانه مشاوره تخصصی در حوزه رشد و تغذیه کودکان و نوجوانان است. تیم ما با استفاده از روش TC و علم زبان‌شناسی، برنامه‌های اختصاصی برای همراهی بی‌اشتهایی، حمایت از رشد قد و تمرکز فرزندان طراحی می‌کند.',
+ aboutIntroTextEn:"Farzandman is a specialized consultation system in the field of children's growth and nutrition. Our team, using the TC method and linguistics science, designs customized programs to treat picky eating, increase height growth, and boost children's intelligence and focus.",
  consultTopics:['رشد قد','بی‌اشتهایی / بدغذایی','هوش و ذهن','وزنگیری'],digestiveOptions:['ندارد','یبوست','اسهال','نفخ','رفلاکس','سایر'],appetiteOptions:['خوب','متوسط','ضعیف','بی‌اشتهایی شدید'],specialConditions:['سلیاک','فاویسم (باقلایی)','حساسیت به آجیل','کم‌خونی مینور'],timeSlots:['۹ تا ۱۲','۱۲ تا ۱۸','۱۸ تا ۲۲'],categories:['ثبتی','اصلاحی','پیگیری','آخر ماه','مشاوره اولیه'],
  formFields:{parentName:{label:'نام و نام خانوادگی',placeholder:'نام و نام خانوادگی',show:true,required:false},parentPhone:{label:'شماره تماس',placeholder:'09123456789',show:true,required:true},age:{label:'سن (سال)',placeholder:'مثلاً ۵',show:true,required:true,min:2,max:17},height:{label:'قد (سانتیمتر)',placeholder:'مثلاً ۱۱۰',show:true,required:false},weight:{label:'وزن (کیلوگرم)',placeholder:'مثلاً ۱۸',show:true,required:false},disease:{label:'بیماری خاص',placeholder:'نام بیماری...',show:true,required:false},notes:{label:'توضیحات تکمیلی',placeholder:'هر گونه توضیح اضافی، سابقه بیماری، دارو مصرفی یا نگرانی خاص را اینجا بنویسید',show:true,required:false}},
  countryCodes:baseCountries,
@@ -543,7 +543,7 @@ const defaultSettings:Any={
    {id:'ht9',title:'صفحه رشد یه درِ کشویی‌ست که یه روز برای همیشه بسته میشه.',description:'قبل از بسته شدنش، سوخت لازم رو بهش برسون.',order:9},
    {id:'ht10',title:'مکمل رشد قد، وقتی با طبع فرزندت هماهنگ باشه، بهتر جواب می‌ده.',description:'ما با تحلیل تخصصی عکس زبان، مسیر جذب و رشد رو بهتر می‌شناسیم.',order:10},
    {id:'ht11',title:'عکس زبون بچهات، نقشه گنج سلامتی و قد بلندشه.',description:'ما به جای حدس زدن، نقشه می‌خونیم. ریشه کندرشدی رو دقیقاً همونجا پیدا می‌کنیم.',order:11},
-   {id:'ht12',title:'نسخهٔ منحصربه‌فرد برای رشد منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در افرادیکید شبیه هم نیست. چون هیچ دو کودکی شبیه هم نیستن.',order:12},
+   {id:'ht12',title:'نسخهٔ منحصربه‌فرد برای رشد منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در فرزند من شبیه هم نیست. چون هیچ دو کودکی شبیه هم نیستن.',order:12},
    {id:'ht13',title:'۱۰,۰۰۰+ مادری که نتیجه گرفتن، پشتوانه رشد قد فرزندت.',description:'آمار رضایت‌ها رو ببین، ویس‌ها رو بشنو، تغییرات قدی رو ببین، بعد تصمیم بگیر.',order:13},
    {id:'ht14',title:'هر هفته که بگذره و اقدام نکنی، یه قدم از هم‌سن و سالاش عقب‌تر میفته.',description:'کمبود وزن موندگار میشه و قد از دست میره. تصمیم سخت امروز، حسرت آسون فردا رو حذف می‌کنه.',order:14},
    {id:'ht15',title:'بچت قهرمان قدی میشه چون بدنش از درون ترمیم میشه.',description:'تفاوت بین یه کودک خسته و کم‌قد، با یه کودک پرانرژی و بلندقامت، ریشه‌اش تو ترمیم سلولیه.',order:15},
@@ -588,12 +588,12 @@ const defaultSettings:Any={
    {id:'m15',title:'فرزندت قرار نیست نابغه به دنیا بیاد؛ می‌تونه نابغه تغذیه بشه.',description:'پتانسیل واقعی مغز، با تغذیه بیدار میشه.',order:15},
    {id:'m16',title:'ذهن آروم، حافظه قوی و یادگیری سریع، محصول یه صبحانه مهندسی‌شده‌ست.',description:'ما مهندس تغذیه مغزیم.',order:16},
    {id:'m17',title:'همراهی ریشه‌ای، نه مسکن موقت.',description:'ما با تحلیل زبان‌شناسی و اصلاح طبع، تمرکز رو ریشه‌ای دنبال می‌کنیم؛ به‌جای راه‌حل‌های موقت.',order:17},
-   {id:'m18',title:'نسخهٔ منحصربه‌فرد برای ذهن منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در افرادیکید شبیه هم نیست. حتی برای تقویت هوش.',order:18}
+   {id:'m18',title:'نسخهٔ منحصربه‌فرد برای ذهن منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در فرزند من شبیه هم نیست. حتی برای تقویت هوش.',order:18}
   ]
  },
  // اصلاح ۴۴-۴۵: جملات اعتمادساز صفحات موفقیت (قابل مدیریت از پنل)
  successTrustSentences:[
-  {id:'st1',title:'به جمع خانواده افرادیکید خوش آمدید',description:'به خانواده بزرگ افرادیکید خوش آمدید - مسیر سلامت فرزند شما از اینجا شروع می‌شود',order:1},
+  {id:'st1',title:'به جمع خانواده فرزند من خوش آمدید',description:'به خانواده بزرگ فرزند من خوش آمدید - مسیر سلامت فرزند شما از اینجا شروع می‌شود',order:1},
   {id:'st2',title:'ثبت‌نام شما با موفقیت انجام شد',description:'اطلاعات شما ثبت شد و کارشناسان ما طی 24 تا 48 ساعت آینده با شما تماس می‌گیرند',order:2},
   {id:'st3',title:'یک قدم به سلامت فرزندتان نزدیک‌تر شدید',description:'از این لحظه، پشتیبانی ما 24 ساعته کنار شما و فرزندتان است',order:3},
   {id:'st4',title:'بیش از 10,000 مادر به ما اعتماد کرده‌اند',description:'شما نیز به جمع مادران آگاه و قهرمان پیوستید',order:4},
@@ -886,7 +886,7 @@ function PlatformIcon({type,color,size=18}:{type:string,color:string,size?:numbe
 // بازطراحی: فوتر سبک و مینیمال (کپی‌رایت + یک لینک ارتباطی) برای صفحات اصلی
 function Footer({cfg,T,lang,setView}:{cfg:any,T:any,lang:Lang,setView:(v:string)=>void}){
   const year = new Date().getFullYear();
-  const siteName = cfg.siteTitle || 'افرادیکید';
+  const siteName = cfg.siteTitle || 'فرزند من';
   const c = cfg.contacts || {};
   const [openAcc, setOpenAcc] = useState<string | null>(null);
   const toggleAcc = (key: string) => setOpenAcc(openAcc === key ? null : key);
@@ -1042,9 +1042,14 @@ function App(){
  useEffect(()=>{ const p=location.pathname; if((p==='/admin'||p==='/admin/app')&&!adminAuthed){ navigate('/admin/login',{replace:true}); } },[location.pathname,adminAuthed,navigate]);
  // Phase 3: هنگام ورود به /admin/app، validate_session را با Edge Function بررسی کن.
  // فقط وجود token در sessionStorage کافی نیست — session ممکن است منقضی یا revoke شده باشد.
- useEffect(()=>{ const p=location.pathname; if((p==='/admin'||p==='/admin/app')&&getAdminSessionToken()){ let alive=true; validateAdminSession().then(r=>{ if(!alive)return; if(!r.valid){ setAdminAuthed(false); navigate('/admin/login',{replace:true}); } }).catch(()=>{ if(!alive)return; setAdminAuthed(false); navigate('/admin/login',{replace:true}); }); return ()=>{alive=false}; } },[location.pathname,navigate]);
+ // برای کاهش تأخیر ورود، اگر همین لحظه‌ها تازه لاگین انجام شده باشد (لاگین همین حالا نشست را ساخته)
+ // از validate مجدد صرف‌نظر می‌کنیم تا ورود «لحظه‌ای» شود؛ در بارگذاری مستقیم صفحه validate انجام می‌شود.
+ useEffect(()=>{ const p=location.pathname; if((p==='/admin'||p==='/admin/app')&&getAdminSessionToken()){
+   let justLoggedIn=false; try{ const t=Number(localStorage.getItem('zk_admin_login_at')||0); justLoggedIn = (Date.now()-t)<8000; }catch{}
+   if(justLoggedIn)return;
+   let alive=true; validateAdminSession().then(r=>{ if(!alive)return; if(!r.valid){ setAdminAuthed(false); navigate('/admin/login',{replace:true}); } }).catch(()=>{ if(!alive)return; setAdminAuthed(false); navigate('/admin/login',{replace:true}); }); return ()=>{alive=false}; } },[location.pathname,navigate]);
  const view=pathToView[location.pathname]||pathToView[location.pathname.replace(/\/+$/,'')||'/']||'home';
- const setView=useCallback((newView:string)=>{const path=viewToPath[newView]||'/'; if(newView==='admin'){setAdminSettingsLoading(isSupabaseConfigured);setAdminAuthed(true)} if(newView!=='courses'){try{window.scrollTo(0,0)}catch{}} navigate(path)},[navigate]);
+ const setView=useCallback((newView:string)=>{const path=viewToPath[newView]||'/'; if(newView==='admin'){setAdminSettingsLoading(false);setAdminAuthed(true)} if(newView!=='courses'){try{window.scrollTo(0,0)}catch{}} navigate(path)},[navigate]);
  // سازگاری با هش‌های قدیمی (#admin, #track, #courses) — هدایت خودکار به مسیرهای جدید
  useEffect(()=>{const h=window.location.hash;if(h==='#admin')navigate('/admin-login',{replace:true});else if(h==='#track')navigate('/track',{replace:true});else if(h==='#courses')navigate('/courses',{replace:true})},[]);
  const [lang,setLang]=useState<Lang>(()=>getLS('zkid_lang','fa'));
@@ -1126,7 +1131,7 @@ function App(){
  useEffect(()=>{if(!isSupabaseConfigured||view==='admin'||view==='admin-login')return;let alive=true;const refresh=()=>{fetchSettings().then(s=>{if(alive&&s)setCfg((current:any)=>mergeSettings({...current,...s,products:s.products??current.products,showProductsSection:s.showProductsSection??current.showProductsSection,showProductsPage:s.showProductsPage??current.showProductsPage}))}).catch(()=>{})};const iv=setInterval(refresh,60000);return()=>{alive=false;clearInterval(iv)}},[view,isSupabaseConfigured]);
  // پس از ورود مدیر، تنظیمات کامل و احرازهویت‌شده دوباره بارگذاری می‌شود. تا پایان این مرحله
  // پنل قابل ویرایش نیست تا پاسخ عمومیِ فیلترشده هرگز محصولات یا تصاویر را با پیش‌فرض بازنویسی نکند.
- useEffect(()=>{if(!adminAuthed||!isSupabaseConfigured)return;let alive=true;setAdminSettingsLoading(true);fetchSettings().then(s=>{if(alive&&s)setCfg((current:any)=>mergeSettings({...current,...s,products:s.products??current.products}))}).catch(e=>console.warn('Could not load full admin settings',e)).finally(()=>{if(alive)setAdminSettingsLoading(false)});return()=>{alive=false}},[adminAuthed]);
+ useEffect(()=>{if(!adminAuthed||!isSupabaseConfigured)return;let alive=true;fetchSettings().then(s=>{if(alive&&s)setCfg((current:any)=>mergeSettings({...current,...s,products:s.products??current.products}))}).catch(e=>console.warn('Could not load full admin settings',e)).finally(()=>{if(alive)setAdminSettingsLoading(false)});return()=>{alive=false}},[adminAuthed]);
  // مهاجرت localStorage: یک‌بار داده‌های قدیمی را به ساختار جدید تبدیل کن
  useEffect(()=>{const MIGRATION_KEY='zkid_settings_migrated_v2';if(!localStorage.getItem(MIGRATION_KEY)){try{const raw=localStorage.getItem('zkid_settings_v2');if(raw){const parsed=JSON.parse(raw);const migrated=migrateSettings(parsed);if(migrated.version===2){localStorage.setItem('zkid_settings_v2',JSON.stringify(migrated));localStorage.setItem(MIGRATION_KEY,'1')}}}catch{}}},[]);
  // ذخیره خودکار داده‌های مهاجرت‌شده در Supabase
@@ -1199,8 +1204,8 @@ const page=<Suspense fallback={<div style={{display:'flex',justifyContent:'cente
   <Route path="/consultation" element={<ConsultationPage app={app}/>}/>
   <Route path="/admin-login" element={<AdminLoginPage app={app}/>}/>
   <Route path="/admin/login" element={<AdminLoginPage app={app}/>}/>
-  <Route path="/admin" element={adminAuthed?(adminSettingsLoading?<div style={{display:'flex',minHeight:'70vh',alignItems:'center',justifyContent:'center',color:T.mut}}>در حال دریافت امن تنظیمات…</div>:<AdminPanel app={app}/>):<Navigate to="/admin/login" replace/>}/>
-  <Route path="/admin/app" element={adminAuthed?(adminSettingsLoading?<div style={{display:'flex',minHeight:'70vh',alignItems:'center',justifyContent:'center',color:T.mut}}>در حال دریافت امن تنظیمات…</div>:<AdminPanel app={app}/>):<Navigate to="/admin/login" replace/>}/>
+  <Route path="/admin" element={adminAuthed?<AdminPanel app={app}/>:<Navigate to="/admin/login" replace/>}/>
+  <Route path="/admin/app" element={adminAuthed?<AdminPanel app={app}/>:<Navigate to="/admin/login" replace/>}/>
   <Route path="*" element={<Navigate to="/" replace/>}/>
  </Routes></Suspense>;
  // هدر اصلی در فهرست و جزئیات دوره نمایش داده می‌شود؛ فقط مراحل حساس ثبت/پرداخت هدر ندارند.

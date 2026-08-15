@@ -4,7 +4,7 @@ export default function ProfilePage({ app }: { app: any }) {
   const { cfg, T, S, css, lang, setView, publicText, showContactOn, ContactPanel } = app;
 
   // Enhanced profile data (safe, from cfg + realistic defaults, no logic change)
-  const userName = (cfg.specialistName && cfg.specialistName !== 'کارشناس رشد و تغذیه کودک و نوجوان افرادیکید') 
+  const userName = (cfg.specialistName && cfg.specialistName !== 'کارشناس رشد و تغذیه کودک و نوجوان فرزند من') 
     ? cfg.specialistName.split(' ')[0] 
     : (lang === 'en' ? 'Dear Parent' : 'والد گرامی');
   const tracking = 'ZK' + (Date.now() % 100000).toString().padStart(5,'0');

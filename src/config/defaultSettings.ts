@@ -181,7 +181,7 @@ export const defaultSettings = {
   images: {
     hero: {
       url: '/images/asset13c-hero-mother-child.webp',
-      alt: 'مادر و کودک در بنر اصلی افرادیکید',
+      alt: 'مادر و کودک در بنر اصلی فرزند من',
       enabled: true,
       storagePath: '',
       aspectRatio: '1.05 / 1',
@@ -228,7 +228,7 @@ export const defaultSettings = {
     // عکس هیرو صفحهٔ درباره ما
     aboutHero: {
       url: '/images/specialist/specialist-hero-master.webp',
-      alt: 'کارشناس ارشد افرادیکید',
+      alt: 'کارشناس ارشد فرزند من',
       enabled: true,
       storagePath: '',
     },
@@ -277,7 +277,7 @@ export const defaultSettings = {
         { id: 'ht9', title: 'صفحه رشد یه درِ کشویی‌ست که یه روز برای همیشه بسته میشه.', description: 'قبل از بسته شدنش، سوخت لازم رو بهش برسون.', titleEn: 'The growth plate is a sliding door that one day closes forever.', descriptionEn: 'Before it closes, deliver the fuel it needs.', priority: 5, tabs: ['height'], active: true },
         { id: 'ht10', title: 'مکمل رشد قد، وقتی با طبع فرزندت هماهنگ باشه، بهتر جواب می‌ده.', description: 'ما با تحلیل تخصصی عکس زبان، مسیر جذب و رشد رو بهتر می‌شناسیم.', titleEn: 'Height supplements work best when they match your child’s temperament.', descriptionEn: 'With tongue photo analysis, we unlock absorption for your child’s stature.', priority: 4, tabs: ['height'], active: true },
         { id: 'ht11', title: 'عکس زبون بچهات، نقشه گنج سلامتی و قد بلندشه.', description: 'ما به جای حدس زدن، نقشه می‌خونیم. ریشه کندرشدی رو دقیقاً همونجا پیدا می‌کنیم.', titleEn: 'Your child’s tongue photo is the treasure map for health and tall stature.', descriptionEn: 'Instead of guessing, we read the map. We find the root of slow growth right there.', priority: 5, tabs: ['height'], active: true },
-        { id: 'ht12', title: 'نسخهٔ منحصربه‌فرد برای رشد منحصربه‌فرد فرزندت.', description: 'هیچ دو نسخه‌ای در افرادیکید شبیه هم نیست. چون هیچ دو کودکی شبیه هم نیستن.', titleEn: 'A unique prescription for your child’s unique growth.', descriptionEn: 'No two prescriptions at Afradikid are alike, because no two children are alike.', priority: 4, tabs: ['height'], active: true },
+        { id: 'ht12', title: 'نسخهٔ منحصربه‌فرد برای رشد منحصربه‌فرد فرزندت.', description: 'هیچ دو نسخه‌ای در فرزند من شبیه هم نیست. چون هیچ دو کودکی شبیه هم نیستن.', titleEn: 'A unique prescription for your child’s unique growth.', descriptionEn: 'No two prescriptions at Farzandman are alike, because no two children are alike.', priority: 4, tabs: ['height'], active: true },
         { id: 'ht13', title: '۱۰,۰۰۰+ مادری که نتیجه گرفتن، پشتوانه رشد قد فرزندت.', description: 'آمار رضایت‌ها رو ببین، ویس‌ها رو بشنو، تغییرات قدی رو ببین، بعد تصمیم بگیر.', titleEn: '10,000+ mothers who got results are the backbone for your child’s height growth.', descriptionEn: 'See the stats, listen to voices, see height changes, then decide.', priority: 5, tabs: ['height'], active: true },
         { id: 'ht14', title: 'هر هفته که بگذره و اقدام نکنی، یه قدم از هم‌سن و سالاش عقب‌تر میفته.', description: 'کمبود وزن موندگار میشه و قد از دست میره. تصمیم سخت امروز، حسرت آسون فردا رو حذف می‌کنه.', titleEn: 'Every week you delay, they fall one step behind peers.', descriptionEn: 'Weight deficit becomes permanent and height is lost. Today’s hard decision removes tomorrow’s easy regret.', priority: 5, tabs: ['height'], active: true },
         { id: 'ht15', title: 'بچت قهرمان قدی میشه چون بدنش از درون ترمیم میشه.', description: 'تفاوت بین یه کودک خسته و کم‌قد، با یه کودک پرانرژی و بلندقامت، ریشه‌اش تو ترمیم سلولیه.', titleEn: 'Your child becomes a height champion because their body heals from within.', descriptionEn: 'The difference between a tired, short child and an energetic, tall child is cellular repair.', priority: 4, tabs: ['height'], active: true },
@@ -322,7 +322,7 @@ export const defaultSettings = {
         { id: 'm15', title: 'فرزندت قرار نیست نابغه به دنیا بیاد؛ می‌تونه نابغه تغذیه بشه.', description: 'پتانسیل واقعی مغز، با تغذیه بیدار میشه.', titleEn: 'Your child won’t be born a genius; they can become a nutrition genius.', descriptionEn: 'The brain’s true potential is awakened by nutrition.', priority: 4, tabs: ['mind'], active: true },
         { id: 'm16', title: 'ذهن آروم، حافظه قوی و یادگیری سریع، محصول یه صبحانه مهندسی‌شده‌ست.', description: 'ما مهندس تغذیه مغزیم.', titleEn: 'A calm mind, strong memory and fast learning are the product of an engineered breakfast.', descriptionEn: 'We are brain nutrition engineers.', priority: 3, tabs: ['mind'], active: true },
         { id: 'm17', title: 'ما با علم زبان‌شناسی و اصلاح طبع، مشکل تمرکز رو از ریشه حل می‌کنیم.', description: 'نه با داروهای شیمیایی. نسخهٔ منحصربه‌فرد برای ذهن منحصربه‌فرد فرزندت.', titleEn: 'We solve focus problems from the root with tongue analysis and temperament correction.', descriptionEn: 'Not with chemicals. A unique prescription for your child’s unique mind.', priority: 5, tabs: ['mind'], active: true },
-        { id: 'm18', title: 'هیچ دو نسخه‌ای در افرادیکید شبیه هم نیست. حتی برای تقویت هوش.', description: 'چون هیچ دو کودکی شبیه هم نیستن.', titleEn: 'No two prescriptions at Afradikid are alike, even for boosting intelligence.', descriptionEn: 'Because no two children are alike.', priority: 3, tabs: ['mind'], active: true },
+        { id: 'm18', title: 'هیچ دو نسخه‌ای در فرزند من شبیه هم نیست. حتی برای تقویت هوش.', description: 'چون هیچ دو کودکی شبیه هم نیستن.', titleEn: 'No two prescriptions at Farzandman are alike, even for boosting intelligence.', descriptionEn: 'Because no two children are alike.', priority: 3, tabs: ['mind'], active: true },
       ],
     },
   },

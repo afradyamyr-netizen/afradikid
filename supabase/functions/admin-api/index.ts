@@ -1,5 +1,5 @@
 // supabase/functions/admin-api/index.ts
-// Centralized admin API for the Afradikid admin panel.
+// Centralized admin API for the Farzandman admin panel.
 //
 // All admin CRUD operations go through this function. Each request must:
 //   1. Provide a sessionToken (Authorization Bearer or body.sessionToken)

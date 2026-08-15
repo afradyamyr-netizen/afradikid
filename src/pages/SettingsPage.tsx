@@ -190,7 +190,7 @@ export default function SettingsPage({ app }: { app: any }) {
         {/* Links */}
         <div style={{ display: 'grid', gap: 6, marginBottom: 16 }}>
           {[
-            { label: lang === 'en' ? 'About Afradikid' : 'درباره افرادیکید', view: 'about' },
+            { label: lang === 'en' ? 'About Farzandman' : 'درباره فرزند من', view: 'about' },
             { label: lang === 'en' ? 'Contact & Support' : 'تماس و پشتیبانی', view: 'contact' },
             { label: lang === 'en' ? 'Terms & Privacy' : 'قوانین و حریم خصوصی', view: 'licenses' },
           ].map((l, i) => (

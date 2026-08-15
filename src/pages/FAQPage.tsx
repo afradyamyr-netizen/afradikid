@@ -42,7 +42,7 @@ export default function FAQPage({ app }: { app: any }) {
         })}
       />
       <Helmet>
-        <title>{lang === 'fa' ? 'سوالات متداول | افرادیکید' : 'FAQ | Afradikid'}</title>
+        <title>{lang === 'fa' ? 'سوالات متداول | فرزند من' : 'FAQ | Farzandman'}</title>
         <meta
           name="description"
           content={

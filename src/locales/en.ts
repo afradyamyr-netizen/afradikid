@@ -70,7 +70,7 @@ const en: Record<string, string> = {
   "عکس زبون بچهات، نقشه گنج سلامتی و قد بلندشه.": "Your child's tongue photo is the treasure map of their health and tall stature.",
   "ما به جای حدس زدن، نقشه می‌خونیم. ریشه کندرشدی رو دقیقاً همونجا پیدا می‌کنیم.": "Instead of guessing, we read the map. We find the root of slow growth exactly there.",
   "نسخهٔ منحصربه‌فرد برای رشد منحصربه‌فرد فرزندت.": "A unique prescription for your child's unique growth.",
-  "هیچ دو نسخه‌ای در افرادیکید شبیه هم نیست. چون هیچ دو کودکی شبیه هم نیستن.": "No two prescriptions at Afradikid are alike, because no two children are alike.",
+  "هیچ دو نسخه‌ای در فرزند من شبیه هم نیست. چون هیچ دو کودکی شبیه هم نیستن.": "No two prescriptions at Farzandman are alike, because no two children are alike.",
   "۱۰,۰۰۰+ مادری که نتیجه گرفتن، پشتوانه رشد قد فرزندت.": "10,000+ mothers who got results back your child's height growth.",
   "آمار رضایت‌ها رو ببین، ویس‌ها رو بشنو، تغییرات قدی رو ببین، بعد تصمیم بگیر.": "See the satisfaction stats, hear the voice messages, see the height changes - then decide.",
   "هر هفته که بگذره و اقدام نکنی، یه قدم از هم‌سن و سالاش عقب‌تر میفته.": "Every week that passes without action, they fall one step behind their peers.",
@@ -151,7 +151,7 @@ const en: Record<string, string> = {
   "ما مهندس تغذیه مغزیم.": "We are brain-nutrition engineers.",
   "ما با تحلیل زبان‌شناسی و اصلاح طبع، تمرکز رو ریشه‌ای دنبال می‌کنیم؛ به‌جای راه‌حل‌های موقت.": "With tongue-diagnosis science and constitution correction, we solve focus problems from the root - not with chemical drugs.",
   "نسخهٔ منحصربه‌فرد برای ذهن منحصربه‌فرد فرزندت.": "A unique prescription for your child's unique mind.",
-  "هیچ دو نسخه‌ای در افرادیکید شبیه هم نیست. حتی برای تقویت هوش.": "No two prescriptions at Afradikid are alike - even for boosting intelligence.",
+  "هیچ دو نسخه‌ای در فرزند من شبیه هم نیست. حتی برای تقویت هوش.": "No two prescriptions at Farzandman are alike - even for boosting intelligence.",
   // اصلاح ۸: Our Services section on the home page
   ourServicesTitle: "Our Services",
   servicesModeGrid: "Grid", servicesModeList: "List", servicesModeCarousel: "Carousel",
@@ -178,17 +178,17 @@ const en: Record<string, string> = {
   tonguePhoto: "Tongue Photo", tonguePhotoRequired: "Uploading a tongue photo is required", tonguePhotoHint: "Uploading a tongue photo isn't very important — you can also send it later", uploadPhoto: "Upload Photo", takePhoto: "Take Photo", chooseFromGallery: "Choose from Gallery", chooseFromFiles: "Choose from Files", maxFileSizeMB: "Maximum size per photo: {size} MB", uploadProgress: "Uploading... {percent}%",
   tonguePhotoOptional: "Child's Tongue Photo (optional)", tonguePhotoRequiredLabel: "Child's Tongue Photo (required)", deleteTonguePhotos: "Delete Tongue Photos", maxPhotosReached: "A maximum of {count} photos can be uploaded",
   // اصلاح ۳۲ (مرحله ۹): FAQ + page SEO intro texts
-  homeFAQTitle: "Frequently Asked Questions", faqPageTitle: "FAQ | Afradikid", faqPageDesc: "Answers to frequently asked questions about height growth, loss of appetite, picky eating, boosting intelligence and children's health", viewAllFAQs: "View all questions", noFAQs: "No questions have been added yet.",
+  homeFAQTitle: "Frequently Asked Questions", faqPageTitle: "FAQ | Farzandman", faqPageDesc: "Answers to frequently asked questions about height growth, loss of appetite, picky eating, boosting intelligence and children's health", viewAllFAQs: "View all questions", noFAQs: "No questions have been added yet.",
   // Fix 2: Course tab FAQ section title
   courseFAQTitle: "Frequently Asked Questions",
   // Fix 15: Multimedia content section title under course tabs
   courseMediaTitle: "Multimedia Content",
   // Fix 3: Full SEO section title on Courses page
-  coursesSeoFullTitle: "About Afradikid Courses",
-  coursesIntroText: "In this section, Afradikid's specialized courses for improving height growth, increasing appetite, addressing picky eating, and boosting children's intelligence and focus are introduced. Each course is designed based on the TC method and according to your child's unique temperament and condition. For a free consultation, please complete the consultation form.",
+  coursesSeoFullTitle: "About Farzandman Courses",
+  coursesIntroText: "In this section, Farzandman's specialized courses for improving height growth, increasing appetite, addressing picky eating, and boosting children's intelligence and focus are introduced. Each course is designed based on the TC method and according to your child's unique temperament and condition. For a free consultation, please complete the consultation form.",
   experienceIntroText: "In this section, real experiences of parents from height growth, appetite guidance, and intelligence boosting courses are shared. These experiences are published with parental consent and reflect the positive impact of the TC method on children's health and growth.",
   educationIntroText: "In this section, specialized educational content about child nutrition, height growth, appetite improvement, focus and learning support is collected. This page's content includes video, voice, photo, and educational articles.",
-  aboutIntroText: "Afradikid is a specialized consultation system in the field of children's growth and nutrition. Our team, using the TC method and linguistics science, designs customized programs to treat picky eating, increase height growth, and boost children's intelligence and focus.",
+  aboutIntroText: "Farzandman is a specialized consultation system in the field of children's growth and nutrition. Our team, using the TC method and linguistics science, designs customized programs to treat picky eating, increase height growth, and boost children's intelligence and focus.",
   // اصلاح ۱۷: Merged media management
   mediaManagement: 'Media Management',
   mediaAparatCode: 'Aparat Embed Code',

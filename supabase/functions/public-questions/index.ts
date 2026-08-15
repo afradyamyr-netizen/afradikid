@@ -10,7 +10,7 @@
 //   - No admin data, token, or secret is ever returned.
 //
 // Security:
-//   - CORS restricted to afradikid.vercel.app + *.vercel.app + localhost:5173
+//   - CORS restricted to farzandman.vercel.app + *.vercel.app + localhost:5173
 //   - Rate limit: 30 req/min per IP
 //   - service_role inside the function only
 //

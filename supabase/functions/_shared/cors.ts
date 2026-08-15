@@ -1,13 +1,13 @@
 // supabase/functions/_shared/cors.ts
-// Shared CORS helpers for all Afradikid Edge Functions.
+// Shared CORS helpers for all Farzandman Edge Functions.
 // Allowed origins:
-//   - Production: https://afradikid.vercel.app
-//   - Afradikid-owned Vercel aliases/previews beginning with afradikid-
+//   - Production: https://farzandman.vercel.app
+//   - Farzandman-owned Vercel aliases/previews beginning with farzandman-
 //   - Local dev: http://localhost:5173 (Vite default)
 // Other projects' *.vercel.app origins are intentionally rejected.
 
-const ALLOWED_PRIMARY_ORIGIN = "https://afradikid.vercel.app";
-const ALLOWED_PREVIEW_PREFIX = "afradikid-";
+const ALLOWED_PRIMARY_ORIGIN = "https://farzandman.vercel.app";
+const ALLOWED_PREVIEW_PREFIX = "farzandman-";
 const ALLOWED_LOCAL = "http://localhost:5173";
 
 export function isAllowedOrigin(origin: string | null): boolean {

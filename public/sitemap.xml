@@ -2,68 +2,68 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- صفحات اصلی پروژه -->
   <url>
-    <loc>https://afradikid.vercel.app/</loc>
+    <loc>https://farzandman.vercel.app/</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://afradikid.vercel.app/courses</loc>
+    <loc>https://farzandman.vercel.app/courses</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://afradikid.vercel.app/experience</loc>
+    <loc>https://farzandman.vercel.app/experience</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://afradikid.vercel.app/licenses</loc>
+    <loc>https://farzandman.vercel.app/licenses</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://afradikid.vercel.app/education</loc>
+    <loc>https://farzandman.vercel.app/education</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://afradikid.vercel.app/faq</loc>
+    <loc>https://farzandman.vercel.app/faq</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://afradikid.vercel.app/about</loc>
+    <loc>https://farzandman.vercel.app/about</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://afradikid.vercel.app/contact</loc>
+    <loc>https://farzandman.vercel.app/contact</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://afradikid.vercel.app/track</loc>
+    <loc>https://farzandman.vercel.app/track</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://afradikid.vercel.app/products</loc>
+    <loc>https://farzandman.vercel.app/products</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <!-- پروژه ثانویه (فرم مشاوره) -->
   <url>
-    <loc>https://afradikid-form.vercel.app/</loc>
+    <loc>https://farzandman-form.vercel.app/</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

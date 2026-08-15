@@ -17,7 +17,7 @@
 //   - date, time, type
 //
 // Security:
-//   - CORS restricted to afradikid.vercel.app + *.vercel.app
+//   - CORS restricted to farzandman.vercel.app + *.vercel.app
 //   - Rate limit: 15 req/min per IP
 //   - Error responses are generic (no enumeration leak)
 //   - service_role inside Function only

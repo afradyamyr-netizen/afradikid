@@ -8,7 +8,7 @@ import './index.css';
 
 // ─── PWA: dynamic manifest & service worker based on route ──────────────
 // مسیرهای /admin/* از manifest و SW مستقل مدیریت استفاده می‌کنند تا
-// اپ PWA "افرادیکید | مدیریت" به‌صورت یک اپ جداگانه نصب شود.
+// اپ PWA "فرزند من | مدیریت" به‌صورت یک اپ جداگانه نصب شود.
 function isAdminRoute(pathname: string): boolean {
   return pathname === '/admin' || pathname.startsWith('/admin/');
 }
@@ -49,7 +49,7 @@ function applyAdminPwaMeta() {
     meta.name = 'apple-mobile-web-app-title';
     document.head.appendChild(meta);
   }
-  meta.content = 'مدیریت افرادیکید';
+  meta.content = 'مدیریت فرزند من';
 
   // iOS: اطمینان از باز شدن به‌صورت اپ مستقل (بدون نوار مرورگر) و full-screen
   let capable = document.querySelector<HTMLMetaElement>('meta[name="apple-mobile-web-app-capable"]');
@@ -86,7 +86,7 @@ function applyAdminPwaMeta() {
   }
   robots.content = 'noindex, nofollow';
 
-  document.title = 'افرادیکید | مدیریت';
+  document.title = 'فرزند من | مدیریت';
 }
 
 function applyPublicPwaMeta() {
@@ -121,7 +121,7 @@ function applyPublicPwaMeta() {
     meta.name = 'apple-mobile-web-app-title';
     document.head.appendChild(meta);
   }
-  meta.content = 'افرادیکید';
+  meta.content = 'فرزند من';
 
   let robots = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
   if (robots) robots.content = 'index, follow';

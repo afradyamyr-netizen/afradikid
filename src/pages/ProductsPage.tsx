@@ -75,10 +75,10 @@ export default function ProductsPage({ app }: { app: any }) {
 
   return (
     <div style={{ background: 'var(--zk-bg)', minHeight: '100dvh', overflowX: 'hidden' }}>
-      <JsonLd id="ld-products" data={JSON.stringify({'@context':'https://schema.org','@type':'ItemList',name:lang==='en'?'Afradikid products':'محصولات افرادیکید',itemListElement:((cfg.products?.list)||[]).filter((p:any)=>p.isVisible!==false).map((p:any)=>({'@type':'Product',name:lang==='en'?(p.titleEn||p.title):p.title,description:p.description||'',brand:{'@type':'Brand',name:'افرادیکید'}}))})} />
+      <JsonLd id="ld-products" data={JSON.stringify({'@context':'https://schema.org','@type':'ItemList',name:lang==='en'?'Farzandman products':'محصولات فرزند من',itemListElement:((cfg.products?.list)||[]).filter((p:any)=>p.isVisible!==false).map((p:any)=>({'@type':'Product',name:lang==='en'?(p.titleEn||p.title):p.title,description:p.description||'',brand:{'@type':'Brand',name:'فرزند من'}}))})} />
       <Helmet>
         
-        <title>{lang === 'en' ? 'Products & Plans | Afradikid' : 'برنامه‌ها و محصولات | افرادیکید'}</title>
+        <title>{lang === 'en' ? 'Products & Plans | Farzandman' : 'برنامه‌ها و محصولات | فرزند من'}</title>
       </Helmet>
 
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '0 14px 100px' }}>
@@ -100,8 +100,8 @@ export default function ProductsPage({ app }: { app: any }) {
 
           <p style={{ color: 'var(--zk-text-muted)', fontSize: 13.5, lineHeight: 1.65, maxWidth: 520 }}>
             {lang === 'en'
-              ? 'Afradikid products and plans are thoughtful companions on your child’s growth journey — never a replacement for personalized professional guidance.'
-              : 'محصولات و برنامه‌های افرادیکید همراهان اندیشمند در مسیر رشد فرزند شما هستند — نه جایگزین مشاوره تخصصی.'}
+              ? 'Farzandman products and plans are thoughtful companions on your child’s growth journey — never a replacement for personalized professional guidance.'
+              : 'محصولات و برنامه‌های فرزند من همراهان اندیشمند در مسیر رشد فرزند شما هستند — نه جایگزین مشاوره تخصصی.'}
           </p>
 
           <p style={{ fontSize: 12.5, color: 'var(--zk-primary)', marginTop: 4 }}>

@@ -16,4 +16,4 @@ Allow: /
 Disallow: /admin
 Disallow: /admin-login
 
-Sitemap: https://afradikid.vercel.app/sitemap.xml
+Sitemap: https://farzandman.vercel.app/sitemap.xml

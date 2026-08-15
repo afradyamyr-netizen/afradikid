@@ -4,7 +4,7 @@
 // (بدون دست‌زدن به بقیه اطلاعات فرم) merge می‌کند.
 //
 // Security:
-//   - CORS فقط برای afradikid.vercel.app و previewهای *.vercel.app
+//   - CORS فقط برای farzandman.vercel.app و previewهای *.vercel.app
 //   - Rate Limit: حداکثر ۲۰ درخواست در دقیقه برای هر IP
 //   - service_role داخل Function فقط
 //   - فقط فیلدهای مجاز (whitelist) در correctiveData ذخیره می‌شوند

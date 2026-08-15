@@ -118,7 +118,7 @@ export default function Header({
       </div>
 
       <div
-        aria-label="Afradikid"
+        aria-label="Farzandman"
         style={{
           fontSize: 'clamp(17px, 4.2vw, 21px)',
           fontWeight: 800,
@@ -129,7 +129,7 @@ export default function Header({
           whiteSpace: 'nowrap',
         }}
       >
-        Afradikid
+        Farzandman
       </div>
 
       <div aria-hidden="true" style={{ width: 44, height: 44, flexShrink: 0 }} />

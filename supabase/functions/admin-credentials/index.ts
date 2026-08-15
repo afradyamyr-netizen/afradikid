@@ -12,7 +12,7 @@
 // امنیت:
 //   - ADMIN_MGMT_TOKEN فقط داخل این تابع (سمت سرور) استفاده می‌شود؛ هرگز به فرانت نمی‌رسد.
 //   - Rate Limit: حداکثر ۱۰ درخواست در دقیقه برای هر IP
-//   - CORS محدود (afradikid.vercel.app + *.vercel.app + localhost)
+//   - CORS محدود (farzandman.vercel.app + *.vercel.app + localhost)
 //   - هیچ Secret یا مقدار حساس در پاسخ یا لاگ چاپ نمی‌شود.
 //
 // Deploy: supabase functions deploy admin-credentials --no-verify-jwt

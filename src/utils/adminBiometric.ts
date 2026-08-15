@@ -6,7 +6,7 @@ export const biometricSupported = () => typeof window !== 'undefined' && !!windo
 export const hasAdminBiometric = () => { try { return !!localStorage.getItem(KEY); } catch { return false; } };
 export async function enrollAdminBiometric(phone: string) {
   if (!biometricSupported()) throw new Error('پشتیبانی نمی‌شود');
-  const credential = await navigator.credentials.create({ publicKey: { challenge: random(), rp: { name: 'Afradikid Admin' }, user: { id: random(), name: phone || 'admin', displayName: 'مدیر افرادیکید' }, pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }], authenticatorSelection: { authenticatorAttachment: 'platform', residentKey: 'preferred', userVerification: 'required' }, timeout: 60000, attestation: 'none' } }) as PublicKeyCredential | null;
+  const credential = await navigator.credentials.create({ publicKey: { challenge: random(), rp: { name: 'Farzandman Admin' }, user: { id: random(), name: phone || 'admin', displayName: 'مدیر فرزند من' }, pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }], authenticatorSelection: { authenticatorAttachment: 'platform', residentKey: 'preferred', userVerification: 'required' }, timeout: 60000, attestation: 'none' } }) as PublicKeyCredential | null;
   if (!credential) throw new Error('لغو شد');
   localStorage.setItem(KEY, b64(new Uint8Array(credential.rawId)));
 }

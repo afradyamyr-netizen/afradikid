@@ -2,7 +2,7 @@
 @import './zk-tokens.css';
 
 /* ═══════════════════════════════════════════════
-   Afradikid — Stage 1 Global Styles (Mobile-First)
+   Farzandman — Stage 1 Global Styles (Mobile-First)
    Design System: Warm Trust (Teal/Blue + Cream)
    Font: Vazirmatn
    No Emoji. 3 shadows. Pill buttons.
@@ -48,7 +48,7 @@ input:not([type]), textarea, select {
   font-family: 'Vazirmatn', 'Tahoma', Arial, sans-serif;
 }
 
-/* ─── Stage 1: Afradikid Warm Trust Design System (Replaces old Wellness classes) ─── */
+/* ─── Stage 1: Farzandman Warm Trust Design System (Replaces old Wellness classes) ─── */
 .zk-page {
   background: var(--zk-bg);
   color: var(--zk-text);

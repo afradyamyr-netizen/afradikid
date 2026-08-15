@@ -811,7 +811,7 @@ export const bulkUpdateReviewPlacements = async (ids: number[], placements: stri
 /**
  * توابع دانلود و خروجی نظرات به فرمت CSV اکسل و JSON با پشتیبانی کامل از UTF-8 BOM
  */
-export const downloadReviewsAsCSV = (reviews: ReviewItem[], filename = 'afradikid-reviews.csv') => {
+export const downloadReviewsAsCSV = (reviews: ReviewItem[], filename = 'farzandman-reviews.csv') => {
   if (!reviews || reviews.length === 0) {
     alert('هیچ نظری برای دانلود وجود ندارد.');
     return;
@@ -883,7 +883,7 @@ export const downloadReviewsAsCSV = (reviews: ReviewItem[], filename = 'afradiki
   URL.revokeObjectURL(url);
 };
 
-export const downloadReviewsAsJSON = (reviews: ReviewItem[], filename = 'afradikid-reviews.json') => {
+export const downloadReviewsAsJSON = (reviews: ReviewItem[], filename = 'farzandman-reviews.json') => {
   if (!reviews || reviews.length === 0) {
     alert('هیچ نظری برای دانلود وجود ندارد.');
     return;

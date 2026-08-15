@@ -1,5 +1,5 @@
 /**
- * Afradikid Admin — Stage 7A
+ * Farzandman Admin — Stage 7A
  * Theme bridge between the admin panel and Stage 6's theme system.
  * Stage 6 contract (must stay identical):
  *   - localStorage key: "zk_theme"  =  'light' | 'dark' | 'auto'

@@ -55,7 +55,7 @@ export default function InstallPrompt({ lang }: { lang: string }) {
   return (
     <div
       role="dialog"
-      aria-label={en ? 'Install Afradikid app' : 'نصب اپلیکیشن افرادیکید'}
+      aria-label={en ? 'Install Farzandman app' : 'نصب اپلیکیشن فرزند من'}
       style={{
         position: 'fixed',
         bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
@@ -124,7 +124,7 @@ export default function InstallPrompt({ lang }: { lang: string }) {
             textOverflow: 'ellipsis',
           }}
         >
-          {en ? 'Install Afradikid' : 'نصب اپلیکیشن افرادیکید'}
+          {en ? 'Install Farzandman' : 'نصب اپلیکیشن فرزند من'}
         </strong>
         <span
           style={{

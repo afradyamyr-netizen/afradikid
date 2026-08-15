@@ -1,4 +1,4 @@
-/* Afradikid Admin Service Worker
+/* Farzandman Admin Service Worker
  * Scope: /admin/
  * Separate from the public site's sw.js to avoid cache interference.
  *

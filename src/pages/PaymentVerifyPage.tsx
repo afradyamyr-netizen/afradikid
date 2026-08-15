@@ -167,7 +167,7 @@ export default function PaymentVerifyPage({ app }: { app: any }) {
   return (
     <div style={{ ...S.page, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <Helmet>
-        <title>{lang === 'en' ? 'Payment Verification' : 'تأیید پرداخت'} | افرادیکید</title>
+        <title>{lang === 'en' ? 'Payment Verification' : 'تأیید پرداخت'} | فرزند من</title>
         <meta name="robots" content="noindex, follow" />
       </Helmet>
       <style>{css}</style>

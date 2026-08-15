@@ -1,5 +1,5 @@
 -- =========================================================
--- Afradikid — Admin Session schema (admin_sessions, admin_devices)
+-- Farzandman — Admin Session schema (admin_sessions, admin_devices)
 -- اجرا در SQL Editor پروژه‌ی Supabase افRadi
 -- =========================================================
 
@@ -57,7 +57,7 @@ create policy "admin_devices_service_role" on public.admin_devices
   for all to service_role using (true) with check (true);
 
 -- =========================================================
--- Afradikid — افزودن‌های بعدی (Reviews columns + media bucket)
+-- Farzandman — افزودن‌های بعدی (Reviews columns + media bucket)
 -- =========================================================
 
 -- ستون‌های لازم برای reviews (کد admin-api / فرانت می‌خواند و می‌نویسد)
@@ -94,7 +94,7 @@ drop policy if exists "public delete receipts" on storage.objects;
 create policy "public delete receipts" on storage.objects for delete using (bucket_id='receipts');
 
 -- =========================================================
--- Afradikid — ستون‌های لازم برای سازگاری کامل کد (منطبق بر Zeynalikid)
+-- Farzandman — ستون‌های لازم برای سازگاری کامل کد (منطبق بر Zeynalikid)
 -- =========================================================
 
 -- reviews.phone (پنل ادمین می‌خواند؛ در نمایش عمومی strip می‌شود)

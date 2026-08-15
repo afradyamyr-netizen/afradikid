@@ -1,5 +1,5 @@
 /**
- * Afradikid Admin — Admin Shell / Layout
+ * Farzandman Admin — Admin Shell / Layout
  * ─ Desktop (≥1024px): fixed sidebar on the inline-start edge (right in RTL)
  *   256px wide, sticky header 60px, content fills the rest.
  * ─ Mobile/tablet (<1024px): sidebar becomes a sliding Drawer from the
@@ -104,7 +104,7 @@ export default function AdminLayout({ lang, groups, active, onNavigate, onLogout
     ? { root: activeGroup.label, cur: activeLeaf.label }
     : { root: '', cur: activeLeaf?.label || (rtl ? 'داشبورد' : 'Dashboard') };
 
-  const brandName = rtl ? 'افرادیکید ادمین' : 'Afradikid Admin';
+  const brandName = rtl ? 'فرزند من ادمین' : 'Farzandman Admin';
   const brandSub = rtl ? 'پنل مدیریت' : 'Management panel';
 
   const sidebarContent = (
@@ -297,7 +297,7 @@ export default function AdminLayout({ lang, groups, active, onNavigate, onLogout
           </button>
         </div>
         <div className="zkad-side-meta">
-          {rtl ? `نسخه ${version}` : `Version ${version}`} · {rtl ? '© افرادیکید' : '© Afradikid'}
+          {rtl ? `نسخه ${version}` : `Version ${version}`} · {rtl ? '© فرزند من' : '© Farzandman'}
         </div>
       </div>
     </>
@@ -360,7 +360,7 @@ export default function AdminLayout({ lang, groups, active, onNavigate, onLogout
             )}
           </div>
 
-          <span className="zkad-avatar" title={rtl ? 'مدیر افرادیکید' : 'Afradikid Admin'} aria-label={rtl ? 'حساب مدیر' : 'Admin account'}><ZkStaffIcon size={17} color="#fff" /></span>
+          <span className="zkad-avatar" title={rtl ? 'مدیر فرزند من' : 'Farzandman Admin'} aria-label={rtl ? 'حساب مدیر' : 'Admin account'}><ZkStaffIcon size={17} color="#fff" /></span>
 
           <button
             type="button"

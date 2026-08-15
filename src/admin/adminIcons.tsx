@@ -1,5 +1,5 @@
 /**
- * Afradikid Admin — Stage 7A
+ * Farzandman Admin — Stage 7A
  * SVG icon set for the admin panel (replaces every emoji).
  * Stroke-based, currentColor, dense 24-grid. RTL-safe (no direction baked in).
  */

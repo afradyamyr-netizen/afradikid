@@ -1,4 +1,4 @@
-/* Afradikid Service Worker — Stage 9
+/* Farzandman Service Worker — Stage 9
  * استراتژی: Stale-While-Revalidate برای assetهای استاتیک هم‌خاستگاه،
  * Network-First برای ناوبری/HTML (نسخه تازه پس از هر دیپلوی)،
  * و عدم کش هر درخواست API/Supabase/خارج‌خاستگاه.

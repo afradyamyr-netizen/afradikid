@@ -205,12 +205,12 @@ export default function ConsultationPage({ app }: { app: any }) {
       ? ((cfg.consultationSuccessSentencesEn && Array.isArray(cfg.consultationSuccessSentencesEn) && cfg.consultationSuccessSentencesEn.length > 0) ? cfg.consultationSuccessSentencesEn : (cfg.consultationSuccessSentences && Array.isArray(cfg.consultationSuccessSentences) && cfg.consultationSuccessSentences.length > 0 ? cfg.consultationSuccessSentences : formSuccessMessages))
       : ((cfg.consultationSuccessSentences && Array.isArray(cfg.consultationSuccessSentences) && cfg.consultationSuccessSentences.length > 0) ? cfg.consultationSuccessSentences : formSuccessMessages);
     const total = list.length;
-    if (!total) { setSuccessMsgRnd('به جمع خانواده افرادیکید خوش آمدید'); return; }
+    if (!total) { setSuccessMsgRnd('به جمع خانواده فرزند من خوش آمدید'); return; }
     if (usedMsgIdx.current.length >= total) usedMsgIdx.current = [];
     const avail = Array.from({ length: total }, (_, i) => i).filter(i => !usedMsgIdx.current.includes(i));
     const idx = avail[Math.floor(Math.random() * avail.length)];
     usedMsgIdx.current = [...usedMsgIdx.current, idx];
-    setSuccessMsgRnd(list[idx] || 'به جمع خانواده افرادیکید خوش آمدید');
+    setSuccessMsgRnd(list[idx] || 'به جمع خانواده فرزند من خوش آمدید');
   };
 
   const similarityScore = (a: any, b: any) => {
@@ -509,9 +509,9 @@ export default function ConsultationPage({ app }: { app: any }) {
   // FIX: Inline render to avoid Unstable Nested Component remount (FormPage/SuccessPage as nested components cause entire form to remount on each keystroke)
   if (formView === 'form') return <><MemphisBg T={T} /><div style={{ ...S.page, position: 'relative' }}>
       <Helmet>
-        <title>فرم مشاوره رشد و تغذیه کودک | افرادیکید</title>
+        <title>فرم مشاوره رشد و تغذیه کودک | فرزند من</title>
         <meta name="description" content="فرم مشاوره تخصصی رشد قد، بهبود اشتها، تقویت هوش و تمرکز کودکان و نوجوانان" />
-        <meta name="keywords" content="فرم مشاوره کودک, رشد قد, بهبود اشتها, تقویت هوش, افرادیکید" />
+        <meta name="keywords" content="فرم مشاوره کودک, رشد قد, بهبود اشتها, تقویت هوش, فرزند من" />
       </Helmet>
       <style>{css}</style>
       <div style={{ ...S.card, marginTop: 0 }}>
@@ -634,7 +634,7 @@ export default function ConsultationPage({ app }: { app: any }) {
     </div></>;
   if (formView === 'success') return <><MemphisBg T={T} /><div style={{ ...S.page, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingBottom: 16 }}>
       <Helmet>
-        <title>ثبت موفقیت‌آمیز فرم مشاوره | افرادیکید</title>
+        <title>ثبت موفقیت‌آمیز فرم مشاوره | فرزند من</title>
         <meta name="description" content="فرم مشاوره شما با موفقیت ثبت شد." />
         <meta name="robots" content="noindex, follow" />
       </Helmet>

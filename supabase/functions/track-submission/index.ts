@@ -2,7 +2,7 @@
 // Edge Function برای پیگیری امن سفارش: فقط با «کد پیگیری + شماره تماس» و فقط فیلدهای عمومی.
 //
 // Security:
-//   - CORS فقط برای afradikid.vercel.app و previewهای *.vercel.app
+//   - CORS فقط برای farzandman.vercel.app و previewهای *.vercel.app
 //   - Rate Limit: حداکثر ۳۰ درخواست در دقیقه برای هر IP
 //   - service_role داخل Function فقط (هیچ‌وقت به کلاینت نمی‌رسد)
 //   - هیچ اطلاعات هویتی کامل (نام، شماره کامل) به کلاینت برگردانده نمی‌شود

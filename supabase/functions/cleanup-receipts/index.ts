@@ -3,7 +3,7 @@
 //
 // Security:
 //   - فقط ادمین با sessionToken معتبر می‌تواند این Function را صدا بزند
-//   - CORS فقط برای afradikid.vercel.app و previewهای *.vercel.app
+//   - CORS فقط برای farzandman.vercel.app و previewهای *.vercel.app
 //   - قبل از حذف، تعداد فایل‌های هدف را گزارش می‌دهد (در پاسخ)
 //   - هیچ فایل غیرمرتبطی حذف نمی‌شود (فقط receipts/)
 //   - service_role داخل Function فقط

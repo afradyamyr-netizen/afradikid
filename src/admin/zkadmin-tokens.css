@@ -1,10 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════════
-   Afradikid Admin Panel — Stage 7A Design Tokens (--zkad-*)
+   Farzandman Admin Panel — Stage 7A Design Tokens (--zkad-*)
    ─ Scoped strictly to `body.admin-root` so nothing leaks into the
      marketing pages, course flow, profile, settings or the form app.
    ─ Light mode is the default. Dark mode follows Stage 6's system:
      <html data-theme="dark"> (localStorage key: "zk_theme").
-   ─ Palette: Afradikid teal/blue (#0F766E / #0EA5E9), cream and warm
+   ─ Palette: Farzandman teal/blue (#0F766E / #0EA5E9), cream and warm
      neutrals. No purple, no neon cyan, no SCADA-dark industrial bg.
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -22,7 +22,7 @@ body.admin-root {
   --zkad-pop: #FFFFFF;
 
   /* brand */
-  --zkad-acc: #0F766E;                          /* teal افرادیکید */
+  --zkad-acc: #0F766E;                          /* teal فرزند من */
   --zkad-acc-hover: #134E4B;
   --zkad-acc-soft: rgba(15, 118, 110, 0.09);
   --zkad-accent2: #0EA5E9;                      /* آبی آسمانی */

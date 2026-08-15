@@ -1,5 +1,5 @@
 /**
- * Design Tokens — Complete Design System for Afradikid
+ * Design Tokens — Complete Design System for Farzandman
  *
  * Classic    — تم‌های ترکیبی قدیمی (نئومورفیسم + مینیمال + ممفیس)
  * Wellness   — Public pages (Home, Courses, Experience, Licenses, About, Contact)

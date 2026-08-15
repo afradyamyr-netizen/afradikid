@@ -152,7 +152,7 @@ export default function CoursesPage({ app }: { app: any }) {
     return (
       <div style={{ background: 'var(--zk-bg)', minHeight: '100dvh', overflowX: 'hidden' }}>
         <Helmet>
-          <title>{(lang === 'en' ? (selectedCourse.titleEn || selectedCourse.title) : selectedCourse.title)} | {lang === 'en' ? 'Afradikid' : 'افرادیکید'}</title>
+          <title>{(lang === 'en' ? (selectedCourse.titleEn || selectedCourse.title) : selectedCourse.title)} | {lang === 'en' ? 'Farzandman' : 'فرزند من'}</title>
         </Helmet>
         <div style={{ maxWidth: 960, margin: '0 auto', padding: '16px 14px 80px' }}>
           <CourseDetailView
@@ -186,9 +186,9 @@ export default function CoursesPage({ app }: { app: any }) {
 
   return (
     <div style={{ background: 'var(--zk-bg)', minHeight: '100dvh', overflowX: 'hidden' }}>
-      <JsonLd id="ld-courses" data={JSON.stringify({'@context':'https://schema.org','@type':'ItemList',name:lang==='en'?'Afradikid growth & nutrition courses':'دوره‌های رشد و تغذیه افرادیکید',itemListElement:(cfg.courseTabs||[]).flatMap((t:any)=>(t.courses||[]).filter((c:any)=>c.active!==false).map((c:any,i:number)=>({'@type':'Course',name:lang==='en'?(c.titleEn||c.title):c.title,description:lang==='en'?(c.descEn||c.desc):c.desc,provider:{'@type':'Organization',name:'افرادیکید',url:'https://afradikid.vercel.app/'}})))})} />
+      <JsonLd id="ld-courses" data={JSON.stringify({'@context':'https://schema.org','@type':'ItemList',name:lang==='en'?'Farzandman growth & nutrition courses':'دوره‌های رشد و تغذیه فرزند من',itemListElement:(cfg.courseTabs||[]).flatMap((t:any)=>(t.courses||[]).filter((c:any)=>c.active!==false).map((c:any,i:number)=>({'@type':'Course',name:lang==='en'?(c.titleEn||c.title):c.title,description:lang==='en'?(c.descEn||c.desc):c.desc,provider:{'@type':'Organization',name:'فرزند من',url:'https://farzandman.vercel.app/'}})))})} />
       <Helmet>
-        <title>{lang === 'en' ? 'Courses | Afradikid' : 'دوره‌های تخصصی | افرادیکید'}</title>
+        <title>{lang === 'en' ? 'Courses | Farzandman' : 'دوره‌های تخصصی | فرزند من'}</title>
       </Helmet>
 
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '0 14px 80px' }}>

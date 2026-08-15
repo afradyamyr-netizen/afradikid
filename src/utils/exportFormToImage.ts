@@ -1,4 +1,4 @@
-/** پرونده تصویری افرادیکید — Canvas RTL، مینیمال + نئومورفیسم + ممفیس */
+/** پرونده تصویری فرزند من — Canvas RTL، مینیمال + نئومورفیسم + ممفیس */
 const toEnglishDigits = (value: unknown) => String(value ?? '—').replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString()).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d).toString());
 const gender = (v: any) => v === 'male' ? 'پسر' : v === 'female' ? 'دختر' : (v || '—');
 
@@ -36,7 +36,7 @@ export async function generateFormImage(submission: any, format: 'webp' | 'jpg' 
   const g=ctx.createLinearGradient(pad,36,width-pad,190);g.addColorStop(0,'#087F78');g.addColorStop(1,'#10A8C8');round(pad,36,width-pad*2,headerH,32,g);
   ctx.fillStyle='rgba(255,255,255,.16)';ctx.beginPath();ctx.arc(width-120,72,78,0,Math.PI*2);ctx.fill();
   ctx.fillStyle='#fff';ctx.textAlign='right';ctx.font='800 32px Vazirmatn, Tahoma, Arial';ctx.fillText('پرونده رشد و تغذیه کودک',width-pad-34,98);
-  ctx.font='500 16px Vazirmatn, Tahoma, Arial';ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillText('افرادیکید  |  پرونده محرمانه والد و کودک',width-pad-34,132);
+  ctx.font='500 16px Vazirmatn, Tahoma, Arial';ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillText('فرزند من  |  پرونده محرمانه والد و کودک',width-pad-34,132);
   ctx.textAlign='left';ctx.font='600 15px Vazirmatn, Tahoma, Arial';ctx.fillText(toEnglishDigits(submission.date || '—')+'  '+toEnglishDigits(submission.time || ''),pad+34,132);
   // section titles and cards
   let y=headerH+76;
@@ -48,6 +48,6 @@ export async function generateFormImage(submission: any, format: 'webp' | 'jpg' 
   const noteH=Math.max(66,notesLines*30+30);round(pad,y,width-pad*2,noteH,18,'#F7FBFB','#E1EEEC');ctx.fillStyle='#243F41';ctx.font='500 16px Vazirmatn, Tahoma, Arial';ctx.textAlign='right';
   const words=notes.split(/\s+/);let line='', yy=y+30;for(const word of words){const next=(line+' '+word).trim();if(ctx.measureText(next).width>width-pad*2-42&&line){ctx.fillText(line,width-pad-22,yy);yy+=30;line=word;}else line=next;}if(line)ctx.fillText(line,width-pad-22,yy);
   // footer
-  ctx.strokeStyle='#DDECEA';ctx.beginPath();ctx.moveTo(pad+24,height-74);ctx.lineTo(width-pad-24,height-74);ctx.stroke();ctx.textAlign='center';ctx.font='500 13px Vazirmatn, Tahoma, Arial';ctx.fillStyle='#789395';ctx.fillText('افرادیکید — همراهی والدین در مسیر رشد و تغذیه کودک',width/2,height-42);
+  ctx.strokeStyle='#DDECEA';ctx.beginPath();ctx.moveTo(pad+24,height-74);ctx.lineTo(width-pad-24,height-74);ctx.stroke();ctx.textAlign='center';ctx.font='500 13px Vazirmatn, Tahoma, Arial';ctx.fillStyle='#789395';ctx.fillText('فرزند من — همراهی والدین در مسیر رشد و تغذیه کودک',width/2,height-42);
   return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('image generation failed')),format==='webp'?'image/webp':'image/jpeg',.9));
 }
