@@ -32,7 +32,33 @@ const DEFAULT_SERVICES = [
 
 export const defaultSettings = {
 
-    dailyTips: [
+  // ─── مشاورین و لینک‌های ارجاع ───
+  consultants: [] as Array<{
+    id: string;
+    name: string;         // نام فارسی (الزامی)
+    nameEn: string;       // نام انگلیسی (الزامی — برای ساخت کد ارجاع)
+    title?: string;
+    titleEn?: string;
+    desc?: string;
+    descEn?: string;
+    photoUrl?: string;    // عکس (در صورت انتخاب/آپلود)
+    useAboutPhoto?: boolean; // استفاده از عکس «درباره ما» (جلوگیری از آپلود دوباره)
+    aboutPhotoUrl?: string;  // عکسِ منبع «درباره ما»
+    showPhoto?: boolean;     // نمایش عکس در اطلاعات مشاور
+    referralCode?: string;   // کد ارجاع یکتا و کوتاه
+    bank?: Record<string, any>;   // اطلاعات بانکی اختصاصی
+    wallet?: Record<string, any>; // اطلاعات کیف پول رمزارز
+    active?: boolean;
+    order?: number;
+  }>,
+  referral: {
+    showConsultantSelection: false, // نمایش انتخاب مشاور در روند ثبت (پیش‌فرض مخفی)
+    home: {
+      showCta: true,               // نمایش دکمه‌های CTA هوم (ثبت مشاوره/مشاهده دوره)
+    },
+  },
+
+  dailyTips: [
     { id:'t1', fa:'سفره آرام یعنی بدون فشار؛ وعده‌های منظم و تنوع کوچک کافیه.', en:"A calm table means no pressure; regular meals and tiny variety are enough." },
     { id:'t2', fa:'خواب کافی کودک، تمرکز فردای اوست.', en:"Your child's sleep tonight is their focus tomorrow." },
     { id:'t3', fa:'مکمل بدون مشورت، مسیر ناشناخته است.', en:"Supplements without consultation are an unknown path." },
