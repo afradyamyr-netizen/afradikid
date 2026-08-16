@@ -354,28 +354,6 @@ export function AboutPage({app}:{app:any}){
       {lang==="en"?"Over 10,000 families. No shortcuts. Just care, science, and results that speak for themselves." : "بیش از ۱۰٬۰۰۰ خانواده. بدون میان‌بر. فقط مراقبت، علم و نتایج واقعی."}
     </div>
 
-    {/* لیست مشاورین — قابل مدیریت از پنل مدیریت (تنظیمات ← درباره ما) */}
-    {(cfg.consultants||[]).length>0&&(
-      <div style={{margin:"0 0 24px"}}>
-        <div style={{fontWeight:800,fontSize:15.5,marginBottom:12,color:T.ttl}}>{lang==="en"?"Our Team of Specialists":"تیم مشاورین ما"}</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:12}}>
-          {(cfg.consultants||[]).map((c:any)=>{
-            const name=lang==="en"?(c.nameEn||c.name):(c.name||"");
-            const role=lang==="en"?(c.titleEn||c.title):(c.title||"");
-            const desc=lang==="en"?(c.descEn||c.desc):(c.desc||"");
-            return (
-              <div key={c.id} style={{background:T.card,border:`1px solid ${T.brd}`,borderRadius:18,padding:"16px 14px",textAlign:"center",boxShadow:"var(--zk-shadow-light,0 3px 12px rgba(15,38,60,.05))"}}>
-                {c.photoUrl?<img src={c.photoUrl} alt={name} loading="lazy" style={{width:92,height:92,borderRadius:"50%",objectFit:"cover",border:`2px solid ${T.acc}`,margin:"0 auto 10px",display:"block"}}/>:null}
-                <div style={{fontWeight:800,fontSize:14,color:T.ttl,lineHeight:1.4}}>{name}</div>
-                {role&&<div style={{fontSize:12,color:T.acc,fontWeight:700,marginTop:2}}>{role}</div>}
-                {desc&&<div style={{fontSize:12,color:T.mut,lineHeight:1.75,marginTop:6,whiteSpace:"pre-wrap"}}>{desc}</div>}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    )}
-
     {cfg.servicesVisibility?.about!==false&&<div style={{marginTop:18}}><h3 style={{color:T.ttl,fontSize:15,margin:"0 0 10px",fontWeight:800}}>{lang==="en"?"Our Services":"خدمات ما"}</h3><ServicesSection T={T} lang={lang} publicText={(k:string,fb?:string)=>lang==="en"?(cfg.translations?.en?.[k]||fb||k):(cfg.translations?.fa?.[k]||fb||k)} mode={cfg.servicesDisplayMode?.home==="carousel"?"carousel":"list"} listItems={cfg.listSettings?.items||[]} carouselSettings={cfg.carouselSettings||{columns:2,autoScrollInterval:8,autoScrollEnabled:true,pauseOnSwipe:3,columnsData:[]}}/></div>}
      {contactFirst?<>{ContactBlock}{IntroBlock}</>:<>{IntroBlock}{ContactBlock}</>}
    </PageShell>
