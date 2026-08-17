@@ -56,6 +56,21 @@ export const defaultSettings = {
     home: {
       showCta: true,               // نمایش دکمه‌های CTA هوم (ثبت مشاوره/مشاهده دوره)
     },
+    // ── متون راهنمای قابل‌ویرایش در حالت لینک ارجاع ──
+    // هر متن در پنل «مشاورین و لینک‌های ارجاع» قابل تغییر است. خالی = استفاده از متن پیش‌فرض کد.
+    texts: {
+      homeBase: '',
+      homeTab: '',
+      homeCourse: '',
+      coursesTab: '',
+      coursesCourse: '',
+      popupTitle: '',
+      popupPrimaryBase: '',
+      popupPrimaryTab: '',
+      popupPrimaryCourse: '',
+      reconsultLabel: '',
+      reconsultQuestion: '',
+    },
   },
 
   dailyTips: [
