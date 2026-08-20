@@ -118,7 +118,7 @@ export default function Header({
       </div>
 
       <div
-        aria-label="Farzandman"
+        aria-label={lang === 'fa' ? 'فرزند من' : 'Farzandman'}
         style={{
           fontSize: 'clamp(17px, 4.2vw, 21px)',
           fontWeight: 800,
@@ -129,7 +129,7 @@ export default function Header({
           whiteSpace: 'nowrap',
         }}
       >
-        Farzandman
+        {lang === 'fa' ? 'فرزند من' : 'Farzandman'}
       </div>
 
       <div aria-hidden="true" style={{ width: 44, height: 44, flexShrink: 0 }} />
