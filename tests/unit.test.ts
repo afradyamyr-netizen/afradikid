@@ -1,5 +1,5 @@
 /**
- * Afradikid — Unit Tests (Read-only)
+ * Zeynalikid — Unit Tests (Read-only)
  * منطق phone / tracking / growth / validation / i18n / successMessages / درایورهای پرداخت
  * هیچ داده‌ای ذخیره یا درخواست نوشتنی انجام نمی‌شود.
  */
@@ -78,6 +78,13 @@ assert(isAnyValidTrackingCode('ZK-AB12CD') === true, 'isAnyValidTrackingCode ه�
 assert(isAnyValidTrackingCode('XYZ123') === false, 'isAnyValidTrackingCode نامعتبر');
 assert(normalizeTrackingCode('zk 12345') === 'ZK12345', 'normalizeTrackingCode استاندارد');
 assert(normalizeTrackingCode('ZK-AB12CD') === 'ZK-AB12CD', 'normalizeTrackingCode هگز');
+// ── ورودی مخفی ادمین «۶۳۹»: هیچ کد پیگیری تولیدی نباید با ۶۳۹ شروع شود ──
+for (let i = 0; i < 2000; i++) {
+  const c = generateTrackingCode(5);
+  const body = extractTrackingNumber(c);
+  assert(!body.startsWith('639'), 'کد پیگیری هرگز با 639 شروع نشود');
+}
+assert(!extractTrackingNumber(generateTrackingCode(3)).startsWith('639'), 'کد ۳رقمی هم با 639 شروع نشود');
 assert(isTrackingCodeUnique('ZK99999', ['ZK11111']) === true, 'isTrackingCodeUnique یکتا');
 assert(isTrackingCodeUnique('ZK11111', ['ZK11111']) === false, 'isTrackingCodeUnique تکراری');
 const uniq = generateUniqueTrackingCode(['ZK11111', 'ZK22222']);
@@ -132,7 +139,7 @@ const allGateways = SUPPORTED_GATEWAYS.map(id => ({
     wallets: [{ currency: 'USDT', address: 'T123456789', network: 'TRC20' }],
   },
 }));
-const service = new PaymentService({ gateways: allGateways, defaultCurrency: 'IRR', callbackUrl: 'https://afradikid.vercel.app/callback' });
+const service = new PaymentService({ gateways: allGateways, defaultCurrency: 'IRR', callbackUrl: 'https://zeynalikid.vercel.app/callback' });
 const enabled = service.getEnabledDrivers();
 assert(enabled.length === SUPPORTED_GATEWAYS.length, 'همه ۷ درگاه فعال ثبت شدند');
 for (const id of SUPPORTED_GATEWAYS) {

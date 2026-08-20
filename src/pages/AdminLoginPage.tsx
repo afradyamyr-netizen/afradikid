@@ -1,10 +1,11 @@
 import { useState, useRef } from 'react';
+import GlassTopBar from '../components/GlassTopBar';
 import { biometricSupported, enrollAdminBiometric, hasAdminBiometric, verifyAdminBiometric } from '../utils/adminBiometric';
 import { loginAdminSession, getAdminSessionToken, validateAdminSession } from '../utils/adminSession';
 // Phase 3: VITE_ADMIN_PASSWORD removed — login only via admin-session Edge Function.
 // ADMIN_PHONE and ADMIN_PASSWORD live in Supabase Edge Function secrets, never in frontend.
 export default function AdminLoginPage({app}:{app:any}){
- const {T,css,setView,goHome,p2e}=app;
+ const {T,css,setView,goHome,p2e,lang,setLang}=app;
  const [aPhone,setAPhone]=useState(''); const [aPwd,setAPwd]=useState(''); const [aErr,setAErr]=useState(''); const [showPwd,setShowPwd]=useState(false); const [bioBusy,setBioBusy]=useState(false);
  const phoneRef=useRef<HTMLInputElement>(null); const pwdRef=useRef<HTMLInputElement>(null);
  const done=()=>{setView('admin')};
@@ -38,8 +39,9 @@ export default function AdminLoginPage({app}:{app:any}){
  }catch{setAErr('اثر انگشت یا Face ID تأیید نشد')}finally{setBioBusy(false)}};
  const mem=T.memphis||[T.soft,T.soft,T.soft];
  return (
-  <div className="zkgl-root" dir="ltr" style={{['--zkgl-acc' as any]:T.acc||'#0F766E', position:'fixed', inset:0, zIndex:1500, alignItems:'center', padding:'20px 16px', overflowY:'auto'}}>
+  <div className="zkgl-root zkgl-has-topbar" dir="ltr" style={{['--zkgl-acc' as any]:T.acc||'#0F766E', position:'fixed', inset:0, zIndex:1500, alignItems:'center', overflowY:'auto'}}>
    <style>{css}</style>
+   <GlassTopBar brand="Farzandman" lang={lang} setLang={setLang} onBack={goHome} backLabel={lang==='fa'?'بازگشت':'Back'} />
    {/* پس‌زمینه: گرادیان تم + ممفیس + تصویر محو + اورلی تیره */}
    <div className="zkgl-bg" style={{ background:`linear-gradient(150deg, ${T.bg}, ${T.sel||T.soft||T.bg})` }}>
     <svg aria-hidden="true" style={{position:'absolute',inset:0,width:'100%',height:'100%'}} preserveAspectRatio="xMidYMid slice">
@@ -57,7 +59,7 @@ export default function AdminLoginPage({app}:{app:any}){
    <div className="zkgl-col" style={{maxWidth:400}}>
     <div className="zkgl-card">
      <h2 className="zkgl-title">Admin Panel</h2>
-     <p className="zkgl-sub">farzandman — restricted access</p>
+     <p className="zkgl-sub">zeynalikid — restricted access</p>
      <div className="zkgl-field">
       <input className="zkgl-input" id="zkgl-al-phone" ref={phoneRef} dir="ltr" inputMode="tel" placeholder=" " value={aPhone} onChange={e=>setAPhone(p2e(e.target.value))} onKeyDown={e=>{if(e.key==='Enter')ok()}}/>
       <label className="zkgl-label" htmlFor="zkgl-al-phone">Phone</label>
