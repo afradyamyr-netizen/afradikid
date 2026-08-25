@@ -10,3 +10,5 @@ supabase/.temp/
 .vercel/
 .env.local
 !.env.example
+
+backup-output/
