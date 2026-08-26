@@ -14,8 +14,8 @@ import TaggedCoursesSection from '../components/TaggedCoursesSection';
 import HeroSection from '../components/HeroSection';
 import TrustBoxWithImage from '../components/TrustBoxWithImage';
 import TrustBoxNew from '../components/TrustBoxNew';
-import { fillReferralText } from '../utils/referral';
 import ProductCard from '../components/ProductCard';
+import { fillReferralText } from '../utils/referral';
 
 export default function HomePage(){
  const app=useAppContext();
@@ -57,7 +57,6 @@ export default function HomePage(){
  const homeLayout=(cfg.homeLayout&&cfg.homeLayout.length?cfg.homeLayout:[{id:'consult',show:true},{id:'courses',show:true},{id:'experience',show:true},{id:'licenses',show:true},{id:'contact',show:true}]);
  // Phase 8: اگر صفحهٔ مجوزها غیرفعال باشد، میانبر آن در صفحهٔ اصلی هم نمایش داده نشود (داده‌ها حذف نمی‌شوند)
  const showLicensesPage=(cfg.showLicensesPage ?? cfg.menuVisibility?.licenses ?? true)!==false;
- // در حالت لینک ارجاع، دکمه «درخواست مشاوره» حذف می‌شود (چون مخاطب قبلاً مشاوره شده است)
  const shortcuts=homeLayout.filter((x:any)=>x.show!==false&&shortcutsBase[x.id]&&(x.id!=='licenses'||showLicensesPage)).map((x:any)=>shortcutsBase[x.id]);
  const heroImage=cfg.images?.hero||{}; const trustBoxImage=cfg.images?.trustBox||{};
  const allCourses:any[]=[];(cfg.courseTabs||[]).forEach((tab:any)=>(tab.courses||[]).forEach((c:any)=>{if(c.active!==false)allCourses.push({...c,tabId:tab.id})}));
@@ -70,7 +69,6 @@ export default function HomePage(){
   .filter((product:any)=>product.isVisible!==false&&product.active!==false&&product.showOnHome!==false)
   .sort((a:any,b:any)=>(a.order||0)-(b.order||0));
  const productRailRef=useRef<HTMLDivElement|null>(null);
- const scrollProducts=(direction:-1|1)=>productRailRef.current?.scrollBy({left:direction*Math.max(260,productRailRef.current.clientWidth*.78),behavior:'smooth'});
  return <main className="zk-home-page zk-home-v2" dir={isRtl?'rtl':'ltr'} style={{...app.S?.page,paddingBottom:92,flexDirection:'column',alignItems:'center',background:T.bg,color:T.txt,overflowX:'hidden'}}>
   <Helmet><title>{`${brand} | مشاوره رشد قد و تغذیه کودک و نوجوان`}</title><meta name="description" content="مشاوره و آموزش والدین درباره رشد، تغذیه، اشتها، قد، وزن و تمرکز کودک و نوجوان."/><meta name="keywords" content="رشد قد کودک, تغذیه کودک, بی‌اشتهایی کودک, بدغذایی, مشاوره رشد کودک"/><meta property="og:title" content={`${brand} | رشد و تغذیه کودک و نوجوان`}/><meta property="og:description" content="مسیر آرام‌تر و آگاهانه‌تر برای همراهی با رشد و تغذیه فرزند شما"/></Helmet>
   <style>{css}{` .zk-home-page{width:100%;}.zk-home-container{width:100%;max-width:680px;margin-inline:auto;padding-inline:16px}.zk-home-section{width:100%;margin-top:26px}.zk-home-section-title{font-size:20px;color:var(--zk-text-primary);margin:0 0 12px;font-weight:800}.zk-home-section-heading{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:12px}.zk-home-section-link{color:var(--zk-action-primary);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap}@media(min-width:481px){.zk-home-container{padding-inline:20px}}@media(min-width:900px){.zk-home-container{max-width:1120px;padding-inline:24px}.zk-home-quick-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important}.zk-home-quick-item{grid-column:auto!important}}`}</style>
@@ -100,7 +98,7 @@ export default function HomePage(){
 
    {!referralConsultant && heroImage.enabled!==false&&<HeroSection title={lang==='en'?(cfg.heroTitleEn||cfg.heroTitle||'A clearer path for your child’s growth'):(cfg.heroTitle||'مسیر روشن‌تری برای رشد فرزند شما')} subtitle={lang==='en'?(cfg.heroSubtitleEn||cfg.heroSubtitle||'Understand growth, nutrition and daily needs with calm, expert guidance.'):(cfg.heroSubtitle||'با شناخت بهتر رشد، تغذیه و نیازهای روزانه، آگاهانه‌تر کنار فرزندتان باشید.')} imageUrl={heroImage.url||'/images/asset13c-hero-mother-child.webp'} imageAlt={heroImage.alt||'کودک شاد و سالم'} imageAspect={heroImage.aspectRatio} imagePosition={heroImage.objectPosition} ctaText={lang==='en'?'Request consultation':'ثبت درخواست مشاوره'} ctaLink="/form" onCtaClick={()=>requestConsult?.()} secondaryCtaText={coursesCtaLabel} secondaryCtaLink={coursesCtaTo||undefined} onSecondaryClick={coursesCtaTo?undefined:onCoursesCta} T={T} lang={lang} animateCoursesCta={animateCta} animateConsultCta={!!consultPulse}/>}
 
-   {/* وقتی لینک ارجاع پایه است، یک باکس شناور زرد برای راهنمایی والد + دکمه تپشدار */}
+   {/* وقتی لینک ارجاع پایه است، یک باکس شناور زرد برای راهنمایی والد نمایش می‌دهیم */}
    {showBaseTip && (
      <section style={{marginBottom:16,padding:'14px 16px',background:'#FEF9C3',border:'1.5px solid #FACC15',borderRadius:18,boxShadow:'0 8px 24px rgba(250,204,21,0.18)',fontSize:13.5,lineHeight:1.9,color:'#713F12',fontWeight:700}}>
        <div style={{marginBottom:10}}>
@@ -141,7 +139,7 @@ export default function HomePage(){
            {(cfg.referral?.texts?.homeCourse
              ? fillReferralText(cfg.referral.texts.homeCourse, { course: cname })
              : (lang==='en'
-             ? `Tap the button below to see the details and register “${cname}”.`
+             ? `Tap the button below to see the details and register "${cname}".`
              : `با زدن دکمهٔ زیر می‌توانید جزئیات «${cname}» را ببینید و همان دوره را ثبت کنید.`))}
          </div>
          <button type="button" onClick={onCoursesCta} style={{width:'100%',minHeight:54,padding:'12px 18px',borderRadius:999,background:'var(--zk-primary)',color:'#fff',border:0,fontWeight:800,fontSize:15,cursor:'pointer',fontFamily:'inherit',animation:'zk-hero-pulse 1.6s ease-in-out infinite',WebkitAnimation:'zk-hero-pulse 1.6s ease-in-out infinite'}}>
@@ -163,10 +161,8 @@ export default function HomePage(){
    {showFeaturedProducts && featuredProducts.length>0 && (
      <section className="zk-home-section zk-home-featured-products" data-home-section="featured-products">
        <div className="zk-home-section-heading">
-         <h2 className="zk-home-section-title">{lang==='en' ? 'Featured Products & Plans' : 'محصولات و برنامه‌های منتخب'}</h2>
+         <h2 className="zk-home-section-title">{lang==='en' ? 'Featured Products' : 'محصولات منتخب'}</h2>
          <div style={{display:'flex',alignItems:'center',gap:7}}>
-          <button type="button" aria-label={lang==='en'?'Previous products':'محصولات قبلی'} onClick={()=>scrollProducts(-1)} style={{width:38,height:38,display:'grid',placeItems:'center',border:`1px solid ${T.brd}`,borderRadius:999,background:T.card,color:T.acc,cursor:'pointer',fontFamily:'inherit',fontSize:18}}>‹</button>
-          <button type="button" aria-label={lang==='en'?'Next products':'محصولات بعدی'} onClick={()=>scrollProducts(1)} style={{width:38,height:38,display:'grid',placeItems:'center',border:`1px solid ${T.brd}`,borderRadius:999,background:T.card,color:T.acc,cursor:'pointer',fontFamily:'inherit',fontSize:18}}>›</button>
           {showProductsPage&&<Link className="zk-home-section-link" to="/products">{lang==='en'?'View all':'مشاهده همه'}</Link>}
          </div>
        </div>

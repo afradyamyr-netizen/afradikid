@@ -55,7 +55,7 @@ export default function InstallPrompt({ lang }: { lang: string }) {
   return (
     <div
       role="dialog"
-      aria-label={en ? 'Install Farzandman app' : 'نصب اپلیکیشن فرزند من'}
+      aria-label={en ? 'Install Zeynalikid app' : 'نصب اپلیکیشن زینالیکید'}
       style={{
         position: 'fixed',
         bottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
@@ -124,7 +124,7 @@ export default function InstallPrompt({ lang }: { lang: string }) {
             textOverflow: 'ellipsis',
           }}
         >
-          {en ? 'Install Farzandman' : 'نصب اپلیکیشن فرزند من'}
+          {en ? 'Install Zeynalikid' : 'نصب اپلیکیشن زینالیکید'}
         </strong>
         <span
           style={{
@@ -171,9 +171,9 @@ export default function InstallPrompt({ lang }: { lang: string }) {
           style={{
             width: 32,
             height: 32,
-            borderRadius: '50%',
+            borderRadius: 0,
             border: 'none',
-            background: 'var(--zk-bg-soft, rgba(0, 0, 0, 0.05))',
+            background: 'transparent',
             color: 'var(--zk-text-muted, #64748B)',
             display: 'flex',
             alignItems: 'center',
