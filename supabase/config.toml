@@ -38,3 +38,9 @@ verify_jwt = false
 
 [functions.checkout-session]
 verify_jwt = false
+
+[functions.assistant-public]
+verify_jwt = false
+
+[functions.assistant-admin]
+verify_jwt = false
