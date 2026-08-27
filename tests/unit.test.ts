@@ -18,6 +18,7 @@ import { PaymentService,SUPPORTED_GATEWAYS,isGatewayProductionReady } from '../s
 import type { PaymentMetadata } from '../src/services/payment/drivers';
 import { parseReferralRaw, findConsultantByCode, findTabByCode } from '../src/utils/referral';
 import { paymentShareText, resolvePaymentLaunchInfo } from '../src/utils/paymentLauncher';
+import { findAssistantRule, matchAssistantKnowledge, normalizeAssistantText, scoreAssistantKnowledge, type AssistantKnowledge } from '../src/utils/assistantMatch';
 
 let passed = 0;
 let failed = 0;
@@ -213,6 +214,26 @@ for(const id of ['blubank','stripe','paypal']){let threw=false;try{await service
   const useDefault=resolvePaymentLaunchInfo(null,'6037990012345678','بانک اول');
   assert(useDefault.shouldCopyDefault&&useDefault.info?.value==='6037990012345678','لانچر فقط در نبود اطلاعات قبلی کارت اول را انتخاب می‌کند');
   assert(paymentShareText(copiedCrypto,'fa')==='wallet-123','اشتراک‌گذاری فقط مقدار خام اطلاعات پرداخت را ارسال می‌کند');
+}
+
+// ── assistant matching and owner-defined deterministic rules ─────
+{
+ const knowledge:AssistantKnowledge[]=[
+  {id:'1',question:'چطور درخواست مشاوره ثبت کنم؟',answer:'از فرم مشاوره استفاده کنید.',aliases:['مشاوره میخوام'],keywords:['فرم','مشاوره'],category:'راهنما',priority:10},
+  {id:'2',question:'چطور دوره‌ها را ببینم؟',answer:'به صفحه دوره‌ها بروید.',aliases:['لیست دوره ها'],keywords:['دوره','ثبت نام'],category:'دوره',priority:5},
+ ];
+ assert(normalizeAssistantText('كودکِ ۱۲ ساله')==='کودک 12 ساله','نرمال‌سازی فارسی دستیار');
+ assert(scoreAssistantKnowledge('مشاوره میخوام',knowledge[0])>=1,'تطبیق عبارت مشابه دستیار');
+ assert(matchAssistantKnowledge('چطور مشاوره ثبت کنم',knowledge,1)[0]?.item.id==='1','تطبیق سؤال فارسی نزدیک');
+ assert(matchAssistantKnowledge('آب و هوای مریخ',knowledge).length===0,'دستیار برای سؤال نامرتبط پاسخ نمی‌سازد');
+ const rules:AssistantKnowledge[]=[
+  {id:'r1',question:'قیمت مشاوره',answer:'برای قیمت وارد فرم شوید.',aliases:['مشاوره چنده'],keywords:[],category:'قیمت',response_mode:'exact',match_mode:'contains',priority:50},
+  {id:'r2',question:'پیش بینی هوا',answer:'من درباره این موضوع اطلاعاتی ندارم.',aliases:['هوا چطوره'],keywords:[],category:'خارج از حوزه',response_mode:'refusal',match_mode:'exact',priority:50},
+ ];
+ assert(findAssistantRule('لطفاً بگو مشاوره چنده',rules)?.item.id==='r1','قانون شامل عبارت، پاسخ ثابت را پیدا می‌کند');
+ assert(findAssistantRule('قیمت',rules)===null,'قانون contains فقط وقتی اجرا می‌شود که عبارت کامل داخل سؤال کاربر باشد');
+ assert(findAssistantRule('هوا چطوره',rules)?.item.id==='r2','قانون عدم اطلاع با جمله دقیق پیدا می‌شود');
+ assert(findAssistantRule('هوا فردا چطوره',rules)===null,'قانون exact روی جمله متفاوت اجرا نمی‌شود');
 }
 
 console.log(`\n═══════════════════════════════════`);
