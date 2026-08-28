@@ -125,11 +125,26 @@ const classicDefaults = {
   fontFamily: "'Vazirmatn','Tahoma',Arial,sans-serif",
 };
 
+export const PUBLIC_DARK_COLORS:Any={
+ id:'dark',name:'تاریک',
+ bg:'#0A0E27',card:'#111638',brd:'#1E2756',acc:'#00D4FF',soft:'rgba(0,212,255,.08)',
+ grad:'linear-gradient(135deg,#0E7490,#6D28D9)',txt:'#E2E8F0',mut:'#A7B4C5',ttl:'#7DD3FC',
+ inp:'#0A0E27',sel:'#161D48',pop:'#111638',err:'#F87171',ok:'#34D399',warn:'#FBBF24',
+ info:'#38BDF8',badge:'rgba(0,212,255,.10)',hdr:'rgba(13,19,51,.97)',hover:'rgba(0,212,255,.10)',
+ sidebar:'#0D1333',cardHover:'#161D48',
+ neuOut:'0 4px 16px rgba(0,0,0,.34)',
+ neuIn:'inset 2px 2px 6px rgba(0,0,0,.38),inset -2px -2px 6px rgba(30,39,86,.24)',
+ shadowLight:'0 4px 15px rgba(0,0,0,.24)',shadowMedium:'0 8px 24px rgba(0,0,0,.32)',
+ shadowStrong:'0 18px 42px rgba(0,0,0,.44)',shadowFocus:'0 0 0 4px rgba(0,212,255,.28)',
+ shadowGlow:'0 0 12px rgba(0,212,255,.15)',shadowCardHover:'0 4px 16px rgba(0,212,255,.08)',
+ memphis:['rgba(0,212,255,.05)','rgba(124,58,237,.05)','rgba(16,185,129,.04)'],
+};
+
 export const TH:Any={
- light:{id:'light',name:'روشن',bg:'#eaf1f7',card:'#fff',brd:'rgba(35,100,165,.16)',acc:'#2564a8',soft:'rgba(35,100,165,.09)',grad:'linear-gradient(135deg,#1a4f8a,#2578c8)',txt:'#162435',mut:'#5a7282',ttl:'#2564a8',inp:'#f4f8fc',sel:'#eaf1f7',pop:'#fff',err:'#dc2626',ok:'#059669',warn:'#ca8a04',badge:'#f0f5fb',hdr:'rgba(234,241,247,.96)',neuOut:'6px 6px 12px rgba(35,100,165,.14),-6px -6px 12px rgba(255,255,255,.75)',neuIn:'inset 3px 3px 7px rgba(35,100,165,.12),inset -3px -3px 7px rgba(255,255,255,.7)',memphis:['#bfdbfe','#93c5fd','#dbeafe'],...classicDefaults},
- cream:{id:'cream',name:'کرم',bg:'linear-gradient(155deg,#fdf6ee,#f4e4d0)',card:'#fff',brd:'rgba(175,108,45,.18)',acc:'#9c5820',soft:'rgba(156,88,32,.09)',grad:'linear-gradient(135deg,#7a4015,#c87028)',txt:'#3a1e0a',mut:'#8a5832',ttl:'#9c5820',inp:'#fdf8f0',sel:'#fdf6ee',pop:'#fffaf3',err:'#dc2626',ok:'#059669',warn:'#ca8a04',badge:'#f5eade',hdr:'rgba(253,246,238,.96)',neuOut:'6px 6px 12px rgba(156,88,32,.14),-6px -6px 12px rgba(255,255,255,.75)',neuIn:'inset 3px 3px 7px rgba(156,88,32,.12),inset -3px -3px 7px rgba(255,255,255,.7)',memphis:['#f4e4d0','#eecfa3','#fbe8cf'],...classicDefaults},
+ light:{id:'light',name:'روشن',bg:'#eaf1f7',card:'#fff',brd:'rgba(35,100,165,.16)',acc:'#2564a8',soft:'rgba(35,100,165,.09)',grad:'linear-gradient(135deg,#1a4f8a,#2578c8)',txt:'#162435',mut:'#5a7282',ttl:'#2564a8',inp:'#f4f8fc',sel:'#eaf1f7',pop:'#fff',err:'#B91C1C',ok:'#047857',warn:'#854D0E',badge:'#f0f5fb',hdr:'rgba(234,241,247,.96)',neuOut:'6px 6px 12px rgba(35,100,165,.14),-6px -6px 12px rgba(255,255,255,.75)',neuIn:'inset 3px 3px 7px rgba(35,100,165,.12),inset -3px -3px 7px rgba(255,255,255,.7)',memphis:['#bfdbfe','#93c5fd','#dbeafe'],...classicDefaults},
+ cream:{id:'cream',name:'کرم',bg:'linear-gradient(155deg,#fdf6ee,#f4e4d0)',card:'#fff',brd:'rgba(175,108,45,.18)',acc:'#9c5820',soft:'rgba(156,88,32,.09)',grad:'linear-gradient(135deg,#7A4015,#9A3412)',txt:'#3a1e0a',mut:'#8a5832',ttl:'#9c5820',inp:'#fdf8f0',sel:'#fdf6ee',pop:'#fffaf3',err:'#B91C1C',ok:'#047857',warn:'#854D0E',badge:'#f5eade',hdr:'rgba(253,246,238,.96)',neuOut:'6px 6px 12px rgba(156,88,32,.14),-6px -6px 12px rgba(255,255,255,.75)',neuIn:'inset 3px 3px 7px rgba(156,88,32,.12),inset -3px -3px 7px rgba(255,255,255,.7)',memphis:['#f4e4d0','#eecfa3','#fbe8cf'],...classicDefaults},
  ocean:{id:'ocean',name:'اقیانوسی',bg:'linear-gradient(135deg,#0f2027,#1a3a4a,#0f2027)',card:'rgba(255,255,255,.045)',brd:'rgba(0,201,255,.18)',acc:'#00c9ff',soft:'rgba(0,201,255,.12)',grad:'linear-gradient(135deg,#0077b6,#00c9ff)',txt:'#e8f4f8',mut:'#7ecfe8',ttl:'#2ac9f5',inp:'rgba(255,255,255,.07)',sel:'#102638',pop:'#0f2535',err:'#f87171',ok:'#6ee7b7',warn:'#facc15',badge:'rgba(255,255,255,.045)',hdr:'rgba(10,28,42,.94)',neuOut:'6px 6px 14px rgba(0,0,0,.35),-6px -6px 14px rgba(255,255,255,.04)',neuIn:'inset 3px 3px 7px rgba(0,0,0,.3),inset -3px -3px 7px rgba(255,255,255,.03)',memphis:['#0e3a4a','#124a5e','#0a2c38'],...classicDefaults},
- dark:{id:'dark',name:'تاریک',bg:'#0d0d0d',card:'rgba(255,255,255,.055)',brd:'rgba(129,140,248,.22)',acc:'#818cf8',soft:'rgba(99,102,241,.11)',grad:'linear-gradient(135deg,#4f46e5,#818cf8)',txt:'#f1f5f9',mut:'#94a3b8',ttl:'#a5b4fc',inp:'rgba(255,255,255,.065)',sel:'#111',pop:'#111827',err:'#f87171',ok:'#34d399',warn:'#facc15',badge:'rgba(255,255,255,.045)',hdr:'rgba(8,8,8,.96)',neuOut:'6px 6px 14px rgba(0,0,0,.5),-6px -6px 14px rgba(255,255,255,.03)',neuIn:'inset 3px 3px 7px rgba(0,0,0,.45),inset -3px -3px 7px rgba(255,255,255,.02)',memphis:['#1e1b3a','#241f4a','#171430'],...classicDefaults},
+ dark:{...classicDefaults,...PUBLIC_DARK_COLORS},
  wellness:{
   id: 'wellness', name: 'Wellness',
   bg: '#FFFFFF',
@@ -137,16 +152,16 @@ export const TH:Any={
   brd: '#DFE1E5',
   acc: '#7A12D4',
   soft: '#F8EFFF',
-  grad: 'linear-gradient(135deg, #4F0C8A 0%, #DF1A6F 100%)',
+  grad: 'linear-gradient(135deg, #4F0C8A 0%, #BE185D 100%)',
   txt: '#0F131A',
   mut: '#595E67',
   ttl: '#7A12D4',
   inp: '#FFFFFF',
   sel: '#F8EFFF',
   pop: '#FFFFFF',
-  err: '#F34747',
-  ok: '#159F65',
-  warn: '#ED6325',
+  err: '#B91C1C',
+  ok: '#047857',
+  warn: '#9A3412',
   badge: '#F8EFFF',
   hdr: 'rgba(255,255,255,.96)',
   neuOut: '0 4px 15px 0 rgba(0,0,0,0.05)',
@@ -174,18 +189,18 @@ export const TH:Any={
   bg: '#FFFFFF',
   card: '#F9FAFB',
   brd: '#E5E7EB',
-  acc: '#EF4444',
+  acc: '#B91C1C',
   soft: '#FEF3C7',
-  grad: 'linear-gradient(135deg, #EF4444 0%, #3B82F6 100%)',
+  grad: 'linear-gradient(135deg, #B91C1C 0%, #1D4ED8 100%)',
   txt: '#1F2937',
   mut: '#6B7280',
-  ttl: '#EF4444',
+  ttl: '#B91C1C',
   inp: '#FFFFFF',
   sel: '#FEF3C7',
   pop: '#FFFFFF',
-  err: '#EF4444',
-  ok: '#22C55E',
-  warn: '#F59E0B',
+  err: '#B91C1C',
+  ok: '#047857',
+  warn: '#92400E',
   badge: '#FEF3C7',
   hdr: 'rgba(255,255,255,.96)',
   neuOut: '6px 6px 0px #D1D5DB',
@@ -216,14 +231,14 @@ export const TH:Any={
   brd: '#1E2756',
   acc: '#00D4FF',
   soft: 'rgba(0,212,255,0.06)',
-  grad: 'linear-gradient(135deg, #00D4FF 0%, #7C3AED 100%)',
+  grad: 'linear-gradient(135deg, #0E7490 0%, #6D28D9 100%)',
   txt: '#E2E8F0',
-  mut: '#94A3B8',
+  mut: '#B0BED1',
   ttl: '#00D4FF',
   inp: '#0A0E27',
   sel: 'rgba(0,212,255,0.06)',
   pop: '#111638',
-  err: '#EF4444',
+  err: '#F87171',
   ok: '#10B981',
   warn: '#F59E0B',
   badge: 'rgba(0,212,255,0.08)',
@@ -253,7 +268,7 @@ export const TH:Any={
  },
  'navystack-dark':{
   id: 'navystack-dark', name: 'NavyStack Dark',
-  bg: '#0F1722', card: '#1E293B', brd: '#334155', acc: '#2DD4BF', soft: 'rgba(45,212,191,0.10)', hover: 'rgba(14,165,233,0.10)', grad: 'linear-gradient(135deg,#0F766E,#0EA5E9)', txt: '#E2E8F0', mut: '#94A3B8', ttl: '#5EEAD4', inp: '#0F1722', sel: '#1E293B', pop: '#1E293B', err: '#F87171', ok: '#34D399', warn: '#FBBF24', info: '#38BDF8', badge: 'rgba(45,212,191,0.10)', hdr: '#111827', sidebar: '#111827', neuOut: '0 1px 3px rgba(0,0,0,0.35)', neuIn: 'inset 0 1px 2px rgba(0,0,0,0.30)', memphis: ['rgba(45,212,191,0.05)','rgba(56,189,248,0.05)','rgba(255,255,255,0.02)'],
+  bg: '#0F1722', card: '#1E293B', brd: '#334155', acc: '#2DD4BF', soft: 'rgba(45,212,191,0.10)', hover: 'rgba(14,165,233,0.10)', grad: 'linear-gradient(135deg,#0F766E,#0369A1)', txt: '#E2E8F0', mut: '#94A3B8', ttl: '#5EEAD4', inp: '#0F1722', sel: '#1E293B', pop: '#1E293B', err: '#F87171', ok: '#34D399', warn: '#FBBF24', info: '#38BDF8', badge: 'rgba(45,212,191,0.10)', hdr: '#111827', sidebar: '#111827', neuOut: '0 1px 3px rgba(0,0,0,0.35)', neuIn: 'inset 0 1px 2px rgba(0,0,0,0.30)', memphis: ['rgba(45,212,191,0.05)','rgba(56,189,248,0.05)','rgba(255,255,255,0.02)'],
   cardHover: '#161D48',
   btnRadius: 6,
   cardRadius: 8,
@@ -292,14 +307,24 @@ Object.assign(TH, {
   sel: '#edf6f5',
   pop: '#fff',
   err: '#b83a3a',
-  ok: '#218653',
-  warn: '#b56a08',
+  ok: '#047857',
+  warn: '#854D0E',
   badge: '#edf6f5',
   hdr: 'rgba(247,250,251,.96)',
   neuOut: '0 4px 15px rgba(15,38,60,.06)',
   neuIn: 'inset 2px 2px 5px rgba(15,38,60,.05), inset -2px -2px 5px rgba(255,255,255,.8)',
   memphis: ['#e7f2fc','#fff0e8','#eaf5f3'],
   ...classicDefaults,
+ },
+ 'admin-light':{
+  ...TH.navystack,
+  id:'admin-light',name:'Admin Light',
+  bg:'#F8FAFC',card:'#FFFFFF',brd:'#E2E8F0',acc:'#0B5F59',soft:'rgba(15,118,110,.09)',
+  grad:'linear-gradient(135deg,#0F766E,#0369A1)',txt:'#0F172A',mut:'#475569',ttl:'#0B5F59',
+  inp:'#FFFFFF',sel:'#F0FDFA',pop:'#FFFFFF',err:'#B91C1C',ok:'#047857',warn:'#92400E',
+  badge:'#F0FDFA',hdr:'rgba(255,255,255,.96)',sidebar:'#FFFFFF',cardHover:'#F1F5F9',
+  neuOut:'0 1px 3px rgba(15,23,42,.08)',neuIn:'inset 0 1px 2px rgba(15,23,42,.06)',
+  memphis:['rgba(15,118,110,.04)','rgba(14,165,233,.04)','rgba(15,23,42,.02)'],
  },
  'motherly-trust':{
   ...TH.light,
@@ -317,8 +342,8 @@ Object.assign(TH, {
   sel: '#eaf5f3',
   pop: '#fff',
   err: '#b83a3a',
-  ok: '#218653',
-  warn: '#b56a08',
+  ok: '#047857',
+  warn: '#854D0E',
   badge: '#eaf5f3',
   hdr: 'rgba(248,251,250,.96)',
   neuOut: '0 4px 15px rgba(15,38,60,.06)',
@@ -347,9 +372,9 @@ const defTabs=[
  ]}
 ];
 const defaultSettings:Any={
- theme:'light',publicThemeMode:'auto',siteTitle:'فرزند من',browserTitle:'فرزند من',specialistName:'کارشناس رشد و تغذیه کودک و نوجوان فرزند من',showSpecialistPhoto:true,photoUrl:PROFILE_PHOTO,showProductsPage:true,showLicensesPage:true,adminLoginText:'ورود به پنل مدیریت',adminPhone:'',emergencyToken:'',
+ theme:'light',publicThemeMode:'auto',siteTitle:'زینالیکید',browserTitle:'زینالیکید',specialistName:'کارشناس رشد و تغذیه کودک و نوجوان زینالیکید',showSpecialistPhoto:true,photoUrl:PROFILE_PHOTO,showProductsPage:true,showLicensesPage:true,adminLoginText:'ورود به پنل مدیریت',adminPhone:'',emergencyToken:'',
  // اصلاح ۱-۶ (مرحله ۴): عناوین کنار عکس پروفایل — دو زبانه، قابل ویرایش از پنل مدیریت
- specialistTitle:'کارشناس رشد و تغذیه کودک و نوجوان فرزند من',specialistTitleEn:'Child and Adolescent Growth and Nutrition Specialist at Farzandman',heroSubtitle:'ضمن آرزوی اوقاتی خوش برای شما',heroSubtitleEn:'Wishing you a pleasant time',
+ specialistTitle:'کارشناس رشد و تغذیه کودک و نوجوان زینالیکید',specialistTitleEn:'Child and Adolescent Growth and Nutrition Specialist at Zeynalikid',heroSubtitle:'ضمن آرزوی اوقاتی خوش برای شما',heroSubtitleEn:'Wishing you a pleasant time',
  heroTitle:'ضمن آرزوی اوقاتی خوش برای شما',heroDesc:'این فرم برای بررسی شرایط فرزند شما و تعیین نوبت مشاوره خصوصی طراحی شده است.',noticeText:'این مشاوره فقط به والدین یا سرپرست قانونی فرزند ارائه می‌شود. لطفاً اطلاعات را با دقت تکمیل فرمایید.',phoneNote:'مشاوره فقط به‌صورت تلفنی',submitBtnText:'ثبت درخواست مشاوره',successMsg:'اطلاعات فرزند شما با موفقیت ثبت شد',successSubMsg:'طی ۲۴ الی ۴۸ ساعت آینده با شما تماس می‌گیریم',timeSlotLabel:'بازه زمانی مناسب برای تماس (اختیاری)',
  directCourseBtn:'معرفی و ثبت مستقیم دوره',newFormBtn:'ثبت فرم جدید',contactBtn:'ارتباط با ما',backToConsultation:'بازگشت به فرم مشاوره',currencyUnit:'تومان',
  // اصلاح ۲: چیدمان (ترتیب + نمایش/پنهان) میانبرهای صفحه هوم و آیتم‌های منوی همبرگری — قابل تنظیم از پنل مدیریت
@@ -411,17 +436,17 @@ const defaultSettings:Any={
   education:{showIntro:true,order:'contentFirst'},
   about:{showIntro:true,order:'contentFirst'}
  },
- coursesIntroText:'در این بخش، دوره‌های تخصصی فرزند من برای حمایت از رشد قد، افزایش اشتها و همراهی بدغذایی، و حمایت از تمرکز و یادگیری کودکان و نوجوانان معرفی شده‌اند. هر دوره بر اساس روش TC و با توجه به طبع و شرایط منحصربه‌فرد فرزند شما طراحی می‌شود. برای دریافت مشاوره رایگان، فرم مشاوره را تکمیل کنید.',
- coursesIntroTextEn:"In this section, Farzandman's specialized courses for improving height growth, increasing appetite, addressing picky eating, and boosting children's intelligence and focus are introduced. Each course is designed based on the TC method and according to your child's unique temperament and condition. For a free consultation, please complete the consultation form.",
+ coursesIntroText:'در این بخش، دوره‌های تخصصی زینالیکید برای حمایت از رشد قد، افزایش اشتها و همراهی بدغذایی، و حمایت از تمرکز و یادگیری کودکان و نوجوانان معرفی شده‌اند. هر دوره بر اساس روش TC و با توجه به طبع و شرایط منحصربه‌فرد فرزند شما طراحی می‌شود. برای دریافت مشاوره رایگان، فرم مشاوره را تکمیل کنید.',
+ coursesIntroTextEn:"In this section, Zeynalikid's specialized courses for improving height growth, increasing appetite, addressing picky eating, and boosting children's intelligence and focus are introduced. Each course is designed based on the TC method and according to your child's unique temperament and condition. For a free consultation, please complete the consultation form.",
  // اصلاح ۳: متن سئوی کامل (پایین صفحه دوره‌ها، بین سوالات متداول و ارتباط با ما)
- coursesSeoFullText:'در فرزند من، هر دوره ترکیبی از مشاوره تخصصی، برنامه مکمل و تغذیه اختصاصی، پشتیبانی مرحله‌ای و پیگیری رشد فرزند شماست. هدف ما کمک به والدین برای تصمیم‌گیری آگاهانه در مسیر رشد قد، همراهی بی‌اشتهایی و حمایت از تمرکز کودکان است.',
- coursesSeoFullTextEn:"At Farzandman, every course combines specialized consultation, a personalized supplement and nutrition plan, step-by-step support, and growth tracking for your child. Our goal is to help parents make informed decisions on the path of height growth, addressing picky eating, and boosting children's intelligence.",
+ coursesSeoFullText:'در زینالیکید، هر دوره ترکیبی از مشاوره تخصصی، برنامه مکمل و تغذیه اختصاصی، پشتیبانی مرحله‌ای و پیگیری رشد فرزند شماست. هدف ما کمک به والدین برای تصمیم‌گیری آگاهانه در مسیر رشد قد، همراهی بی‌اشتهایی و حمایت از تمرکز کودکان است.',
+ coursesSeoFullTextEn:"At Zeynalikid, every course combines specialized consultation, a personalized supplement and nutrition plan, step-by-step support, and growth tracking for your child. Our goal is to help parents make informed decisions on the path of height growth, addressing picky eating, and boosting children's intelligence.",
  experienceIntroText:'در این بخش، تجربه‌های واقعی والدین از دوره‌های رشد قد، همراهی بی‌اشتهایی و حمایت از تمرکز کودکان را مشاهده می‌کنید. این تجربه‌ها با رضایت والدین منتشر شده‌اند و نشان‌دهنده تأثیر مثبت روش TC بر سلامت و رشد فرزندان است.',
  experienceIntroTextEn:'In this section, real experiences of parents from height growth, appetite guidance, and intelligence boosting courses are shared. These experiences are published with parental consent and reflect the positive impact of the TC method on children\'s health and growth.',
  educationIntroText:'در این بخش، آموزش‌های تخصصی در زمینه تغذیه کودک، افزایش رشد قد، بهبود اشتها، تقویت تمرکز و هوش کودکان گردآوری شده است. محتوای این صفحه شامل ویدیو، ویس، عکس و مقالات آموزشی است.',
  educationIntroTextEn:"In this section, specialized educational content about child nutrition, height growth, appetite improvement, focus and learning support is collected. This page's content includes video, voice, photo, and educational articles.",
- aboutIntroText:'فرزند من یک سامانه مشاوره تخصصی در حوزه رشد و تغذیه کودکان و نوجوانان است. تیم ما با استفاده از روش TC و علم زبان‌شناسی، برنامه‌های اختصاصی برای همراهی بی‌اشتهایی، حمایت از رشد قد و تمرکز فرزندان طراحی می‌کند.',
- aboutIntroTextEn:"Farzandman is a specialized consultation system in the field of children's growth and nutrition. Our team, using the TC method and linguistics science, designs customized programs to treat picky eating, increase height growth, and boost children's intelligence and focus.",
+ aboutIntroText:'زینالیکید یک سامانه مشاوره تخصصی در حوزه رشد و تغذیه کودکان و نوجوانان است. تیم ما با استفاده از روش TC و علم زبان‌شناسی، برنامه‌های اختصاصی برای همراهی بی‌اشتهایی، حمایت از رشد قد و تمرکز فرزندان طراحی می‌کند.',
+ aboutIntroTextEn:"Zeynalikid is a specialized consultation system in the field of children's growth and nutrition. Our team, using the TC method and linguistics science, designs customized programs to treat picky eating, increase height growth, and boost children's intelligence and focus.",
  consultTopics:['رشد قد','بی‌اشتهایی / بدغذایی','هوش و ذهن','وزنگیری'],digestiveOptions:['ندارد','یبوست','اسهال','نفخ','رفلاکس','سایر'],appetiteOptions:['خوب','متوسط','ضعیف','بی‌اشتهایی شدید'],specialConditions:['سلیاک','فاویسم (باقلایی)','حساسیت به آجیل','کم‌خونی مینور'],timeSlots:['۹ تا ۱۲','۱۲ تا ۱۸','۱۸ تا ۲۲'],categories:['ثبتی','اصلاحی','پیگیری','آخر ماه','مشاوره اولیه'],
  formFields:{parentName:{label:'نام و نام خانوادگی',placeholder:'نام و نام خانوادگی',show:true,required:false},parentPhone:{label:'شماره تماس',placeholder:'09123456789',show:true,required:true},age:{label:'سن (سال)',placeholder:'مثلاً ۵',show:true,required:true,min:2,max:17},height:{label:'قد (سانتیمتر)',placeholder:'مثلاً ۱۱۰',show:true,required:false},weight:{label:'وزن (کیلوگرم)',placeholder:'مثلاً ۱۸',show:true,required:false},disease:{label:'بیماری خاص',placeholder:'نام بیماری...',show:true,required:false},notes:{label:'توضیحات تکمیلی',placeholder:'هر گونه توضیح اضافی، سابقه بیماری، دارو مصرفی یا نگرانی خاص را اینجا بنویسید',show:true,required:false}},
  countryCodes:baseCountries,
@@ -485,7 +510,7 @@ const defaultSettings:Any={
    {id:'ht9',title:'صفحه رشد یه درِ کشویی‌ست که یه روز برای همیشه بسته میشه.',description:'قبل از بسته شدنش، سوخت لازم رو بهش برسون.',order:9},
    {id:'ht10',title:'مکمل رشد قد، وقتی با طبع فرزندت هماهنگ باشه، بهتر جواب می‌ده.',description:'ما با تحلیل تخصصی عکس زبان، مسیر جذب و رشد رو بهتر می‌شناسیم.',order:10},
    {id:'ht11',title:'عکس زبون بچهات، نقشه گنج سلامتی و قد بلندشه.',description:'ما به جای حدس زدن، نقشه می‌خونیم. ریشه کندرشدی رو دقیقاً همونجا پیدا می‌کنیم.',order:11},
-   {id:'ht12',title:'نسخهٔ منحصربه‌فرد برای رشد منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در فرزند من شبیه هم نیست. چون هیچ دو کودکی شبیه هم نیستن.',order:12},
+   {id:'ht12',title:'نسخهٔ منحصربه‌فرد برای رشد منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در زینالیکید شبیه هم نیست. چون هیچ دو کودکی شبیه هم نیستن.',order:12},
    {id:'ht13',title:'تجربه‌های والدین می‌تواند به انتخاب آگاهانه‌تر مسیر رشد کمک کند.',description:'بازخوردها را ببینید و سپس متناسب با شرایط فرزندتان تصمیم بگیرید.',order:13},
    {id:'ht14',title:'هر هفته که بگذره و اقدام نکنی، یه قدم از هم‌سن و سالاش عقب‌تر میفته.',description:'کمبود وزن موندگار میشه و قد از دست میره. تصمیم سخت امروز، حسرت آسون فردا رو حذف می‌کنه.',order:14},
    {id:'ht15',title:'بچت قهرمان قدی میشه چون بدنش از درون ترمیم میشه.',description:'تفاوت بین یه کودک خسته و کم‌قد، با یه کودک پرانرژی و بلندقامت، ریشه‌اش تو ترمیم سلولیه.',order:15},
@@ -506,7 +531,7 @@ const defaultSettings:Any={
    {id:'ap12',title:'اگه سر سفره جنگ جهانی سوم راه میفته، مشکل از غذا نیست، از سیستم گوارش و طبعشه.',description:'قبل از دعوا، تیغه‌های زبانش رو بررسی کن.',order:12},
    {id:'ap13',title:'به جای این‌که توپ رو به گردن بچه بندازی، ببین بدنش چه ریزمغذی‌ای رو جذب نکرده.',description:'کمبود زینک و آهن، اولین مظنون بی‌اشتهایی بچه‌هاست.',order:13},
    {id:'ap14',title:'بی‌اشتهایی یعنی متابولیسم بدن قفل کرده. ما کلیدش رو داریم.',description:'کلیدش یه نسخه گیاهی پیچیده شده با طعم مورد علاقه بچه‌اته.',order:14},
-   {id:'ap15',title:'فرزند من بدغذاست؟ نه! بدنش هوشمندانه از چیزی که بلد نیست هضم کنه، فرار می‌کنه.',description:'به بدنش گوش بده، داره راه نجات رو نشون میده.',order:15},
+   {id:'ap15',title:'زینالیکید بدغذاست؟ نه! بدنش هوشمندانه از چیزی که بلد نیست هضم کنه، فرار می‌کنه.',description:'به بدنش گوش بده، داره راه نجات رو نشون میده.',order:15},
    {id:'ap16',title:'با اصلاح طبع، بچه‌ای که از قاشق فرار می‌کرد، خودش دنبال بشقاب میاد.',description:'این یه شعار نیست، نتیجه‌ای هست که ۱۰,۰۰۰ مادر دیدش.',order:16},
    {id:'ap17',title:'همراهی ریشه‌ای، نه مسکن موقت.',description:'ما با تحلیل زبان‌شناسی و اصلاح طبع، بی‌اشتهایی رو ریشه‌ای دنبال می‌کنیم؛ به‌جای راه‌حل‌های موقت.',order:17},
    {id:'ap18',title:'یه مادر آگاه، دنبال شربت اشتها نیست؛ دنبال ریشه‌یابیه.',description:'شربت فقط یه مُسکنه، روش TC جراحی تغذیه‌ایه برای بی‌اشتهایی.',order:18},
@@ -530,12 +555,12 @@ const defaultSettings:Any={
    {id:'m15',title:'فرزندت قرار نیست نابغه به دنیا بیاد؛ می‌تونه نابغه تغذیه بشه.',description:'پتانسیل واقعی مغز، با تغذیه بیدار میشه.',order:15},
    {id:'m16',title:'ذهن آروم، حافظه قوی و یادگیری سریع، محصول یه صبحانه مهندسی‌شده‌ست.',description:'ما مهندس تغذیه مغزیم.',order:16},
    {id:'m17',title:'همراهی ریشه‌ای، نه مسکن موقت.',description:'ما با تحلیل زبان‌شناسی و اصلاح طبع، تمرکز رو ریشه‌ای دنبال می‌کنیم؛ به‌جای راه‌حل‌های موقت.',order:17},
-   {id:'m18',title:'نسخهٔ منحصربه‌فرد برای ذهن منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در فرزند من شبیه هم نیست. حتی برای تقویت هوش.',order:18}
+   {id:'m18',title:'نسخهٔ منحصربه‌فرد برای ذهن منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در زینالیکید شبیه هم نیست. حتی برای تقویت هوش.',order:18}
   ]
  },
  // اصلاح ۴۴-۴۵: جملات اعتمادساز صفحات موفقیت (قابل مدیریت از پنل)
  successTrustSentences:[
-  {id:'st1',title:'به جمع خانواده فرزند من خوش آمدید',description:'به خانواده بزرگ فرزند من خوش آمدید - مسیر سلامت فرزند شما از اینجا شروع می‌شود',order:1},
+  {id:'st1',title:'به جمع خانواده زینالیکید خوش آمدید',description:'به خانواده بزرگ زینالیکید خوش آمدید - مسیر سلامت فرزند شما از اینجا شروع می‌شود',order:1},
   {id:'st2',title:'ثبت‌نام شما با موفقیت انجام شد',description:'اطلاعات شما ثبت شد و کارشناسان ما طی 24 تا 48 ساعت آینده با شما تماس می‌گیرند',order:2},
   {id:'st3',title:'یک قدم به سلامت فرزندتان نزدیک‌تر شدید',description:'از این لحظه، پشتیبانی ما 24 ساعته کنار شما و فرزندتان است',order:3},
   {id:'st4',title:'بیش از 10,000 مادر به ما اعتماد کرده‌اند',description:'شما نیز به جمع مادران آگاه و قهرمان پیوستید',order:4},
@@ -759,7 +784,7 @@ export function t(cfg:any,lang:Lang,k:string,fallback?:string){const dict=cfg.tr
 export const StableErr = memo(function StableErr({x, err, T}:any){
   const msg = err ?? x;
   if(msg==null || msg==='') return null as any;
-  return <div style={{fontSize:11,color:T?.err??'#dc2626',marginTop:4}}>{msg}</div>;
+  return <div style={{fontSize:11,color:T?.err??'var(--zk-error, #dc2626)',marginTop:4}}>{msg}</div>;
 });
 export const StableField = memo(function StableField({label,value,onChange,ph,type='text',required=false,S,T,trVal,p2e:_p2e}:any){
   const _tr = trVal || ((s:any)=>String(s||''));
@@ -771,7 +796,7 @@ export const StableField = memo(function StableField({label,value,onChange,ph,ty
     onChange?.(val);
   };
   const s = S || {lbl:{display:'block',fontSize:14,marginBottom:7,fontWeight:700}, inp:{width:'100%',padding:'13px 14px',border:'1px solid #ddd',borderRadius:12,minHeight:48,fontSize:16,boxSizing:'border-box'}};
-  const tt = T || {err:'#dc2626'};
+  const tt = T || {err:'var(--zk-error, #dc2626)'};
   return <div style={{marginBottom:13}}><label style={s.lbl}>{_tr(label)}{required&&<span style={{color:tt.err,marginInlineStart:4}}>*</span>}</label><input inputMode={isNumeric?'numeric':undefined} type={type} style={s.inp} value={value ?? ''} onChange={handleChange} placeholder={_tr(ph)} /></div>;
 });
 export const StableSelectBox = memo(function StableSelectBox({label,items,val,setVal,multi=false,S,T,trVal,cfg,lang}:any){
@@ -836,8 +861,10 @@ function PlatformIcon({type,color,size=18}:{type:string,color:string,size?:numbe
 // بازطراحی: فوتر سبک و مینیمال (کپی‌رایت + یک لینک ارتباطی) برای صفحات اصلی
 export function Footer({cfg,T,lang,setView,referralConsultant,requestConsult,onStartConsult}:{cfg:any,T:any,lang:Lang,setView:(v:string)=>void,referralConsultant?:any,requestConsult?:()=>void,onStartConsult?:()=>void}){
   const year = new Date().getFullYear();
-  const siteName = (cfg.browserTitle && String(cfg.browserTitle).trim()) ? String(cfg.browserTitle).trim().replace(/["“”]+/g,'') : (cfg.siteTitle || 'فرزند من');
+  const siteName = (cfg.browserTitle && String(cfg.browserTitle).trim()) ? String(cfg.browserTitle).trim().replace(/["“”]+/g,'') : (cfg.siteTitle || 'زینالیکید');
   const c = cfg.contacts || {};
+  const whatsappAccessible = T.id==='dark' ? '#6EE7B7' : '#08783E';
+  const telegramAccessible = T.id==='dark' ? '#7DD3FC' : '#0369A1';
   const [openAcc, setOpenAcc] = useState<string | null>(null);
   const toggleAcc = (key: string) => setOpenAcc(openAcc === key ? null : key);
 
@@ -864,7 +891,7 @@ export function Footer({cfg,T,lang,setView,referralConsultant,requestConsult,onS
     <footer style={{marginTop:32,background:`linear-gradient(180deg, ${T.soft} 0%, ${T.bg} 100%)`,borderTop:`1px solid ${T.brd}`,color:T.txt,fontFamily:'var(--zk-font)',position:'relative',zIndex:1,paddingBottom:'calc(12px + env(safe-area-inset-bottom, 0px))'}}>
       <div style={{background:T.card,borderBottom:`1px solid ${T.brd}`,padding:'18px 16px',display:'flex',flexDirection:'column',gap:10,alignItems:'center',textAlign:'center'}}>
         <div style={{fontSize:15,fontWeight:800,color:T.ttl,lineHeight:1.3}}>{lang==='en'?'Ready to begin your child’s growth journey?':'آماده شروع مسیر رشد فرزندتان هستید؟'}</div>
-        <button onClick={goConsult} style={{minHeight:48,padding:'11px 28px',fontSize:15,fontWeight:800,borderRadius:9999,background:`var(--zk-primary, ${T.acc})`,color:'#fff',boxShadow:T.neuOut||'0 4px 15px rgba(15,38,60,.1)',border:'none',cursor:'pointer'}}>{lang==='en'?'Start Free Consultation':'شروع مشاوره رایگان'}</button>
+        <button onClick={goConsult} style={{minHeight:48,padding:'11px 28px',fontSize:15,fontWeight:800,borderRadius:9999,background:`var(--zk-primary, ${T.acc})`,color:'var(--zk-text-inverse, #fff)',boxShadow:T.neuOut||'0 4px 15px rgba(15,38,60,.1)',border:'none',cursor:'pointer'}}>{lang==='en'?'Start Free Consultation':'شروع مشاوره رایگان'}</button>
       </div>
 
       <div style={{maxWidth:1100,margin:'0 auto',padding:'28px 16px 18px'}}>
@@ -884,7 +911,7 @@ export function Footer({cfg,T,lang,setView,referralConsultant,requestConsult,onS
         <div className="zk-footer-grid">
         <div className="zk-footer-col">
           <div style={{display:'flex',alignItems:'center',gap:9,marginBottom:10}}>
-            <div style={{width:34,height:34,borderRadius:999,background:`linear-gradient(135deg,${T.acc},#0F766E)`,display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',flexShrink:0}}>
+            <div style={{width:34,height:34,borderRadius:999,background:T.grad,display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',flexShrink:0}}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21C7 16 4 13 4 9.5A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 8 2.5C20 13 17 16 12 21z"/><path d="M12 8v13"/></svg>
             </div>
             <div style={{fontWeight:900,fontSize:19,color:T.ttl}}>{siteName}</div>
@@ -900,8 +927,8 @@ export function Footer({cfg,T,lang,setView,referralConsultant,requestConsult,onS
           <button className="zk-footer-acc-head" data-open={openAcc==='reach'} onClick={()=>toggleAcc('reach')} aria-expanded={openAcc==='reach'}>{lang==='en'?'Reach Us':'تماس با ما'}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={T.acc} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
           <div className="zk-footer-acc-body" data-open={openAcc==='reach'} style={{flexDirection:'column',gap:9,paddingTop:'12px'}}>
             {c.phone && <a href={`tel:${c.phone}`} style={{display:'flex',alignItems:'center',gap:9,color:T.acc,fontSize:14,fontWeight:600,minHeight:44,padding:'2px 0'}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.8.3 1.6.6 2.4a2 2 0 0 1-.5 2.1L8 9.4a16 16 0 0 0 6.6 6.6l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.6.5 2.4.6A2 2 0 0 1 22 16.9z"/></svg> <span>{c.phone}</span></a>}
-            {c.whatsapp && <a href={`https://wa.me/${digits(c.whatsapp)}`} target="_blank" style={{display:'flex',alignItems:'center',gap:9,color:'#25D366',fontSize:14,fontWeight:600,minHeight:44,padding:'2px 0'}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.2A8.5 8.5 0 1 1 20 11.5zM8.5 7.8c.2 3.7 3.1 6.4 6.7 6.8l1-1.7-2.2-1-1 1c-1.3-.5-2.2-1.4-2.8-2.7l1-1-1-2.2-1.7.8z"/></svg> <span>WhatsApp</span></a>}
-            {c.telegram && <a href={`https://t.me/${String(c.telegram).replace('@','')}`} target="_blank" style={{display:'flex',alignItems:'center',gap:9,color:'#229ED9',fontSize:14,fontWeight:600,minHeight:44,padding:'2px 0'}}><PlatformIcon type="telegram" color="#229ED9" size={18}/> <span>Telegram</span></a>}
+            {c.whatsapp && <a href={`https://wa.me/${digits(c.whatsapp)}`} target="_blank" style={{display:'flex',alignItems:'center',gap:9,color:whatsappAccessible,fontSize:14,fontWeight:600,minHeight:44,padding:'2px 0'}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.2A8.5 8.5 0 1 1 20 11.5zM8.5 7.8c.2 3.7 3.1 6.4 6.7 6.8l1-1.7-2.2-1-1 1c-1.3-.5-2.2-1.4-2.8-2.7l1-1-1-2.2-1.7.8z"/></svg> <span>WhatsApp</span></a>}
+            {c.telegram && <a href={`https://t.me/${String(c.telegram).replace('@','')}`} target="_blank" style={{display:'flex',alignItems:'center',gap:9,color:telegramAccessible,fontSize:14,fontWeight:600,minHeight:44,padding:'2px 0'}}><PlatformIcon type="telegram" color={telegramAccessible} size={18}/> <span>Telegram</span></a>}
           </div>
           <div className="zk-footer-acc-body" data-open={openAcc==='reach'} style={{marginTop:14,paddingTop:12,borderTop:`1px dashed ${T.brd}`,fontSize:12,color:T.mut,lineHeight:1.7}}>{lang==='en'?'Response time: Within 24–48 hours':'زمان پاسخگویی: ۲۴ تا ۴۸ ساعت'}<br/>{lang==='en'?'Mon–Sat • 9:00–20:00 (Tehran)':'شنبه تا پنجشنبه • ۹ تا ۲۰ (تهران)'}</div>
         </div>
@@ -927,10 +954,11 @@ const items=[c.phone&&{key:'phone',title:lang==='en'?'Phone':'شماره تما�
 const knownKeys=['phone','whatsapp','telegram','instagram','rubika','bale'];
 return <div style={glass?{marginTop:12,padding:14,background:'rgba(15,23,42,.45)',border:'1px solid rgba(255,255,255,.16)',borderRadius:16,backdropFilter:'blur(14px) saturate(140%)',WebkitBackdropFilter:'blur(14px) saturate(140%)'}:{marginTop:12,padding:14,background:T.soft,border:`1px solid ${T.brd}`,borderRadius:16}}><div style={{fontWeight:700,color:glass?'#fff':T.ttl,marginBottom:10,fontSize:13,display:'flex',gap:7,alignItems:'center'}}><PlatformIcon type="phone" color={glass?'#fff':T.acc} size={16}/>{t(cfg,lang,'contactUs','ارتباط با ما')}</div><div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(140px,1fr))',gap:8}}>{items.map((it:any,i:number)=>{
   const color=it.color||icons[it.key]?.color||T.acc;
+  const displayColor=T.id==='dark'?`color-mix(in srgb, ${color} 55%, white)`:`color-mix(in srgb, ${color} 58%, #0F172A)`;
   const isKnown=knownKeys.includes(it.key);
-  return <a key={i} href={it.url} target={it.url?.startsWith('http')?'_blank':undefined} rel="noreferrer" style={glass?{textDecoration:'none',padding:'10px 12px',borderRadius:12,border:'1px solid rgba(255,255,255,.16)',background:'rgba(255,255,255,.07)',color:'#fff',fontWeight:700,fontSize:12.5,display:'flex',alignItems:'center',gap:8,overflow:'hidden',minHeight:44,transition:'all .15s ease'}:{textDecoration:'none',padding:'10px 12px',borderRadius:12,border:`1px solid ${color}44`,background:`${color}10`,color,fontWeight:700,fontSize:12.5,display:'flex',alignItems:'center',gap:8,overflow:'hidden',minHeight:44,transition:'all .15s ease'}}>
-   <span style={{width:28,height:28,borderRadius:'50%',background:glass?`${color}33`:`${color}1f`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-    {it.iconUrl?<img src={it.iconUrl} style={{width:18,height:18,objectFit:'contain',borderRadius:4}} alt=""/>:(isKnown?<PlatformIcon type={it.key} color={color} size={16}/>:<b style={{fontSize:13,color:glass?'#fff':color}}>{(it.title||'?').trim().charAt(0)}</b>)}
+  return <a key={i} href={it.url} target={it.url?.startsWith('http')?'_blank':undefined} rel="noreferrer" style={glass?{textDecoration:'none',padding:'10px 12px',borderRadius:12,border:'1px solid rgba(255,255,255,.16)',background:'rgba(255,255,255,.07)',color:'#fff',fontWeight:700,fontSize:12.5,display:'flex',alignItems:'center',gap:8,overflow:'hidden',minHeight:44,transition:'all .15s ease'}:{textDecoration:'none',padding:'10px 12px',borderRadius:12,border:`1px solid ${displayColor}66`,background:`color-mix(in srgb, ${color} 12%, transparent)`,color:displayColor,fontWeight:700,fontSize:12.5,display:'flex',alignItems:'center',gap:8,overflow:'hidden',minHeight:44,transition:'all .15s ease'}}>
+   <span style={{width:28,height:28,borderRadius:'50%',background:glass?`${color}33`:`color-mix(in srgb, ${color} 18%, transparent)`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+    {it.iconUrl?<img src={it.iconUrl} style={{width:18,height:18,objectFit:'contain',borderRadius:4}} alt=""/>:(isKnown?<PlatformIcon type={it.key} color={displayColor} size={16}/>:<b style={{fontSize:13,color:glass?'#fff':displayColor}}>{(it.title||'?').trim().charAt(0)}</b>)}
    </span>
    <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{it.title}</span>
   </a>})}</div></div>}

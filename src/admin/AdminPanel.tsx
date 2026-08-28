@@ -310,7 +310,7 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
   const isAllSelected = filteredAll.length>0 && filteredAll.every((x:any)=> selectedIds.has(x.id));
   const rows=filtered.map(s=>({نام:s.pName||'',شماره:s.fullPhone||'',موضوع:(s.topics||[]).join('|'),کشور:getCountry(s),دوره:getCourse(s),پرداخت:getPay(s),وضعیت:getStatus(s),تاریخ:s.date||'',شهر:s.shipping?.city||'',یادداشت:s.adminNotes||'',دسته‌بندی:getCategory(s)}));
   const download=(name:string,content:string,type='text/plain;charset=utf-8')=>{const url=URL.createObjectURL(new Blob([content],{type}));const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500)};
-  const exportExcel=()=>{const keys=Object.keys(rows[0]||{نام:'',شماره:'',موضوع:'',کشور:'',دوره:'',پرداخت:'',وضعیت:'',تاریخ:''});const html=`<html><meta charset="utf-8"><body><table border="1"><thead><tr>${keys.map(k=>`<th>${k}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${keys.map(k=>`<td>${String((r as any)[k]||'')}</td>`).join('')}</tr>`).join('')}</tbody></table></body></html>`;download('farzandman-export.xls',html,'application/vnd.ms-excel;charset=utf-8')};
+  const exportExcel=()=>{const keys=Object.keys(rows[0]||{نام:'',شماره:'',موضوع:'',کشور:'',دوره:'',پرداخت:'',وضعیت:'',تاریخ:''});const html=`<html><meta charset="utf-8"><body><table border="1"><thead><tr>${keys.map(k=>`<th>${k}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${keys.map(k=>`<td>${String((r as any)[k]||'')}</td>`).join('')}</tr>`).join('')}</tbody></table></body></html>`;download('zeynalikid-export.xls',html,'application/vnd.ms-excel;charset=utf-8')};
   const exportPhones=()=>download('phones.txt',filtered.map(s=>s.fullPhone).filter(Boolean).join('\n'));
   const exportWhatsApp=()=>{const links=filtered.map(s=>digits(s.fullPhone||'')).filter(Boolean).map(n=>`<p><a href="https://wa.me/${n}">${n}</a></p>`).join('');download('whatsapp-links.html',`<html><meta charset="utf-8"><body>${links}</body></html>`,'text/html;charset=utf-8')};
   // ─── بکاپ کامل: دانلود ZIP شامل تمام بخش‌ها و فایل‌های رسانه‌ای ───
@@ -370,8 +370,8 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
   const pendingList=subs.filter((x:any)=>x.unread||x.isNew||(x.type==='course'&&(x.orderStatus||'جدید')==='جدید')||(x.type==='consultation'&&(x.consultationStatus||'مشاوره اولیه')==='مشاوره اولیه'));
   const activity=useMemo(()=>[...subs].sort((a:any,b:any)=>subTime(b)-subTime(a)).slice(0,6).map((x:any)=>({id:x.id,t:subTime(x),tone:x.course?'t-info':'t-ok',txt:`${x.course?'ثبت‌نام دوره':'فرم مشاوره'} — ${x.pName||x.fullPhone||'بدون نام'}`})),[subs]);
   // اصلاح ۱۷+۳۵: تب‌های ناوبری با آیکون‌ها و دسته‌بندی
-  const navIcon=(id:string)=>{const p={size:18,color:T.acc};if(id==='courses'||id==='featured'||id==='tagged')return <CoursesIcon {...p}/>;if(id==='content'||id==='highlights'||id==='images')return <EducationIcon {...p}/>;if(id==='contacts')return <ContactIcon {...p}/>;if(id==='licenses')return <LicensesIcon {...p}/>;if(id==='data'||id==='analytics')return <SearchIcon {...p}/>;if(id==='userQuestions'||id==='trust'||id==='trustbox')return <ChatIcon {...p}/>;if(id==='products')return <ProductsIcon {...p}/>;if(id==='settings'||id==='security'||id==='shipping'||id==='trash')return <BoxIcon {...p}/>;return <AdminIcon {...p}/>};
-  const navTabs:[string,React.ReactNode,string][]=[['dashboard',navIcon('dashboard'),'داشبورد'],['data',navIcon('data'),'داده‌ها'],['userQuestions',navIcon('userQuestions'),'سوالات مخاطبین'],['assistant',navIcon('userQuestions'),'دستیار'],['settings',navIcon('settings'),'تنظیمات'],['content',navIcon('content'),'مدیریت محتوا'],['contacts',navIcon('contacts'),'ارتباط'],['courses',navIcon('courses'),'دوره‌ها'],['featured',navIcon('featured'),'دوره‌های ویژه'],['tagged',navIcon('tagged'),'دوره‌های تگ‌دار'],['trust',navIcon('trust'),'جملات موفقیت'],['trustbox',navIcon('trustbox'),'جملات اعتمادساز'],['shipping',navIcon('shipping'),'ارسال و بانک'],['analytics',navIcon('analytics'),'آمار بازدید'],['security',navIcon('security'),'امنیت'],['trash',navIcon('trash'),'سطل آشغال'],['products',navIcon('products'),'محصولات'],['highlights',navIcon('highlights'),'هایلایت'],['licenses',navIcon('licenses'),'مجوزها'],['services',navIcon('services'),'خدمات'],['images',navIcon('images'),'تصاویر'],['design',navIcon('settings'),'مدیریت دیزاین']];
+  const navIcon=(id:string)=>{const p={size:18,color:T.acc};if(id==='courses'||id==='featured'||id==='tagged')return <CoursesIcon {...p}/>;if(id==='content'||id==='highlights'||id==='images')return <EducationIcon {...p}/>;if(id==='contacts')return <ContactIcon {...p}/>;if(id==='licenses')return <LicensesIcon {...p}/>;if(id==='data'||id==='analytics')return <SearchIcon {...p}/>;if(id==='userQuestions'||id==='assistant'||id==='trust'||id==='trustbox')return <ChatIcon {...p}/>;if(id==='products')return <ProductsIcon {...p}/>;if(id==='settings'||id==='security'||id==='shipping'||id==='trash')return <BoxIcon {...p}/>;return <AdminIcon {...p}/>};
+  const navTabs:[string,React.ReactNode,string][]=[['dashboard',navIcon('dashboard'),'داشبورد'],['data',navIcon('data'),'داده‌ها'],['userQuestions',navIcon('userQuestions'),'سوالات مخاطبین'],['assistant',navIcon('assistant'),'دستیار'],['settings',navIcon('settings'),'تنظیمات'],['content',navIcon('content'),'مدیریت محتوا'],['contacts',navIcon('contacts'),'ارتباط'],['courses',navIcon('courses'),'دوره‌ها'],['featured',navIcon('featured'),'دوره‌های ویژه'],['tagged',navIcon('tagged'),'دوره‌های تگ‌دار'],['trust',navIcon('trust'),'جملات موفقیت'],['trustbox',navIcon('trustbox'),'جملات اعتمادساز'],['shipping',navIcon('shipping'),'ارسال و بانک'],['analytics',navIcon('analytics'),'آمار بازدید'],['security',navIcon('security'),'امنیت'],['trash',navIcon('trash'),'سطل آشغال'],['products',navIcon('products'),'محصولات'],['highlights',navIcon('highlights'),'هایلایت'],['licenses',navIcon('licenses'),'مجوزها'],['services',navIcon('services'),'خدمات'],['images',navIcon('images'),'تصاویر'],['design',navIcon('settings'),'مدیریت دیزاین']];
   const activeNavLabel=navTabs.find(x=>x[0]===aTab)?.[2]||'داشبورد';
  // Stage 7A: گروه‌بندی منوی سایدبار — همه تب‌های موجود حفظ شده‌اند و هیچ route جدیدی ساخته نشده است.
  const navGroups:AdminNavGroup[]=[
@@ -379,7 +379,7 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
   {id:'data',label:'فرم‌ها و سفارشات',icon:<ZkUsersIcon size={17}/>},
   {id:'userQuestions',label:'سوالات مخاطبین (سوال دارم)',icon:<ZkChatIcon size={17}/>},
   {id:'assistant',label:'دستیار',icon:<ZkChatIcon size={17}/>},
-  {id:'reviews',label:'نظرات کاربران',icon:<ZkStarIcon size={17}/>},
+   {id:'reviews',label:'نظرات کاربران',icon:<ZkStarIcon size={17}/>},
   {id:'consultants',label:'مشاورین و لینک‌های ارجاع',icon:<ZkUsersIcon size={17}/>},
   {id:'courses',label:'دوره‌ها',icon:<ZkCoursesIcon size={17}/>,items:[{id:'featured',label:'دوره‌های ویژه'},{id:'tagged',label:'دوره‌های تگ‌دار'}]},
   {id:'products',label:'محصولات',icon:<ZkProductsIcon size={17}/>,items:[{id:'services',label:'خدمات'}]},
@@ -425,13 +425,13 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
     .zkad-storage-banner{padding:12px 14px}
   }
   `}</style><AdminLayout lang={lang} groups={navGroups} active={aTab} onNavigate={(id:string)=>{setATab(id);setEditCfg(JSON.parse(JSON.stringify(cfg)))}} onLogout={onLogout} onHome={goHome} version="1.0.0">
-  <div className="admin-main"><div style={{maxWidth:1100,margin:'0 auto'}}>{aTab!=='dashboard'&&aTab!=='data'&&<div className="zkad-page-head"><div><h2>{(navGroups.find(g=>g.id===aTab||(g.items||[]).some(i=>i.id===aTab))||{}).label||''}</h2><p>{({assistant:'آموزش و مدیریت دانش عمومی و راهنمای پنل فرزند من',userQuestions:'مدیریت سوالات و درخواست‌های تماس مخاطبین (بخش سوال دارم) همراه با شماره تماس، ویس و متن سوال',settings:'پیکربندی فرم‌ها، فیلدها و رفتار سایت',content:'متن‌های صفحات، سوالات متداول و ترجمه‌ها',consultants:'مدیریت مشاورین، لینک‌های ارجاع اختصاصی، اطلاعات بانکی/کیف پول و نمایش در صفحه درباره ما و صفحه هوم',contacts:'شماره‌ها، شبکه‌های اجتماعی و راه‌های ارتباطی',courses:'تب‌ها، دوره‌ها و واحد پول',featured:'بخش دوره‌های ویژه صفحه اصلی',tagged:'دوره‌های ویژه با تگ',trustbox:'جملات اعتمادساز باکس صفحه اصلی',trust:'جملات صفحات موفقیت',shipping:'روش‌های ارسال، حساب‌های بانکی و درگاه‌ها',analytics:'بازدید صفحات به تفکیک زمان',security:'شماره تماس و رمز عبور پنل',products:'محصولات فروشگاه',highlights:'هایلایت استوری‌ها',licenses:'مجوزها و گواهی‌ها',services:'خدمات و کاروسل صفحه اصلی',images:'تصاویر صفحه اصلی و فرم مشاوره',design:'دیزاین هر بخش از سایت',themes:'تم‌های پیش‌فرض و overrides',trash:'موارد حذف‌شده قابل بازیابی'} as any)[aTab]||''}</p></div></div>}
+  <div className="admin-main"><div style={{maxWidth:1100,margin:'0 auto'}}>{aTab!=='dashboard'&&aTab!=='data'&&<div className="zkad-page-head"><div><h2>{(navGroups.find(g=>g.id===aTab||(g.items||[]).some(i=>i.id===aTab))||{}).label||''}</h2><p>{({assistant:'آموزش، آزمایش و مدیریت پاسخ‌های دستیار راهنمای زینالیکید',userQuestions:'مدیریت سوالات و درخواست‌های تماس مخاطبین (بخش سوال دارم) همراه با شماره تماس، ویس و متن سوال',settings:'پیکربندی فرم‌ها، فیلدها و رفتار سایت',content:'متن‌های صفحات، سوالات متداول و ترجمه‌ها',consultants:'مدیریت مشاورین، لینک‌های ارجاع اختصاصی، اطلاعات بانکی/کیف پول و نمایش در صفحه درباره ما و صفحه هوم',contacts:'شماره‌ها، شبکه‌های اجتماعی و راه‌های ارتباطی',courses:'تب‌ها، دوره‌ها و واحد پول',featured:'بخش دوره‌های ویژه صفحه اصلی',tagged:'دوره‌های ویژه با تگ',trustbox:'جملات اعتمادساز باکس صفحه اصلی',trust:'جملات صفحات موفقیت',shipping:'روش‌های ارسال، حساب‌های بانکی و درگاه‌ها',analytics:'بازدید صفحات به تفکیک زمان',security:'شماره تماس و رمز عبور پنل',products:'محصولات فروشگاه',highlights:'هایلایت استوری‌ها',licenses:'مجوزها و گواهی‌ها',services:'خدمات و کاروسل صفحه اصلی',images:'تصاویر صفحه اصلی و فرم مشاوره',design:'دیزاین هر بخش از سایت',themes:'تم‌های پیش‌فرض و overrides',trash:'موارد حذف‌شده قابل بازیابی'} as any)[aTab]||''}</p></div></div>}
   {aTab==='dashboard'&&<><div className="zkad-page-head"><div><h2>داشبورد</h2><p>نمای کلی عملکرد و درخواست‌های امروز</p></div><button type="button" className="zkad-head-btn" onClick={goHome}><ZkHomeIcon size={14}/> بازدید از سایت</button></div>
 
 {/* بنر هوشمند پایش و هشدار ظرفیت دیتابیس و استوریج (هایلایت قرمز بولد در صورت کمبود فضا) */}
 <div className="zkad-storage-banner" style={{
-  background: isStorageWarning ? '#fef2f2' : 'var(--zkad-card)',
-  border: `2px solid ${isStorageWarning ? '#dc2626' : 'var(--zkad-brd)'}`,
+  background: isStorageWarning ? 'var(--zkad-tag-err-bg)' : 'var(--zkad-card)',
+  border: `2px solid ${isStorageWarning ? 'var(--zkad-err)' : 'var(--zkad-brd)'}`,
   borderRadius: 16,
   padding: '14px 18px',
   marginBottom: 16,
@@ -442,12 +442,12 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
     <div style={{display:'flex', alignItems:'center', gap:8, minWidth:0, flex:'1 1 200px'}}>
       <span style={{fontSize:20}}>{isStorageWarning ? '⚠️' : '💾'}</span>
       <div>
-        <h3 style={{margin:0, fontSize:14.5, fontWeight:800, color: isStorageWarning ? '#b91c1c' : 'var(--zkad-ttl)'}}>
+        <h3 style={{margin:0, fontSize:14.5, fontWeight:800, color: isStorageWarning ? 'var(--zkad-tag-err-tx)' : 'var(--zkad-ttl)'}}>
           {isStorageWarning
             ? `هشدار فوری ظرفیت ذخیره‌سازی: تنها حدود ${faNum(remainingPercent)}٪ از فضای دیتابیس و استوریج باقی مانده است!`
             : `پایش هوشمند ظرفیت دیتابیس و فضای ذخیره‌سازی (استوریج): ${faNum(remainingPercent)}٪ در دسترس`}
         </h3>
-        <p style={{margin:'2px 0 0', fontSize:11.5, color: isStorageWarning ? '#991b1b' : 'var(--zkad-mut)'}}>
+        <p style={{margin:'2px 0 0', fontSize:11.5, color: isStorageWarning ? 'var(--zkad-tag-err-tx)' : 'var(--zkad-mut)'}}>
           {isStorageWarning
             ? 'فضای ذخیره‌سازی شما رو به اتمام است. جهت جلوگیری از اختلال در ثبت فرم‌ها و آپلود تصاویر، فیش‌های قدیمی را پاک‌سازی یا فضا را آزاد نمایید.'
             : 'پایش مستمر حجم عکس‌های زبان، فیش‌های واریزی، فایل‌های صوتی و رکوردهای پایگاه داده.'}
@@ -458,7 +458,7 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
       <button
         type="button"
         className="zkad-toolbtn"
-        style={{background:'#fee2e2', color:'#b91c1c', borderColor:'#fca5a5', fontWeight:800}}
+        style={{background:'var(--zkad-tag-err-bg)', color:'var(--zkad-tag-err-tx)', borderColor:'var(--zkad-err)', fontWeight:800}}
         onClick={async () => {
           // Phase 3: use admin-api client with sessionToken + dryRun first
           try {
@@ -488,7 +488,7 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
       <button type="button" className="zkad-toolbtn" onClick={exportExcel}>
         📥 بک‌آپ Excel
       </button>
-      <button type="button" className="zkad-toolbtn" style={{background:'#e0f2fe', color:'#0369a1', borderColor:'#7dd3fc', fontWeight:800}} onClick={downloadFullBackup}>
+      <button type="button" className="zkad-toolbtn" style={{background:'var(--zkad-tag-info-bg)', color:'var(--zkad-tag-info-tx)', borderColor:'var(--zkad-info)', fontWeight:800}} onClick={downloadFullBackup}>
         🗜️ بک‌آپ کامل (ZIP)
       </button>
     </div>
@@ -519,7 +519,7 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
     <span style={{background:'var(--zkad-badge)', padding:'3px 8px', borderRadius:6, border:'1px solid var(--zkad-brd)'}}>
       📄 کل رکوردهای ثبت‌شده: <b>{faNum(subs.length)} مورد</b>
     </span>
-    <span style={{background: isStorageWarning ? '#fee2e2' : 'var(--zkad-badge)', color: isStorageWarning ? '#b91c1c' : 'inherit', padding:'3px 8px', borderRadius:6, border:`1px solid ${isStorageWarning ? '#fca5a5' : 'var(--zkad-brd)'}`, fontWeight:800}}>
+    <span style={{background: isStorageWarning ? 'var(--zkad-tag-err-bg)' : 'var(--zkad-badge)', color: isStorageWarning ? 'var(--zkad-tag-err-tx)' : 'inherit', padding:'3px 8px', borderRadius:6, border:`1px solid ${isStorageWarning ? 'var(--zkad-err)' : 'var(--zkad-brd)'}`, fontWeight:800}}>
       💾 حجم تخمینی: <b>{faNum(estimatedStorageMB)} MB / {faNum(storageCapacityLimitMB)} MB ({faNum(usedPercent)}%)</b>
     </span>
   </div>
@@ -1204,7 +1204,7 @@ function ThemeManagerEditor(){
   </>;
  }
 
- // --- نصب پنل مدیریت به شکل اپلیکیشن (مثل اپ اصلی — با دکمهٔ واقعی نصب) ---
+ // --- نصب پنل مدیریت به شکل اپلیکیشن ---
  function AdminInstallControl(){
   const [prompt,setPrompt]=useState<any>(null); const [done,setDone]=useState(false); const [installing,setInstalling]=useState(false); const [showIosGuide,setShowIosGuide]=useState(false);
   useEffect(()=>{const h=(e:any)=>{e.preventDefault();setPrompt(e)};const installed=()=>setDone(true);window.addEventListener('beforeinstallprompt',h);window.addEventListener('appinstalled',installed);return()=>{window.removeEventListener('beforeinstallprompt',h);window.removeEventListener('appinstalled',installed)}},[]);
@@ -1301,7 +1301,7 @@ function ThemeManagerEditor(){
       <label style={{display:'block'}}><span style={{fontSize:12,fontWeight:700,color:T.txt,display:'block',marginBottom:4}}>رمز عبور جدید</span><input ref={credNewPwdRef} type="password" style={S.inp} placeholder="حداقل ۱۲ کاراکتر"/></label>
       <label style={{display:'block'}}><span style={{fontSize:12,fontWeight:700,color:T.txt,display:'block',marginBottom:4}}>تکرار رمز جدید</span><input ref={credRepPwdRef} type="password" style={S.inp} placeholder="تکرار رمز جدید"/></label>
      </div>
-     <div><button type="button" style={{...AdminBtn(),background:T.acc||'#0F766E',color:'#fff',border:0,fontWeight:800}} disabled={credBusy} onClick={doChangeCreds}>{credBusy?'در حال ذخیره…':'ذخیره تغییرات ورود'}</button></div>
+     <div><button type="button" style={{...AdminBtn(),background:T.acc||'#0F766E',color:'var(--zkad-acc-contrast, #fff)',border:0,fontWeight:800}} disabled={credBusy} onClick={doChangeCreds}>{credBusy?'در حال ذخیره…':'ذخیره تغییرات ورود'}</button></div>
     </div>
    </div>
    <div style={{marginTop:14,padding:14,borderRadius:14,background:T.soft,border:`1px solid ${T.brd}`}}>
@@ -1322,8 +1322,8 @@ function ThemeManagerEditor(){
         <div style={{minWidth:0,flex:1}}>
          <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
           <span style={{fontSize:12.5,fontWeight:800,color:T.txt,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'100%'}}>{d.device_name||'دستگاه ناشناخته'}</span>
-          {isCurrent&&<span style={{fontSize:10,fontWeight:800,background:T.acc||'#0F766E',color:'#fff',borderRadius:6,padding:'1px 7px'}}>این دستگاه</span>}
-          {d.biometric_enabled&&<span style={{fontSize:10,fontWeight:800,background:'#ede9fe',color:'#6d28d9',borderRadius:6,padding:'1px 7px'}}>بیومتریک</span>}
+          {isCurrent&&<span style={{fontSize:10,fontWeight:800,background:T.acc||'#0F766E',color:'var(--zkad-acc-contrast, #fff)',borderRadius:6,padding:'1px 7px'}}>این دستگاه</span>}
+          {d.biometric_enabled&&<span style={{fontSize:10,fontWeight:800,background:'var(--zkad-placement-course-soft)',color:'var(--zkad-placement-course)',borderRadius:6,padding:'1px 7px'}}>بیومتریک</span>}
          </div>
          <div style={{fontSize:10.5,color:T.mut,marginTop:3}}>{d.browser||''}{d.platform?` • ${d.platform}`:''}{d.last_seen_at?` • آخرین فعالیت: ${new Date(d.last_seen_at).toLocaleDateString('fa-IR')} ${new Date(d.last_seen_at).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}`:''}</div>
         </div>
