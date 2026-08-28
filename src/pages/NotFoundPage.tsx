@@ -1,52 +1,137 @@
-import {Helmet} from 'react-helmet-async';
 import type {CSSProperties,ReactNode} from 'react';
+import {Helmet} from 'react-helmet-async';
+import {Link} from 'react-router-dom';
 import {useAppContext} from '../app/AppContext';
-import {ConsultIcon,CoursesIcon,VideoIcon,LicensesIcon,EducationIcon,ContactIcon,HomeIcon} from '../components/Icons';
 import './not-found-page.css';
 
-type Shortcut={title:string;aria:string;icon:ReactNode;tone:string;run:()=>void};
+type Shortcut={
+ title:string;
+ aria:string;
+ href:string;
+ tone:string;
+ icon:ReactNode;
+};
 type NotFoundVars=CSSProperties&Record<`--nf-${string}`,string>;
 
-function ArrowBackIcon(){return <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>}
-function MemphisArtwork(){return <div className="zk-nf-art" aria-hidden="true">
- <svg className="zk-nf-decor" viewBox="0 0 760 270" preserveAspectRatio="xMidYMid meet">
-  <g className="zk-nf-dot-grid" fill="var(--nf-pop-2)">{Array.from({length:20},(_,index)=><circle key={index} cx={66+(index%5)*13} cy={155+Math.floor(index/5)*13} r="2.6"/>)}</g>
-  <path className="zk-nf-squiggle" d="M78 70c14-24 28 24 42 0s28 24 42 0 28 24 42 0" fill="none" stroke="var(--nf-pop-3)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
-  <g className="zk-nf-plane-wrap">
-   <path className="zk-nf-flight" d="M550 122c39-55 103-48 115-4 9 33-21 51-50 35-20-11-16-39 9-53" fill="none" stroke="var(--nf-pop-2)" strokeWidth="3" strokeDasharray="7 9" strokeLinecap="round"/>
-   <g className="zk-nf-plane" transform="translate(624 69) rotate(-12)"><path d="M0 28 70 0 45 48 27 31Z" fill="var(--nf-pop-1)"/><path d="m27 31 43-31-35 37-8 22Z" fill="var(--nf-pop-2)"/><path d="m27 31 18 17-10-11L70 0Z" fill="var(--nf-surface)" opacity=".72"/></g>
-  </g>
-  <g className="zk-nf-striped-ball" transform="translate(104 205) rotate(-14)"><circle r="34" fill="var(--nf-pop-5)"/><path d="M-31-12C-12-24 12-24 31-12M-34 2C-12-10 12-10 34 2M-29 17C-9 6 12 6 29 17" fill="none" stroke="var(--nf-surface)" strokeWidth="8" opacity=".66"/></g>
-  <path className="zk-nf-triangle" d="m674 205 22 38-44-1Z" fill="var(--nf-pop-4)"/>
-  <circle className="zk-nf-small-ring" cx="579" cy="219" r="13" fill="none" stroke="var(--nf-pop-1)" strokeWidth="6"/>
- </svg>
- <div className="zk-nf-code" dir="ltr"><span className="zk-nf-four">4</span><span className="zk-nf-zero"><span/></span><span className="zk-nf-four">4</span></div>
- </div>}
+function Memphis404Artwork(){
+ return <div className="zk-nf-art" role="img" aria-label="خطای ۴۰۴">
+  <svg viewBox="0 0 400 170" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+   <defs>
+    <filter id="neu-4-shadow" x="-20%" y="-20%" width="140%" height="140%">
+     <feDropShadow dx="4" dy="6" stdDeviation="5" floodColor="var(--nf-art-shadow)" floodOpacity="0.75"/>
+     <feDropShadow dx="-3" dy="-3" stdDeviation="3" floodColor="var(--nf-art-highlight)" floodOpacity="0.95"/>
+    </filter>
+    <filter id="donut-shadow" x="-20%" y="-20%" width="140%" height="140%">
+     <feDropShadow dx="3" dy="7" stdDeviation="6" floodColor="var(--nf-art-shadow)" floodOpacity="0.6"/>
+    </filter>
+    <mask id="donut-hole-mask">
+     <rect width="400" height="170" fill="white"/>
+     <circle cx="200" cy="85" r="26" fill="black"/>
+    </mask>
+   </defs>
+
+   <path d="M 40 38 Q 50 25, 62 38 T 84 38 T 106 38" fill="none" stroke="var(--nf-yellow)" strokeWidth="4.5" strokeLinecap="round"/>
+   <g transform="translate(305, 22) rotate(12) scale(0.85)">
+    <path d="M 0 15 L 42 0 L 24 32 L 18 18 Z" fill="var(--nf-warm)"/>
+    <path d="M 18 18 L 42 0 L 24 32 Z" fill="var(--nf-accent)"/>
+    <path d="M -25 30 Q -10 14, 0 16" fill="none" stroke="var(--nf-blue)" strokeWidth="2.2" strokeDasharray="3.5 3.5" strokeLinecap="round"/>
+   </g>
+   <g transform="translate(48, 105)">
+    <circle cx="18" cy="18" r="16" fill="var(--nf-violet)"/>
+    <path d="M 3 13 Q 18 17 33 13" stroke="var(--nf-art-highlight)" strokeWidth="2.5" fill="none"/>
+    <path d="M 3 22 Q 18 26 33 22" stroke="var(--nf-art-highlight)" strokeWidth="2.5" fill="none"/>
+   </g>
+   <polygon points="325,120 345,150 305,150" fill="var(--nf-green)"/>
+   <circle cx="346" cy="112" r="3.5" fill="var(--nf-warm)"/>
+
+   <text x="92" y="122" fontFamily="sans-serif" fontSize="115" fontWeight="900" fill="var(--nf-four)" stroke="var(--nf-four-stroke)" strokeWidth="2.5" filter="url(#neu-4-shadow)" textAnchor="middle">4</text>
+
+   <g mask="url(#donut-hole-mask)" filter="url(#donut-shadow)">
+    <path d="M 200 85 L 145 85 A 55 55 0 0 1 200 30 Z" fill="var(--nf-accent)"/>
+    <path d="M 200 85 L 200 30 A 55 55 0 0 1 255 85 Z" fill="var(--nf-orange)"/>
+    <path d="M 200 85 L 255 85 A 55 55 0 0 1 200 140 Z" fill="var(--nf-yellow)"/>
+    <path d="M 200 85 L 200 140 A 55 55 0 0 1 145 85 Z" fill="var(--nf-warm)"/>
+    <circle cx="168" cy="112" r="3" fill="var(--nf-art-highlight)"/>
+    <circle cx="184" cy="126" r="2.5" fill="var(--nf-art-highlight)"/>
+    <line x1="218" y1="46" x2="234" y2="62" stroke="var(--nf-art-highlight)" strokeWidth="2.8" strokeLinecap="round" opacity="0.85"/>
+    <line x1="228" y1="62" x2="244" y2="78" stroke="var(--nf-art-highlight)" strokeWidth="2.8" strokeLinecap="round" opacity="0.85"/>
+    <circle cx="174" cy="60" r="2.8" fill="var(--nf-green-soft)"/>
+   </g>
+   <circle cx="200" cy="85" r="26" fill="none" stroke="var(--nf-donut-inner)" strokeWidth="2"/>
+   <circle cx="200" cy="85" r="55" fill="none" stroke="var(--nf-donut-outer)" strokeWidth="2"/>
+
+   <text x="308" y="122" fontFamily="sans-serif" fontSize="115" fontWeight="900" fill="var(--nf-four)" stroke="var(--nf-four-stroke)" strokeWidth="2.5" filter="url(#neu-4-shadow)" textAnchor="middle">4</text>
+  </svg>
+ </div>;
+}
+
+const shortcuts:Shortcut[]=[
+ {title:'درخواست مشاوره',aria:'رفتن به درخواست مشاوره',href:'/consultation',tone:'pink',icon:<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>},
+ {title:'معرفی دوره‌ها',aria:'رفتن به معرفی دوره‌ها',href:'/courses',tone:'blue',icon:<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>},
+ {title:'تجربه والدین',aria:'رفتن به تجربه والدین',href:'/experience',tone:'yellow',icon:<svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>},
+ {title:'مجوزها و نمادها',aria:'رفتن به مجوزها و نمادها',href:'/licenses',tone:'violet',icon:<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>},
+ {title:'مقالات آموزشی',aria:'رفتن به مقالات آموزشی',href:'/education',tone:'green',icon:<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>},
+ {title:'ارتباط با ما و پشتیبانی',aria:'رفتن به ارتباط با ما و پشتیبانی',href:'/contact',tone:'orange',icon:<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>},
+];
+
+function HomeIcon(){
+ return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>;
+}
 
 export default function NotFoundPage(){
- const {cfg,T,lang,setView,requestConsult}=useAppContext(),en=lang==='en';
- const brand=String(cfg?.browserTitle||cfg?.siteTitle||(en?'Website':'سایت')).replace(/[“”"]/g,'').trim();
- const dark=['dark','ocean','navystack','navystack-dark'].includes(String(T.id||''));
+ const {T}=useAppContext();
+ const themeId=String(T.id||'wellness');
+ const dark=['dark','ocean','navystack','navystack-dark'].includes(themeId);
+ const surface=String(T.pop||T.card||(dark?'#111827':'#ffffff'));
+ const text=String(T.txt||(dark?'#f1f5f9':'#312E55'));
+ const accent=String(T.acc||'#7A12D4');
  const vars:NotFoundVars={
-  '--nf-page-bg':String(T.bg||'#f6f3fb'),'--nf-surface':String(T.card||'#fff'),'--nf-soft':String(T.soft||'#f1eafb'),'--nf-text':String(T.txt||'#251b32'),'--nf-muted':String(T.mut||'#74677f'),'--nf-accent':String(T.acc||'#7c3aed'),'--nf-title':String(T.ttl||T.acc||'#7c3aed'),'--nf-border':String(T.brd||'rgba(124,58,237,.14)'),'--nf-gradient':String(T.grad||'linear-gradient(135deg,#7c3aed,#ec4899)'),'--nf-neu-out':String(T.neuOut||'6px 6px 16px rgba(80,60,110,.14),-6px -6px 16px rgba(255,255,255,.85)'),'--nf-neu-in':String(T.neuIn||'inset 4px 4px 8px rgba(80,60,110,.13),inset -4px -4px 8px rgba(255,255,255,.8)'),'--nf-shadow-hi':dark?'rgba(255,255,255,.055)':'rgba(255,255,255,.9)','--nf-shadow-lo':dark?'rgba(0,0,0,.46)':'color-mix(in srgb, var(--nf-accent) 16%, transparent)','--nf-pop-1':dark?'#f472b6':'color-mix(in srgb, var(--nf-accent) 38%, #f472b6)','--nf-pop-2':String(T.secondary||T.primaryHover||'#38bdf8'),'--nf-pop-3':String(T.tertiary||T.warn||'#facc15'),'--nf-pop-4':String(T.ok||T.success||'#34d399'),'--nf-pop-5':String(T.purple||T.brandPurple||T.acc||'#8b5cf6')
+  '--nf-page-bg':String(T.bg||(dark?'#0f1722':'#faf5ff')),
+  '--nf-surface':surface,
+  '--nf-control':String(T.card||surface),
+  '--nf-text':text,
+  '--nf-muted':String(T.mut||(dark?'#94a3b8':'#64748b')),
+  '--nf-border':String(T.brd||(dark?'#334155':'#f1f5f9')),
+  '--nf-accent':accent,
+  '--nf-warm':String(T.err||'#EE776E'),
+  '--nf-blue':String(T.secondary||T.primaryHover||'#0284C7'),
+  '--nf-yellow':String(T.tertiary||'#FACC15'),
+  '--nf-green':String(T.success||T.green||T.ok||'#059669'),
+  '--nf-green-soft':dark?'#6ee7b7':'#A7F3D0',
+  '--nf-violet':String(T.purple||T.brandPurple||accent),
+  '--nf-orange':String(T.warn||'#EA580C'),
+  '--nf-gradient':String(T.grad||'linear-gradient(90deg,#6b21a8 0%,#db2777 100%)'),
+  '--nf-card-shadow':dark?'0 20px 28px -6px rgba(0,0,0,.48),0 8px 12px -7px rgba(0,0,0,.38)':'0 20px 25px -5px color-mix(in srgb,var(--nf-accent) 7%,transparent),0 8px 10px -6px rgba(15,23,42,.06)',
+  '--nf-control-shadow':dark?'0 1px 2px rgba(0,0,0,.34),0 4px 12px rgba(0,0,0,.22)':'0 1px 2px rgba(15,23,42,.07),0 4px 10px rgba(15,23,42,.035)',
+  '--nf-art-shadow':dark?'#020617':'#cbd5e1',
+  '--nf-art-highlight':dark?'#cbd5e1':'#ffffff',
+  '--nf-four':dark?`color-mix(in srgb,${surface} 76%,${text})`:'#F8FAFC',
+  '--nf-four-stroke':String(T.brd||(dark?'#475569':'#CBD5E1')),
+  '--nf-donut-inner':dark?'rgba(255,255,255,.24)':'rgba(0,0,0,.18)',
+  '--nf-donut-outer':dark?'rgba(255,255,255,.28)':'rgba(255,255,255,.45)',
  };
- const iconColor='currentColor';
- const shortcuts:Shortcut[]=[
-  {title:en?'Consultation':'درخواست مشاوره',aria:en?'Request a consultation':'رفتن به ثبت درخواست مشاوره',icon:<ConsultIcon size={20} color={iconColor}/>,tone:'pink',run:()=>requestConsult?.()},
-  {title:en?'Courses':'معرفی دوره‌ها',aria:en?'View courses':'رفتن به معرفی دوره‌ها',icon:<CoursesIcon size={20} color={iconColor}/>,tone:'blue',run:()=>setView('courses')},
-  {title:en?"Parents' stories":'تجربه والدین',aria:en?"View parents' stories":'رفتن به تجربه والدین',icon:<VideoIcon size={20} color={iconColor}/>,tone:'yellow',run:()=>setView('experience')},
-  {title:en?'Licenses and badges':'مجوزها و نمادها',aria:en?'View licenses and trust badges':'رفتن به مجوزها و نمادها',icon:<LicensesIcon size={20} color={iconColor}/>,tone:'violet',run:()=>setView('licenses')},
-  {title:en?'Educational articles':'مقالات آموزشی',aria:en?'View educational articles':'رفتن به مقالات آموزشی',icon:<EducationIcon size={20} color={iconColor}/>,tone:'green',run:()=>setView('education')},
-  {title:en?'Contact and support':'ارتباط با ما و پشتیبانی',aria:en?'Contact support':'رفتن به ارتباط با ما و پشتیبانی',icon:<ContactIcon size={20} color={iconColor}/>,tone:'orange',run:()=>setView('contact')},
- ];
- return <main className="zk-nf-page" style={vars} aria-labelledby="not-found-title" dir={en?'ltr':'rtl'}>
-  <Helmet><title>{en?`Page not found | ${brand}`:`صفحه پیدا نشد | ${brand}`}</title><meta name="robots" content="noindex, nofollow"/></Helmet>
-  <section className="zk-nf-shell">
-   <header className="zk-nf-top"><div className="zk-nf-brand"><span className="zk-nf-brand-mark"/><span>{brand}</span></div><button className="zk-nf-home-icon" type="button" onClick={()=>setView('home')} aria-label={en?'Back to home':'بازگشت به صفحه اصلی'}><HomeIcon size={19} color="currentColor"/></button></header>
-   <MemphisArtwork/>
-   <div className="zk-nf-copy"><h1 id="not-found-title">{en?<>Well, where are we<span>!</span></>:<>عه<span>!</span> اینجا کجاست؟</>}</h1><p>{en?<>The page you were looking for could not be found.<br/>Choose the right path from the options below.</>:<>صفحه‌ای که دنبالش بودی، پیدا نشد. مسیر درست را از بین گزینه‌های زیر پیدا کن!</>}</p></div>
-   <nav className="zk-nf-shortcuts" aria-label={en?'Quick access':'دسترسی سریع'}>{shortcuts.map(item=><button key={item.title} className={`zk-nf-shortcut zk-nf-tone-${item.tone}`} type="button" onClick={item.run} aria-label={item.aria}><span className="zk-nf-shortcut-icon">{item.icon}</span><strong>{item.title}</strong><ArrowBackIcon/></button>)}</nav>
-   <button className="zk-nf-primary" type="button" onClick={()=>setView('home')}><HomeIcon size={20} color="currentColor"/><strong>{en?'Back to home':'بازگشت به صفحه اصلی'}</strong><ArrowBackIcon/></button>
-  </section>
- </main>;
+ return <div className="zk-nf-page" dir="rtl" style={vars} data-nf-theme={themeId}>
+  <Helmet><title>صفحه پیدا نشد | فرزند من</title><meta name="robots" content="noindex, nofollow"/></Helmet>
+  <main className="zk-nf-shell" aria-labelledby="not-found-title">
+   <header className="zk-nf-top">
+    <Link className="zk-nf-home-icon zk-nf-control" to="/" aria-label="خانه"><HomeIcon/></Link>
+    <div className="zk-nf-brand"><span>فرزند من</span><span className="zk-nf-brand-mark" aria-hidden="true"/></div>
+   </header>
+
+   <Memphis404Artwork/>
+
+   <div className="zk-nf-copy">
+    <h1 id="not-found-title" aria-label="عه ! اینجا کجاست؟"><span className="zk-nf-exclaim">عه !</span><span className="zk-nf-question">اینجا کجاست؟</span></h1>
+    <p><span>صفحه‌ای که دنبالش بودی، پیدا نشد.</span><br/><span>مسیر درست را از بین گزینه‌های زیر پیدا کن!</span></p>
+   </div>
+
+   <nav className="zk-nf-shortcuts" aria-label="دسترسی سریع">
+    {shortcuts.map(item=><Link key={item.title} className={`zk-nf-shortcut zk-nf-control zk-nf-tone-${item.tone}`} to={item.href} aria-label={item.aria}><strong>{item.title}</strong><span className="zk-nf-shortcut-icon">{item.icon}</span></Link>)}
+   </nav>
+
+   <footer className="zk-nf-footer">
+    <Link className="zk-nf-primary zk-nf-control" to="/"><strong>بازگشت به صفحه اصلی</strong><HomeIcon/></Link>
+   </footer>
+  </main>
+ </div>;
 }
