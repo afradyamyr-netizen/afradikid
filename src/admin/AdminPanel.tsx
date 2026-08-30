@@ -1126,7 +1126,7 @@ function DesignManagerEditor(){
   {value:'wellness',label:'Wellness (بنفش)'},
   {value:'kidlearn',label:'KidLearn (کودکان)'},
   {value:'blend',label:'Blend (ترکیبی)'},
-  {value:'classic',label:'کلاسیک'},
+  {value:'classic',label:'دیزاین کلاسیک (روشن)'},
  ];
 
  return <><Box title="نمای ظاهری سایت برای کاربران"><p style={{fontSize:12,color:T.mut,lineHeight:1.8,marginTop:0}}>این تنظیم عمومی برای کاربرانی اعمال می‌شود که در مرورگرشان انتخاب شخصی روشن/تاریک ندارند.</p><label style={{...S.lbl}}>حالت نمایش سایت عمومی</label><select style={S.inp} value={publicThemeMode} onChange={e=>setEditCfg({...editCfg,publicThemeMode:e.target.value})}><option value="dark">همیشه دارک</option><option value="light">همیشه وایت</option><option value="auto">سفارشی بر اساس ساعت — دارک از ۲۳ تا ۰۷</option></select><p style={{fontSize:11,color:T.mut,lineHeight:1.7}}>انتخاب شخصی ماه/خورشید در هدر پنل، پنل و صفحات عمومی همین مرورگر را با هم تغییر می‌دهد و بر این تنظیم اولویت دارد.</p></Box>

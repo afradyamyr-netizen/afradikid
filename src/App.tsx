@@ -78,8 +78,15 @@ function App(){
  const designSystem = cfg.designSystem || configDefaultSettings.designSystem;
 
  // Resolve design ids without ever writing compatibility changes back to stored settings.
+ // Fixed: education path respects its own design, form (consultation) follows public design
  const getDesignForPath = (path: string, settings: DynamicRecord): string => {
   if (path.startsWith('/admin') || path.startsWith('/admin-login')) return 'classic';
+  // education page has its own design
+  if (path.startsWith('/education')) {
+    const eduConfigured = normalizeDesignId(settings?.sections?.education?.design, 'kidlearn');
+    return eduConfigured;
+  }
+  // public pages including /form (consultation form) follow public design
   const configured = normalizeDesignId(settings?.sections?.public?.design, 'wellness');
   try {
    const localDesign = localStorage.getItem('zk_design_system');

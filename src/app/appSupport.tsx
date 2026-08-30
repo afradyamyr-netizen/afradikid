@@ -148,7 +148,31 @@ const adminPanelDefaults:Any={
 };
 
 export const TH:Any={
- light:{id:'light',name:'روشن',bg:'#eaf1f7',card:'#fff',brd:'rgba(35,100,165,.16)',acc:'#2564a8',soft:'rgba(35,100,165,.09)',grad:'linear-gradient(135deg,#1a4f8a,#2578c8)',txt:'#162435',mut:'#5a7282',ttl:'#2564a8',inp:'#f4f8fc',sel:'#eaf1f7',pop:'#fff',err:'#B91C1C',ok:'#047857',warn:'#854D0E',badge:'#f0f5fb',hdr:'rgba(234,241,247,.96)',neuOut:'6px 6px 12px rgba(35,100,165,.14),-6px -6px 12px rgba(255,255,255,.75)',neuIn:'inset 3px 3px 7px rgba(35,100,165,.12),inset -3px -3px 7px rgba(255,255,255,.7)',memphis:['#bfdbfe','#93c5fd','#dbeafe'],...classicDefaults},
+ // classic is the former "روشن" light theme — now canonical "دیزاین کلاسیک"
+ classic:{
+  id: 'classic', name: 'دیزاین کلاسیک',
+  bg: '#eaf1f7',
+  card: '#fff',
+  brd: 'rgba(35,100,165,.16)',
+  acc: '#2564a8',
+  soft: 'rgba(35,100,165,.09)',
+  grad: 'linear-gradient(135deg,#1a4f8a,#2578c8)',
+  txt: '#162435',
+  mut: '#5a7282',
+  ttl: '#2564a8',
+  inp: '#f4f8fc',
+  sel: '#eaf1f7',
+  pop: '#fff',
+  err: '#B91C1C',
+  ok: '#047857',
+  warn: '#854D0E',
+  badge: '#f0f5fb',
+  hdr: 'rgba(234,241,247,.96)',
+  neuOut: '6px 6px 12px rgba(35,100,165,.14),-6px -6px 12px rgba(255,255,255,.75)',
+  neuIn: 'inset 3px 3px 7px rgba(35,100,165,.12),inset -3px -3px 7px rgba(255,255,255,.7)',
+  memphis: ['#bfdbfe','#93c5fd','#dbeafe'],
+  ...classicDefaults,
+ },
  wellness:{
   id: 'wellness', name: 'Wellness',
   bg: '#FFFFFF',
@@ -228,36 +252,12 @@ export const TH:Any={
   topbarHeight: 56,
   fontFamily: "'Vazirmatn','Tahoma',Arial,sans-serif",
  },
- classic:{
-  id: 'classic', name: 'کلاسیک',
-  bg: '#eaf1f7',
-  card: '#fff',
-  brd: 'rgba(35,100,165,.16)',
-  acc: '#2564a8',
-  soft: 'rgba(35,100,165,.09)',
-  grad: 'linear-gradient(135deg,#1a4f8a,#2578c8)',
-  txt: '#162435',
-  mut: '#5a7282',
-  ttl: '#2564a8',
-  inp: '#f4f8fc',
-  sel: '#eaf1f7',
-  pop: '#fff',
-  err: '#B91C1C',
-  ok: '#047857',
-  warn: '#854D0E',
-  badge: '#f0f5fb',
-  hdr: 'rgba(234,241,247,.96)',
-  neuOut: '6px 6px 12px rgba(35,100,165,.14),-6px -6px 12px rgba(255,255,255,.75)',
-  neuIn: 'inset 3px 3px 7px rgba(35,100,165,.12),inset -3px -3px 7px rgba(255,255,255,.7)',
-  memphis: ['#bfdbfe','#93c5fd','#dbeafe'],
-  ...classicDefaults,
- },
 
 };
 
-// Add blend after TH is fully defined
+// Add blend after TH is fully defined — fixed: spread classic (light) not removed light, ensure colors apply correctly
 TH.blend = {
-  ...TH.light,
+  ...TH.classic,
   id: 'blend', name: 'ترکیبی',
   bg: '#f7fafb',
   card: '#fff',
@@ -281,6 +281,9 @@ TH.blend = {
   memphis: ['#e7f2fc','#fff0e8','#eaf5f3'],
   ...classicDefaults,
 };
+
+// backward compat: old 'light' theme now maps to classic (روشن -> دیزاین کلاسیک)
+TH.light = { ...TH.classic, id: 'light', name: 'روشن (قدیمی - کلاسیک)' };
 
 Object.assign(TH, {
  'admin-light':{
@@ -368,8 +371,8 @@ Object.assign(TH, {
   memphis: ['#4B5563', '#374151', '#1F2937'],
  },
  'motherly-trust':{
-  ...TH.light,
-  id: 'motherly-trust', name: 'مادرانه-اعتمادساز',
+  ...TH.classic,
+  id: 'motherly-trust', name: 'مادرانه-اعتمادساز (قدیمی)',
   bg: '#f8fbfa',
   card: '#fff',
   brd: '#d9e2ea',
