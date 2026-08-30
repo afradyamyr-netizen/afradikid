@@ -737,6 +737,10 @@ async function listApiKeys(_body: any, origin: string): Promise<Response> {
     .limit(100);
   if (error) {
     console.error("list_api_keys error:", error);
+    // اگر جدول وجود ندارد، آرایه خالی برگردان تا پنل کرش نکند (برای zeynalikid که هنوز migration نشده)
+    if ((error as any).code === '42P01' || String((error as any).message||'').includes('does not exist')) {
+      return ok({ api_keys: [] }, origin);
+    }
     return err("خطا در دریافت لیست کلیدها", origin, 500);
   }
   // Compute status
@@ -780,6 +784,9 @@ async function listPendingApprovals(_body: any, origin: string): Promise<Respons
     .limit(100);
   if (error) {
     console.error("list_pending error:", error);
+    if ((error as any).code === '42P01' || String((error as any).message||'').includes('does not exist')) {
+      return ok({ pending: [] }, origin);
+    }
     return err("خطا در دریافت درخواست‌ها", origin, 500);
   }
   // Join api_keys for display

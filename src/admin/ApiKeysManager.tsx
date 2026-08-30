@@ -77,10 +77,14 @@ export default function ApiKeysManager({ T, S, AdminBtn, Box }: Props) {
     setLoadingKeys(true);
     try {
       const res = await adminListApiKeys();
-      setKeys(res.api_keys);
+      setKeys(res.api_keys || []);
     } catch (e:any) {
-      setMsg(e.message || 'خطا در دریافت کلیدها');
-      setMsgType('err');
+      console.warn('loadKeys failed', e);
+      setKeys([]);
+      if (!String(e.message||'').includes('42P01') && !String(e.message||'').includes('does not exist')) {
+        setMsg(e.message || 'خطا در دریافت کلیدها');
+        setMsgType('err');
+      }
     } finally { setLoadingKeys(false); }
   };
 
@@ -88,10 +92,16 @@ export default function ApiKeysManager({ T, S, AdminBtn, Box }: Props) {
     setLoadingPending(true);
     try {
       const res = await adminListPendingApprovals();
-      setPendings(res.pending);
+      setPendings(res.pending || []);
     } catch (e:any) {
-      setMsg(e.message || 'خطا در دریافت درخواست‌ها');
-      setMsgType('err');
+      console.warn('loadPending failed', e);
+      // اگر جدول وجود ندارد یا خطای 500، آرایه خالی نمایش بده تا پنل کرش نکند
+      setPendings([]);
+      // فقط اگر خطای واقعی غیر از جدول باشد، پیام نشان بده
+      if (!String(e.message||'').includes('42P01') && !String(e.message||'').includes('does not exist')) {
+        setMsg(e.message || 'خطا در دریافت درخواست‌ها');
+        setMsgType('err');
+      }
     } finally { setLoadingPending(false); }
   };
 
@@ -99,10 +109,14 @@ export default function ApiKeysManager({ T, S, AdminBtn, Box }: Props) {
     setLoadingLogs(true);
     try {
       const res = await adminListApiAuditLogs({ limit: 50 });
-      setLogs(res.logs);
+      setLogs(res.logs || []);
     } catch (e:any) {
-      setMsg(e.message || 'خطا در دریافت لاگ‌ها');
-      setMsgType('err');
+      console.warn('loadLogs failed', e);
+      setLogs([]);
+      if (!String(e.message||'').includes('42P01') && !String(e.message||'').includes('does not exist')) {
+        setMsg(e.message || 'خطا در دریافت لاگ‌ها');
+        setMsgType('err');
+      }
     } finally { setLoadingLogs(false); }
   };
 
