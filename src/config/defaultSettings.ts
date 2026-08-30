@@ -398,6 +398,21 @@ export const defaultSettings = {
       },
     },
   },
+
+  // ─── صفحه ورودی سایت (پنل کاربر / پیگیری دوره) ───
+  // entryMode: 'track' = صفحه پیگیری دوره (قدیمی، بدون نیاز به ورود)
+  // entryMode: 'user' = پنل کاربر؛ ثبت دوره و مشاوره فقط پس از ورود/ثبت‌نام
+  entryMode: 'track' as 'track' | 'user',
+  // تنظیمات پنل کاربر (OTP پیامکی، کپچا و محدودیت نام واقعی)
+  userPortal: {
+    // otpMode: 'off' (بدون کد تایید) | 'test' (نمایش کد در حالت تست — تا خرید پنل پیامک) | 'live' (ارسال واقعی از طریق پنل پیامکی)
+    otpMode: 'test' as 'off' | 'test' | 'live',
+    captchaEnabled: false,
+    smsProvider: 'kavenegar' as 'kavenegar' | 'smsir' | 'melipayamak',
+    smsApiKey: '',
+    smsSender: '',
+    minNameWords: 3,
+  },
 } as Record<string, unknown>;
 
 // ─── سیستم مهاجرت داده‌ها (Data Migration) ───
