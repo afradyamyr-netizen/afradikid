@@ -14,9 +14,24 @@ const deviceInfo = () => ({
   user_agent: navigator.userAgent,
 });
 export async function adminSessionAction(action: string, payload: Record<string, unknown> = {}) {
-  const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action, ...payload }) });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data?.message || data?.error || 'خطا در ارتباط با سرویس امنیت');
+  let res: Response;
+  try {
+    res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action, ...payload }) });
+  } catch (e: any) {
+    console.error('[admin-session] network error', e);
+    throw new Error(e?.message?.includes('Failed to fetch') ? 'اتصال به سرور برقرار نشد. VPN را خاموش کنید یا اینترنت را بررسی کنید.' : (e?.message || 'خطا در ارتباط با سرویس امنیت'));
+  }
+  const text = await res.text();
+  let data: any = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    console.error('[admin-session] non-JSON response', res.status, text.slice(0,500));
+    // اگر 502 یا HTML برگشت، خطای واضح‌تری بده
+    if (res.status >= 500) throw new Error(`سرور موقتاً در دسترس نیست (${res.status}). لطفاً ۱ دقیقه بعد دوباره تلاش کنید.`);
+    throw new Error(`خطا در ارتباط با سرویس امنیت (${res.status})`);
+  }
+  if (!res.ok) throw new Error(data?.message || data?.error || `خطا در ارتباط با سرویس امنیت (${res.status})`);
   return data;
 }
 export async function loginAdminSession(phone: string, password: string) {
