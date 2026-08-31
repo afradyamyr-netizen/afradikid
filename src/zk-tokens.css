@@ -11,6 +11,8 @@
   --zk-primary-hover: #134E4B;
   --zk-primary-light: #CCFBF1;
   --zk-accent: #0369A1;
+  /* رنگ متن‌های رنگی — در حالت تاریک روشن‌تر می‌شود تا روی کارت‌های تیره خوانا بماند */
+  --zk-primary-text: var(--zk-primary);
   --zk-accent-light: #E0F2FE;
 
   /* Surfaces */
