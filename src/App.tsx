@@ -459,7 +459,8 @@ const page=<AppRoutes app={app} adminAuthed={adminAuthed} referralReady={referra
  const successView=view==='course-done'||(view==='form'&&consultationComplete);
  const sensitiveFlow=!successView&&['form','child-info','course-shipping','course-payment','payment-verify','course-confirm'].includes(view);
  const showMenu=!glassFullViews.includes(view)&&!sensitiveFlow&&(successView||view==='courses'||(cfg.menuVisibility?.[view]!==undefined?!!cfg.menuVisibility[view]:!noMenuViews.includes(view)));
- const showHeader=view!=='admin'&&!glassFullViews.includes(view);
+ const headerOnFullViews=['admin-login','track']; // پنل کاربر، پیگیری دوره و ورود مدیریت هم هدر صفحات عمومی را دارند
+ const showHeader=view!=='admin'&&(!glassFullViews.includes(view)||headerOnFullViews.includes(view));
  const showAssistant=successView||['home','courses','experience','licenses','education','about','faq','contact','products','privacy'].includes(view);
  // بازطراحی: پس‌زمینه ممفیس تزئینی روی همه صفحات عمومی (به‌جز پنل مدیریت) رندر می‌شود
  // ─── گارد فلش: اگر URL لینک ارجاع دارد و هنوز referral مشخص نشده، صفحهٔ عمومی را نشان نده تا مستقیم صفحهٔ ارجاع بیاید ───
