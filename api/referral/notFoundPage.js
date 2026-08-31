@@ -84,7 +84,7 @@ body{font-family:'Vazirmatn','Tahoma',Arial,sans-serif}
 .nf-art svg{display:block;width:100%;height:auto;max-height:155px}
 .copy{flex:0 0 auto;margin:4px 0;text-align:center}
 .copy h1{margin:0 0 4px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:24px;font-weight:900;line-height:1.5;letter-spacing:-.025em}
-.exclaim{color:#EE776E;font-weight:900}.question{color:#312E55;font-weight:900}
+.exclaim{color:#BE3A31;font-weight:900}.question{color:#312E55;font-weight:900}
 .copy p{margin:0;color:#64748b;font-size:12px;font-weight:500;line-height:1.625}
 .quick{width:100%;flex:0 0 auto;margin:8px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .nf-shortcut{--nf-icon-bg:#f1f5f9;--nf-icon-color:#475569;min-width:0;min-height:48px;padding:6px 12px;border:1px solid #f1f5f9;border-radius:9999px;display:flex;align-items:center;justify-content:space-between;gap:7px;background:#fff;box-shadow:0 1px 2px rgba(15,23,42,.07),0 4px 10px rgba(15,23,42,.035);color:#1e293b;text-align:start;text-decoration:none}
