@@ -380,7 +380,9 @@ serve(async (req) => {
         if (again) user = again;
       }
     }
-
+    if (!user || user.payload?.status !== "active") {
+      return jsonResponse({ error: "شماره تماس یا کد پیگیری اشتباه است." }, 404, origin);
+    }
     if (action === "login") {
       // کاربران قدیمی بدون origin: برچسب «مهمان» بر اساس سوابق قبلی همین شماره
       let nextPayload = { ...user.payload, lastLoginAt: new Date().toISOString() };
