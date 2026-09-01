@@ -3,6 +3,21 @@ import {matchKnowledge,normalizeAssistantText,type KnowledgeLike} from './assist
 const MISTRAL_API_URL='https://api.mistral.ai/v1/chat/completions';
 export const MISTRAL_ASSISTANT_MODEL='mistral-small-latest';
 
+// ── کلید پشتیبانِ صفحات عمومی: وقتی سقف روزانهٔ کلید اصلی تمام شد، تا پایان آن روز (UTC)
+// پاسخ‌ها با کلید دوم داده می‌شود؛ روز بعد کلید اصلی خودش به‌طور خودکار به چرخه برمی‌گردد.
+// ── گردش سه‌لایهٔ دستیارها (فقط صفحات عمومی): کلید ۱ → کلید ۲ → کلید ۳ ──
+// شمار مصرف روزانه و مسدودسازی هر لایه در یک رکورد از جدول settings (کلید assistant_rotation) نگهداری می‌شود تا همهٔ نمونه‌های سرویس یک حالت مشترک ببینند.
+// نزدیک سقف روزانه (باقی‌مانده <= حاشیه) پیش از برخورد با خطا به لایهٔ بعد می‌رود؛ در صورت 429 یا خطای اعتبارسنجی، آن لایه تا پایان روز UTC کنار می‌رود.
+// هیچ‌وقت چیزی از لایه‌ها، اعتبار یا جابه‌جایی به کاربر نشان داده نمی‌شود؛ مدل و قوانین در هر سه لایه یکسان است.
+export const ASSISTANT_ROTATION_SETTINGS_KEY='assistant_rotation';
+interface AssistantRotationState{day:string;counts:Record<string,number>;blocked:Record<string,number>;cap:number;margin:number}
+const assistantRotationUtcDay=()=>new Date().toISOString().slice(0,10);
+function assistantRotationEnvNumber(name:string,fallback:number,min:1|0=1){const raw=Number(String(Deno.env.get(name)||'').trim());return Number.isFinite(raw)&&raw>=min?raw:fallback}
+function freshAssistantRotationState():AssistantRotationState{return {day:assistantRotationUtcDay(),counts:{},blocked:{},cap:assistantRotationEnvNumber('MISTRAL_DAILY_CAP',250),margin:assistantRotationEnvNumber('MISTRAL_CAP_MARGIN',2,0)}}
+function normalizeAssistantRotationState(raw:any):AssistantRotationState{const fresh=freshAssistantRotationState();if(!raw||typeof raw!=='object'||raw.day!==fresh.day)return fresh;return {day:fresh.day,counts:raw.counts&&typeof raw.counts==='object'?raw.counts:{},blocked:raw.blocked&&typeof raw.blocked==='object'?raw.blocked:{},cap:Number(raw.cap)>0?Number(raw.cap):fresh.cap,margin:Number.isFinite(Number(raw.margin))?Number(raw.margin):fresh.margin}}
+async function loadRotationState(db:any):Promise<AssistantRotationState>{if(!db)return freshAssistantRotationState();try{const {data}=await db.from('settings').select('settings').eq('key',ASSISTANT_ROTATION_SETTINGS_KEY).maybeSingle();return normalizeAssistantRotationState(data?.settings)}catch{return freshAssistantRotationState()}}
+async function persistRotationState(db:any,state:AssistantRotationState){if(!db)return;try{await db.from('settings').upsert({key:ASSISTANT_ROTATION_SETTINGS_KEY,settings:state},{onConflict:'key'})}catch{/* اختلال در ذخیرهٔ حالت نباید پاسخ‌دهی را متوقف کند */}}
+
 export interface ScopedKnowledge extends KnowledgeLike {
   id?:string;
   answer?:string;
@@ -92,7 +107,7 @@ function parseProvider(payload:unknown):{answer:string;model:string}{
   return {answer:String(message.content||'').replace(/\*\*/g,'').replace(/^#{1,6}\s+/gm,'').replace(/بهترین نتیجه/g,'نتیجه به شرایط فرد بستگی دارد').trim().slice(0,5000),model:String(record.model||MISTRAL_ASSISTANT_MODEL).slice(0,100)};
 }
 
-export async function generateGroundedAssistant(options:{question:unknown;knowledge:ScopedKnowledge[];mode:'public'|'admin';brand:string;language?:'fa'|'en'}):Promise<GroundedAssistantResult>{
+export async function generateGroundedAssistant(options:{question:unknown;knowledge:ScopedKnowledge[];mode:'public'|'admin';brand:string;language?:'fa'|'en';db?:any}):Promise<GroundedAssistantResult>{
   const rawQuestion=String(options.question||'');
   const question=sanitizeAssistantQuestion(rawQuestion);
   const retrievalQuestion=sanitizeAssistantQuestion(rawQuestion.split(/\r?\n/)[0]||rawQuestion);
@@ -106,9 +121,10 @@ export async function generateGroundedAssistant(options:{question:unknown;knowle
   });
   if(!matches.length)return {answer:'',model:MISTRAL_ASSISTANT_MODEL,sources:[],providerCalled:false};
 
-  const scopedSecret=options.mode==='public'?'MISTRAL_PUBLIC_API_KEY':'MISTRAL_ADMIN_API_KEY';
-  const apiKey=String(Deno.env.get(scopedSecret)||Deno.env.get('MISTRAL_API_KEY')||'').trim();
-  if(!apiKey)throw new Error('MISTRAL_NOT_CONFIGURED');
+  const envKey=(name:string)=>String(Deno.env.get(name)||'').trim();
+  const legacyKey=String(Deno.env.get('MISTRAL_API_KEY')||'').trim();
+  const apiKey=(options.mode==='public'?envKey('MISTRAL_PUBLIC_API_KEY'):envKey('MISTRAL_ADMIN_API_KEY'))||legacyKey;
+  if(options.mode!=='public'&&!apiKey)throw new Error('MISTRAL_NOT_CONFIGURED');
   const publicRules=[
     `شما راهنمای عمومی ${options.brand} هستید.`,
     'فقط درباره خدمات و بخش‌های عمومی سایت پاسخ دهید.',
@@ -137,14 +153,45 @@ export async function generateGroundedAssistant(options:{question:unknown;knowle
     variationHint,
     options.language==='en'?'Answer in clear, natural English and keep the response under 180 words.':'پاسخ را با فارسی گفتاری مودبانه و طبیعی و حداکثر ۱۸۰ کلمه بنویس؛ «می» و «نمی» را به فعل بچسبون، از شکل های رایج مثل میتونم، میخواین، میدونم، اینجوری، کدوم و یه استفاده کن، اعراب ننویس و از واژه های کوچه بازاری بی ادبانه استفاده نکن. تا جای ممکن معادل فارسی واژه های انگلیسی را به کار ببر، مگر اینکه واژه تخصصی یا نام رسمی باشه.',
     'نام یا شماره مرجع را در پاسخ ذکر نکنید.',
+    'هیچ‌وقت جمله‌های خودمحدودکننده یا بلاتکلیف‌ساز مثل «به‌تنهایی کافی نیست»، «برای نتیجه‌گیری کافی نیست» یا «روند چند اندازه‌گیری اهمیت بیشتری دارد» نساز؛ هر جا اطلاعات کامل نبود، کاربر را به ثبت درخواست مشاوره دعوت کن.',
+    'در موضوعاتی که در دوره‌ها، مقالات آموزشی یا موضوع‌های مشاورهٔ سایت پوشش دارند، هرگز نگویید «با پزشک مشورت کنید»، «از پزشک بپرسید» یا «به پزشک اطلاع دهید»؛ در عوض آخر پاسخ بگویید «برای اطلاعات بیشتر می‌تونید درخواست مشاوره بدید».',
+    'وقتی دوره‌ای را پیشنهاد می‌دهی دقیقاً از جزئیات تأییدشدهٔ همان دوره بگو و این‌طور بیان کن که «این دوره مناسب فرزند شماست و می‌تونه کمک کنه این موضوع بهتر پیش بره»؛ هرگز ادعای «صددرصد»، «تضمینی» یا «حتماً خوب می‌شود» نکن و در پایان همین پاسخ، دعوت به ثبت درخواست مشاوره را هم اضافه کن.',
   ];
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),25_000);
+  async function callProvider(key:string):Promise<Response>{
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),25_000);
+    let response:Response;
+    try{
+    response=await fetch(MISTRAL_API_URL,{method:'POST',signal:controller.signal,headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:MISTRAL_ASSISTANT_MODEL,temperature:0.35,max_tokens:450,messages:[{role:'system',content:rules.join('\n')},{role:'user',content:`سؤال:\n${question}\n\nدانش تأییدشده:\n${buildReference(matches)}`}]})});
+    }catch(error){if((error as Error)?.name==='AbortError')throw new Error('MISTRAL_TIMEOUT');throw error instanceof Error&&error.message.startsWith('MISTRAL_')?error:new Error('MISTRAL_NETWORK')}finally{clearTimeout(timer)}
+    if(!response.ok){if(response.status===429)throw new Error('MISTRAL_RATE_LIMIT');if(response.status===401||response.status===403)throw new Error('MISTRAL_AUTH');throw new Error('MISTRAL_PROVIDER')}
+    return response;
+  }
   let response:Response;
-  try{
-    response=await fetch(MISTRAL_API_URL,{method:'POST',signal:controller.signal,headers:{Authorization:`Bearer ${apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:MISTRAL_ASSISTANT_MODEL,temperature:0.35,max_tokens:450,messages:[{role:'system',content:rules.join('\n')},{role:'user',content:`سؤال:\n${question}\n\nدانش تأییدشده:\n${buildReference(matches)}`}]})});
-  }catch(error){if((error as Error)?.name==='AbortError')throw new Error('MISTRAL_TIMEOUT');throw new Error('MISTRAL_NETWORK')}finally{clearTimeout(timer)}
-  if(!response.ok){if(response.status===429)throw new Error('MISTRAL_RATE_LIMIT');if(response.status===401||response.status===403)throw new Error('MISTRAL_AUTH');throw new Error('MISTRAL_PROVIDER')}
+  if(options.mode==='public'){
+    const slotNames=(String(Deno.env.get('ASSISTANT_KEY_ORDER')||'').trim().split(',').map((name:string)=>name.trim()).filter(Boolean).length?String(Deno.env.get('ASSISTANT_KEY_ORDER')).trim().split(',').map((name:string)=>name.trim()):['MISTRAL_PUBLIC_API_KEY','MISTRAL_FALLBACK_API_KEY','MISTRAL_ADMIN_API_KEY']) as string[];
+    const slotValues:Record<string,string>={MISTRAL_PUBLIC_API_KEY:envKey('MISTRAL_PUBLIC_API_KEY')||legacyKey,MISTRAL_FALLBACK_API_KEY:envKey('MISTRAL_FALLBACK_API_KEY'),MISTRAL_ADMIN_API_KEY:envKey('MISTRAL_ADMIN_API_KEY')};
+    const seenValues=new Set<string>();
+    const slots=slotNames.filter(name=>{const value=slotValues[name];if(!value||seenValues.has(value))return false;seenValues.add(value);return true});
+    if(!slots.length)throw new Error('MISTRAL_NOT_CONFIGURED');
+    const state=await loadRotationState(options.db);
+    let chosen:Response|null=null;
+    let lastError:Error=new Error('MISTRAL_PROVIDER');
+    for(const slot of slots){
+      const used=Number(state.counts[slot]||0);
+      if(state.blocked[slot]===1||used>=state.cap-state.margin)continue;
+      state.counts[slot]=used+1;await persistRotationState(options.db,state);
+      try{chosen=await callProvider(slotValues[slot]);break}
+      catch(error){
+        lastError=error instanceof Error?error:new Error('MISTRAL_PROVIDER');
+        const code=String(lastError.message||'');
+        if(code==='MISTRAL_RATE_LIMIT'||code==='MISTRAL_AUTH'||code==='MISTRAL_NOT_CONFIGURED'){state.blocked[slot]=1;await persistRotationState(options.db,state)}
+      }
+    }
+    if(!chosen)throw lastError;
+    response=chosen;
+  }
+  else{response=await callProvider(apiKey)}
   const parsed=parseProvider(await response.json().catch(()=>null));
   if(!parsed.answer)throw new Error('MISTRAL_EMPTY');
   return {...parsed,sources,providerCalled:true};
