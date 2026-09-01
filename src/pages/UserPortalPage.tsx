@@ -12,6 +12,7 @@ import TurnstileGate from '../components/TurnstileGate';
 import {
   getUserSession, setUserSession, clearUserSession, normalizePhoneForServer, validateFullName,
   maskPhoneLocal, takePortalNext, setPortalNext, digitsOnly, getUserSession as readSession,
+  normalizeLoginCode,
 } from '../utils/userPortal';
 import './portal.css';
 import { designModeFromThemeId, warmZpVars } from '../theme/warmPalettes';
@@ -45,7 +46,8 @@ export default function UserPortalPage() {
   const [nextPath, setNextPath] = useState(() => takePortalNext());
   const [phonePreview, setPhonePreview] = useState('');
   // پذیرای همه شکل‌ها: FM-1x2tsvy / F1x2tsvy / M-1x2tsvy / 1x2tsvy / هر خطای فاصله و خط تیره
-  const codeCore = (v: string) => { const s = p2e(String(v || '')).replace(/[^a-zA-Z0-9]/g, '').toUpperCase(); const m = s.match(/[0-9][A-Z0-9]*$/); return m ? m[0] : s; };
+  // همان قاعدهٔ سرور: حذف نویز + گرفتن بدنهٔ کد از اولین رقم به بعد («FM-1x2»، «F 1x2»، «1x2» یکی می‌شوند)
+  const codeCore = normalizeLoginCode;
   const faMinLetters = Math.max(2, Math.min(8, Number((cfg as any)?.userPortal?.minNameWords) || 3));
   const captchaOn = (cfg as any)?.userPortal?.captchaEnabled === true;
   const [captchaToken, setCaptchaToken] = useState('');
@@ -65,10 +67,19 @@ export default function UserPortalPage() {
 
   useEffect(() => { setOtpMode(String((cfg as any)?.userPortal?.otpMode || 'test') as any); }, [cfg]);
   useEffect(() => { const s = readSession(); setSession(s); }, []);
+  // اگر کد، شماره‌ای را پیدا نکرد، دست‌کم شمارهٔ تایپ‌شده را ماسک‌شده نشان بده (۴ رقم + ۴×x + ۳ رقم)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const loginMask = useMemo(() => {
+    try {
+      const localNum = digitsOnly(phone);
+      if (!validPhone(localNum, ctryNow())) return '';
+      return maskPhoneLocal(normalizePhoneForServer(fullPhone(cc, localNum)));
+    } catch { return ''; }
+  }, [phone, cc, countries]);
   useEffect(() => {
     if (auth !== 'login') { setPhonePreview(''); return; }
     const core = codeCore(code);
-    if (core.length < 6) { setPhonePreview(''); return; }
+    if (core.length < 4) { setPhonePreview(''); return; }
     const timer = window.setTimeout(async () => {
       try { const r = await portalPhonePreview(TRACKING_PREFIX + '-' + core.toLowerCase()); setPhonePreview(r.found && r.maskedPhone ? String(r.maskedPhone) : ''); }
       catch { setPhonePreview(''); }
@@ -107,8 +118,8 @@ export default function UserPortalPage() {
       if (!ph) throw new Error(en ? 'Enter a valid phone number.' : 'شمارهٔ تماس معتبر وارد کنید.');
       if (captchaOn && !captchaToken) throw new Error(en ? 'Complete the security check first.' : 'ابتدا بررسی امنیتی را تکمیل کنید.');
       const core = codeCore(code);
-      if (core.length < 6) throw new Error(en ? 'Enter the tracking code exactly as shown.' : 'کد پیگیری را دقیقاً وارد کنید.');
-      const r = await portalLogin(phone, TRACKING_PREFIX + '-' + core.toLowerCase(), captchaToken);
+      if (core.length < 4 || core.length > 20) throw new Error(en ? 'Enter the tracking code exactly as shown.' : 'کد پیگیری را دقیقاً وارد کنید.');
+      const r = await portalLogin(ph, TRACKING_PREFIX + '-' + core.toLowerCase(), captchaToken);
       const s = { code: String(r.code), fullName: String(r.fullName), phone: ph, loginAt: Date.now() };
       setUserSession(s); setSession(s);
     } catch (e: any) { setErr(e?.message || 'خطا در ورود'); if (captchaOn) retryCaptcha(); } finally { setBusy(false); }
@@ -205,6 +216,9 @@ export default function UserPortalPage() {
               </div>
               {err && <div className="zp-err"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg>{err}</div>}
 {captchaOn && <TurnstileGate key={`${auth}:${captchaAttempt}`} variant="auth" siteKey={TURNSTILE_SITE_KEY} lang={lang} T={T} includeCrypto={false} onVerify={onCaptchaVerify} onReset={onCaptchaReset} />}
+              {!phonePreview && loginMask && (
+                <div className="zp-masknote" dir="ltr" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></svg><span>{en ? 'Sign in with account' : 'ورود با حساب'}</span><b>{loginMask}</b></div>
+              )}
               <button className="zp-btn" onClick={doLogin} disabled={busy}>{busy ? <span className="zp-dots" role="status" aria-label={en?'Please wait…':'در حال بررسی…'}><i/><i/><i/></span> : (en ? 'Sign in' : 'ورود به پنل')}</button>
               <button type="button" className="zp-link zp-underline" onClick={() => { setAuth('register'); setErr(''); setStep('form'); }}>{en ? 'Not registered yet? Create an account first' : 'اگر ثبت‌نام نکردید، ابتدا ثبت‌نام کنید'}</button>
             </>)}
@@ -220,7 +234,8 @@ export default function UserPortalPage() {
               </div>
               {err && <div className="zp-err"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg>{err}</div>}
 {captchaOn && <TurnstileGate key={`${auth}:${captchaAttempt}`} variant="auth" siteKey={TURNSTILE_SITE_KEY} lang={lang} T={T} includeCrypto={false} onVerify={onCaptchaVerify} onReset={onCaptchaReset} />}
-              <button className="zp-btn" onClick={doStart} disabled={busy}>{busy ? <span className="zp-dots" role="status" aria-label={en?'Please wait…':'در حال ارسال…'}><i/><i/><i/></span> : (en ? 'Send verification code' : 'ارسال کد تأیید')}</button>
+              <button className="zp-btn" onClick={doStart} disabled={busy}>{busy ? <span className="zp-dots" role="status" aria-label={en?'Please wait…':'در حال ارسال…'}><i/><i/><i/></span> : (otpMode === 'off' ? (en ? 'Sign up' : 'ثبت‌نام') : (en ? 'Register and get the code' : 'ثبت‌نام و دریافت کد تأیید'))}</button>
+              {otpMode !== 'off' && <div className="zp-hint">{en ? 'If you have not registered before, this button creates your profile.' : 'اگر تا حالا ثبت‌نام نکرده باشید، با زدن همین دکمه پروفایل شما ساخته می‌شود.'}</div>}
               {otpMode === 'test' && !busy && <div className="zp-secure" style={{ marginTop: 12 }}>حالت تست — پس از اتصال پنل پیامکی، کد برای شما پیامک میشود</div>}
             </>)}
 
