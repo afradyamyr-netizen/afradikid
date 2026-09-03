@@ -15,5 +15,6 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin-login
+Disallow: /desk
 
 Sitemap: https://farzandman.vercel.app/sitemap.xml
