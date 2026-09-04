@@ -82,7 +82,9 @@ try {
   await page.click('[data-testid="assistant-unanswered-answer-41"]');
   await page.type('[data-testid="assistant-unanswered-answer-41"]', 'برای اطلاع از هزینه، درخواست مشاوره را ثبت کنید.');
   await page.$eval('[data-testid="assistant-resolve-unanswered-41"]', node => node.click());
-  await page.waitForFunction(() => !document.querySelector('[data-testid="assistant-resolve-unanswered-41"]'), { timeout: 12_000 });
+  // `load()` briefly renders the manager loading state. Wait for the post-refresh
+  // controls as well as removal of the resolved item, rather than sampling that gap.
+  await page.waitForFunction(() => !document.querySelector('[data-testid="assistant-resolve-unanswered-41"]') && !!document.querySelector('[data-testid="assistant-clear-unanswered"]'), { timeout: 12_000 });
   const resolvedCall = requests.find(item => item.action === 'resolve_unanswered');
   if (!resolvedCall || resolvedCall.answer !== 'برای اطلاع از هزینه، درخواست مشاوره را ثبت کنید.') throw new Error(`owner answer was not sent unchanged: ${JSON.stringify(resolvedCall)}`);
   if (requests.some(item => item.action === 'save' && item.created_by === 'automatic')) throw new Error('the panel attempted automatic publication');
