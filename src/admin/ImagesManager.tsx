@@ -1,5 +1,5 @@
 // src/admin/ImagesManager.tsx
-// بازطراحی کامل صفحهٔ «تصاویر» در پنل مدیریت.
+// بازطراحی کامل صفحه «تصاویر» در پنل مدیریت.
 //
 // قوانین رعایت‌شده (پنل ادمین React):
 //   - کامپوننت در سطح ماژول تعریف شده (بیرون از AdminPanel) → بدون ریسک Remount / شکستن Hooks.
@@ -9,11 +9,11 @@
 //
 // امکانات:
 //   - تب‌های مجزا برای هر بخش: مجوزها / محصولات / دوره‌ها / عمومی
-//   - آپلود مستقیم از حافظهٔ گوشی (file picker + drag & drop)
+//   - آپلود مستقیم از حافظه گوشی (file picker + drag & drop)
 //   - تبدیل خودکار هر فرمت به webp با حداکثر کیفیت و حجم بهینه
 //   - تنظیم «کادر» (نسبت ابعاد + موقعیت برش object-position) برای هر تصویر
-//   - ذخیرهٔ فوری در Supabase Storage (پوشهٔ مجزا برای هر بخش) + گزینهٔ «ذخیره در پروژه»
-//   - گالری این صفحه با صفحات مقصد هماهنگ است: عکس‌های هر تب فقط در همان صفحهٔ مقصد دیده می‌شوند.
+//   - ذخیره فوری در Supabase Storage (پوشه مجزا برای هر بخش) + گزینه «ذخیره در پروژه»
+//   - گالری این صفحه با صفحات مقصد هماهنگ است: عکس‌های هر تب فقط در همان صفحه مقصد دیده می‌شوند.
 
 import React, { useState } from 'react';
 import {
@@ -24,7 +24,7 @@ import HomeAvatarSlot from './HomeAvatarSlot';
 import ImageCropper from './ImageCropper';
 import { uploadAdminFile } from '../lib/storageUpload';
 
-// ─── بخش‌ها و پوشهٔ هر بخش ──────────────────────────────────────────
+// ─── بخش‌ها و پوشه هر بخش ──────────────────────────────────────────
 export const IMAGE_SECTIONS: { id: string; label: string; folder: string; target: string; hint: string }[] = [
   { id: 'general', label: 'عمومی', folder: 'general', target: 'تصاویر عمومی سایت', hint: 'تصاویر عمومی، هیرو، تراست و فرم مشاوره' },
 ];
@@ -305,13 +305,13 @@ export default function ImagesManager(props: Props) {
       }
       closeCrop();
     } catch (err: any) {
-      notify(err?.message || 'ذخیرهٔ کادر تصویر انجام نشد');
+      notify(err?.message || 'ذخیره کادر تصویر انجام نشد');
     } finally {
       setBusy(null);
     }
   };
 
-  // ذخیرهٔ تصویر در پروژه (public/images) — برای دانلود/ثبت در ریپو
+  // ذخیره تصویر در پروژه (public/images) — برای دانلود/ثبت در ریپو
   const saveToProject = (it: LibraryItem) => {
     try {
       const a = document.createElement('a');
@@ -330,24 +330,24 @@ export default function ImagesManager(props: Props) {
     <>
       <Box title={<><ZkImageIcon size={16} color={T.ttl} /> مرکز مدیریت تصاویر</>}>
         <p style={{ fontSize: 11, color: T.mut, margin: '0 0 14px', lineHeight: 1.8 }}>
-          این صفحه فقط برای تصاویر <b>عمومی</b> سایت است (هیرو، تراست، فرم مشاوره، دربارهٔ ما).
-          عکس‌های محصولات، دوره‌ها و مجوزها از همان صفحهٔ خودشان آپلود و تنظیم می‌شوند.
+          این صفحه فقط برای تصاویر <b>عمومی</b> سایت است (هیرو، تراست، فرم مشاوره، درباره ما).
+          عکس‌های محصولات، دوره‌ها و مجوزها از همان صفحه خودشان آپلود و تنظیم می‌شوند.
           پس از آپلود، تصویر به‌صورت خودکار به <b>webp</b> با حداکثر کیفیت و حجم بهینه تبدیل می‌شود.
         </p>
 
-        {/* عکس‌های تکی عمومی (فرم مشاوره + دربارهٔ ما) + کادر هیرو — فقط در تَب عمومی */}
+        {/* عکس‌های تکی عمومی (فرم مشاوره + درباره ما) + کادر هیرو — فقط در تَب عمومی */}
         {tab === 'general' && (
           <>
             <SingleImageEditor
               T={T} S={S} AdminBtn={AdminBtn} editCfg={editCfg} setEditCfg={setEditCfg}
               supabase={supabase} isSupabaseConfigured={isSupabaseConfigured} deleteStoredImage={deleteStoredImage}
               field="hero"
-              title="تصویر اصلی بالای صفحهٔ خانه (Hero)"
+              title="تصویر اصلی بالای صفحه خانه (Hero)"
               note="همان تصویر مادر و کودک کنار عنوان و دکمه‌های «ثبت درخواست مشاوره» و «مشاهده دوره‌ها». تصویر جدیدی که اینجا ذخیره کنید مستقیماً جایگزین تصویر فعلی سایت می‌شود."
               fallbackUrl="/images/asset13c-hero-mother-child.webp"
-              fallbackAlt="مادر و کودک در بنر اصلی صفحهٔ خانه"
+              fallbackAlt="مادر و کودک در بنر اصلی صفحه خانه"
               sourceFile="asset13c-hero-mother-child.webp"
-              uploadLabel="بارگذاری و جایگزینی تصویر اصلی صفحهٔ خانه"
+              uploadLabel="بارگذاری و جایگزینی تصویر اصلی صفحه خانه"
               highlight
               defaultAspectRatio="1.05 / 1"
               imgStyle={{ width: 220, maxHeight: 200, objectFit: 'cover', objectPosition: 'center', borderRadius: 12 }}
@@ -360,12 +360,12 @@ export default function ImagesManager(props: Props) {
             <SingleImageEditor
               T={T} S={S} AdminBtn={AdminBtn} editCfg={editCfg} setEditCfg={setEditCfg}
               supabase={supabase} isSupabaseConfigured={isSupabaseConfigured} deleteStoredImage={deleteStoredImage}
-              field="trustBox" title="عکس باکس اعتماد (فرمولاسیون / مجوزها)" note="عکس کنار متن اعتمادساز در صفحهٔ اصلی (مثل «فرمولاسیون آلمان»)" defaultAspectRatio="4 / 3" imgStyle={{ width: 200, maxHeight: 150, objectFit: 'cover', objectPosition: 'center', borderRadius: 10 }}
+              field="trustBox" title="عکس باکس اعتماد (فرمولاسیون / مجوزها)" note="عکس کنار متن اعتمادساز در صفحه اصلی (مثل «فرمولاسیون آلمان»)" defaultAspectRatio="4 / 3" imgStyle={{ width: 200, maxHeight: 150, objectFit: 'cover', objectPosition: 'center', borderRadius: 10 }}
             />
             <SingleImageEditor
               T={T} S={S} AdminBtn={AdminBtn} editCfg={editCfg} setEditCfg={setEditCfg}
               supabase={supabase} isSupabaseConfigured={isSupabaseConfigured} deleteStoredImage={deleteStoredImage}
-              field="trustBox" title="عکس باکس اعتماد (فرمولاسیون / مجوزها)" note="عکس کنار متن اعتمادساز در صفحهٔ اصلی (مثل «فرمولاسیون آلمان»)" defaultAspectRatio="4 / 3" imgStyle={{ width: 200, maxHeight: 150, objectFit: 'cover', objectPosition: 'center', borderRadius: 10 }}
+              field="trustBox" title="عکس باکس اعتماد (فرمولاسیون / مجوزها)" note="عکس کنار متن اعتمادساز در صفحه اصلی (مثل «فرمولاسیون آلمان»)" defaultAspectRatio="4 / 3" imgStyle={{ width: 200, maxHeight: 150, objectFit: 'cover', objectPosition: 'center', borderRadius: 10 }}
             />
             <HomeAvatarSlot
               imgs={editCfg?.images || {}}
@@ -378,7 +378,7 @@ export default function ImagesManager(props: Props) {
           </>
         )}
 
-        {/* منطقهٔ آپلود */}
+        {/* منطقه آپلود */}
         <label
           className="zkad-drop"
           style={{ border: `1.5px dashed ${T.brd}`, borderRadius: 14, padding: '18px', textAlign: 'center', cursor: 'pointer', marginBottom: 14, background: T.badge }}
@@ -466,7 +466,7 @@ export default function ImagesManager(props: Props) {
         )}
 
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 16, flexWrap: 'wrap' }}>
-          <button style={S.btn} onClick={() => setSave(editCfg)}><ZkCheckCircleIcon size={14} /> ذخیرهٔ تنظیمات تصاویر</button>
+          <button style={S.btn} onClick={() => setSave(editCfg)}><ZkCheckCircleIcon size={14} /> ذخیره تنظیمات تصاویر</button>
           <span style={{ fontSize: 11, color: T.mut }}>
             عکس‌های تَب «{sectionInfo.label}» در {sectionInfo.target} قابل انتخاب‌اند.
           </span>
@@ -492,7 +492,7 @@ export default function ImagesManager(props: Props) {
 }
 
 // ─── انتخاب‌گر گالری برای صفحات مقصد ────────────────────────────────
-// در صفحهٔ مجوزها/محصولات/دوره‌ها نمایش داده می‌شود تا فقط عکس‌های همان بخش انتخاب شوند.
+// در صفحه مجوزها/محصولات/دوره‌ها نمایش داده می‌شود تا فقط عکس‌های همان بخش انتخاب شوند.
 export function LibraryPicker({
   T, S, editCfg, section, onSelect, current, AdminBtn, label = 'انتخاب از گالری',
 }: {
@@ -517,7 +517,7 @@ export function LibraryPicker({
               <button type="button" style={AdminBtn()} onClick={() => setOpen(false)}>بستن</button>
             </div>
             {list.length === 0 ? (
-              <p style={{ color: T.mut, fontSize: 12, margin: 0 }}>هنوز تصویری در این گالری نیست. اول از صفحهٔ «تصاویر» آپلود کنید.</p>
+              <p style={{ color: T.mut, fontSize: 12, margin: 0 }}>هنوز تصویری در این گالری نیست. اول از صفحه «تصاویر» آپلود کنید.</p>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(120px,1fr))', gap: 10 }}>
                 {list.map((it: any) => (
@@ -539,7 +539,7 @@ export function LibraryPicker({
   );
 }
 
-// ─── ویرایشگر یک تصویر تکی (برای عکس‌های عمومی مثل فرم مشاوره / دربارهٔ ما) ───
+// ─── ویرایشگر یک تصویر تکی (برای عکس‌های عمومی مثل فرم مشاوره / درباره ما) ───
 function SingleImageEditor({
   T, S, AdminBtn, editCfg, setEditCfg, field, title, note, imgStyle, defaultAspectRatio,
   circular = false, fallbackUrl = '', fallbackAlt = '', sourceFile = '', uploadLabel = '', highlight = false,
@@ -600,7 +600,7 @@ function SingleImageEditor({
       }
       closeCrop();
     } catch (err: any) {
-      alert(err?.message || 'ذخیرهٔ تصویر انجام نشد');
+      alert(err?.message || 'ذخیره تصویر انجام نشد');
     } finally {
       setBusy(false);
     }

@@ -1,7 +1,7 @@
 # گزارش نهایی — انتقال Zeynalikid → Afradikid
 
-## نتیجهٔ کلی ✅
-پروژهٔ «افرادیکید (Afradikid)» به‌طور کامل کپی، Rename و Deploy شد.
+## نتیجه کلی ✅
+پروژه «افرادیکید (Afradikid)» به‌طور کامل کپی، Rename و Deploy شد.
 **Production زنده است: https://afradikid.vercel.app** (HTTP 200 در تمام مسیرها).
 
 ## فایل‌های تغییرکرده (Rename + کد)
@@ -21,11 +21,11 @@
 - Push شده به `main` ریپوی **afradyamyr-netizen/afradikid**
 
 ## وضعیت Deploy
-- **Vercel:** پروژهٔ `afradikid` (framework vite، build `npm run build`، output `dist`) — **Deploy READY**، Production دامنهٔ **`afradikid.vercel.app`** verified.
-  - (دامنه از تیم zeynaliarmin آزاد و به پروژهٔ افRadi منتقل شد تا production اصلی باشد.)
-- **Supabase** (پروژهٔ افRadi `doikoqzarsuprcwkghsq`): ۹ تابع Edge با `--no-verify-jwt` Deploy شد؛ سکرت‌ها (`ADMIN_PHONE=09125703684`، `ADMIN_PASSWORD=1234`، `ADMIN_MGMT_TOKEN`) ست شد؛ اسکیمای اپ ایجاد شد؛ جداول ادمین و storage ساخته شد.
+- **Vercel:** پروژه `afradikid` (framework vite، build `npm run build`، output `dist`) — **Deploy READY**، Production دامنه **`afradikid.vercel.app`** verified.
+  - (دامنه از تیم zeynaliarmin آزاد و به پروژه افRadi منتقل شد تا production اصلی باشد.)
+- **Supabase** (پروژه افRadi `doikoqzarsuprcwkghsq`): ۹ تابع Edge با `--no-verify-jwt` Deploy شد؛ سکرت‌ها (`ADMIN_PHONE=09125703684`، `ADMIN_PASSWORD=1234`، `ADMIN_MGMT_TOKEN`) ست شد؛ اسکیمای اپ ایجاد شد؛ جداول ادمین و storage ساخته شد.
 
-## نتیجهٔ تست‌ها (Read-Only)
+## نتیجه تست‌ها (Read-Only)
 - **تست واحد:** `unit.test.ts` → **۶۰۷ موفق / ۰ ناموفق**
 - **E2E (Puppeteer):** ۲۱ مسیر عمومی + تعاملات + پنل → **۲۸ موفق / ۰ ناموفق** (لاگین ادمین در لوکال به‌دلیل CORS لوکال رد شد که تست «نرم» است).
 - **تأیید Production:** تمام مسیرها 200؛ `public-settings` سالم؛ **لاگین ادمین با اعتبار تست موفق** (رسیدن به `/admin/app`).

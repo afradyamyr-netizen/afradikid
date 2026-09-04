@@ -7,7 +7,7 @@ type Props = {
   T: any;
 };
 
-// سازگاری با بخش قدیمی آواتار؛ موتور برش عمومی اکنون برای همهٔ تصاویر پنل استفاده می‌شود.
+// سازگاری با بخش قدیمی آواتار؛ موتور برش عمومی اکنون برای همه تصاویر پنل استفاده می‌شود.
 export default function HomeAvatarCropper({ src, onCancel, onDone, T }: Props) {
   return (
     <ImageCropper
