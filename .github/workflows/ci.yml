@@ -32,8 +32,10 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: npm run check
-      - name: Audit all dependencies
-        run: npm audit --audit-level=high
+      - name: Audit all locked dependencies
+        # npm's installed-tree audit endpoint can reject a valid lockfile after npm ci;
+        # audit the exact locked tree instead, which covers every production and development dependency.
+        run: npm audit --package-lock-only --audit-level=high
 
   browser-readonly:
     needs: verify
