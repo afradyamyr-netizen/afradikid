@@ -29,8 +29,8 @@ import { normalizeDesignId, normalizePublicColorMode, resolveColorMode, type Per
 import { clearAdminSession, getAdminSessionToken, validateAdminSession } from './utils/adminSession';
 import ErrorAlertHost from './components/ErrorAlert/ErrorAlertHost';
 import ZkDialog from './components/ZkDialog';
-import AssistantWidget from './components/AssistantWidget';
 import CourseTimer from './components/CourseTimer';
+import AssistantWidget from './components/AssistantWidget';
 import AppRoutes from './app/AppRoutes';
 import useRouteScrollRestoration from './hooks/useRouteScrollRestoration';
 import type { AppContextValue, DynamicRecord } from './app/AppContext';
@@ -82,8 +82,6 @@ function App(){
  // ─── سیستم مدیریت دیزاین و تم (مرحله ۲ - بازطراحی تدریجی) ───
  const designSystem = cfg.designSystem || configDefaultSettings.designSystem;
 
- // Resolve design ids without ever writing compatibility changes back to stored settings.
- // Fixed: education path respects its own design, form (consultation) follows public design
  // دیزاین انتخابی مالک برای صفحات عمومی (با اولویت انتخابِ خود کاربر در localStorage).
  // صفحه /admin* عمداً به کلاسیک قفل می‌شود، اما پوسته «ورود مدیریت» باید همان دیزاین
  // انتخابی سایت را بگیرد — پس این تابع جدا از getDesignForPath نگه داشته شده است.
@@ -95,14 +93,9 @@ function App(){
   } catch {}
   return configured;
  };
+ // Resolve design ids without ever writing compatibility changes back to stored settings.
  const getDesignForPath = (path: string, settings: DynamicRecord): string => {
   if (path.startsWith('/desk')) return 'classic';
-  // education page has its own design
-  if (path.startsWith('/education')) {
-    const eduConfigured = normalizeDesignId(settings?.sections?.education?.design, 'kidlearn');
-    return eduConfigured;
-  }
-  // public pages including /form (consultation form) follow public design
   const configured = normalizeDesignId(settings?.sections?.public?.design, 'wellness');
   try {
    const localDesign = localStorage.getItem('zk_design_system');
@@ -229,15 +222,12 @@ function App(){
  const [referralTarget,setReferralTarget]=useState<ParsedReferral|null>(null);
  const referralHandledRef = useRef<string|null>(null);
  // ─── جلوگیری از فلش صفحه اصلی قبل از resolve شدن لینک ارجاع ───
- // وقتی URL یک کد ارجاع (پایه/تب/دوره) دارد، صفحه تا وقتی referral مشخص نشده پنهان می‌ماند.
  const [referralReady,setReferralReady]=useState<boolean>(()=>{
    try {
      const path=(window.location.pathname||'').replace(/\/+$/,'').replace(/^\//,'').split('?')[0];
      const q=new URLSearchParams(window.location.search);
      const raw=(q.get('ad')||q.get('ref')||path||'').trim();
-     const SYSTEM=['admin','admin-login','courses','experience','education','about','contact','faq','products','form','consultation','track','growth','settings','profile','privacy','licenses','child-info','course-shipping','course-payment','course-confirm','course-done','payment-verify'];
-     // اگر path یک فایل/مسیر سیستمی است، ارجاع نیست → ready
-     if(!raw||raw.includes('/')||SYSTEM.includes(raw.toLowerCase())||/\.(js|css|png|jpe?g|webp|svg|ico|json|html?|pdf|mp[34]|webm|txt|xml|webmanifest)$/i.test(raw)) return true;
+     if(!raw||raw.includes('/')||SYSTEM_REFERRAL_PATHS.has(raw.toLowerCase())||/\.(js|css|png|jpe?g|webp|svg|ico|json|html?|pdf|mp[34]|webm|txt|xml|webmanifest)$/i.test(raw)) return true;
      return false;
    } catch { return true; }
  });
@@ -248,8 +238,6 @@ function App(){
  const [referralConsultShowReason,setReferralConsultShowReason]=useState(false);
  // وقتی در حالت عادی روی «شروع مشاوره رایگان» (پایین صفحه) بزنند، اسکرول بالا + تپش دکمه مشاوره
  const [consultPulse,setConsultPulse]=useState(0);
- // وقتی مخاطب در حالت لینک ارجاع روی «درخواست مشاوره» می‌زند، پاپ‌آپ باز می‌شود (به‌جای رفتن مستقیم به فرم).
- // دلیل ذخیره‌شده در فرم مشاوره (sessionStorage) قرار می‌گیرد تا در روند ثبت فرم درج شود.
  const requestConsult=useCallback((reasonPreset?:string)=>{
    if (referralConsultant) {
      setReferralConsultReason(reasonPreset || '');
@@ -313,12 +301,9 @@ function App(){
      applyReferral(parsed.code, parsed, consultants);
      setReferralReady(true);
    } else {
-     // fallback: کد ساده بدون پسوند
      const code = getReferralCodeFromUrl();
      if (code) {
        applyReferral(code, { code, raw: code }, consultants);
-       // اگر کد ارجاع هست ولی مشاور هنوز در consultants پیدا نشده (cfg کامل نیامده)،
-       // منتظر بمان تا cfg از دیتابیس بیاید؛ فقط وقتی consultants کامل شد صفحه نمایش داده شود.
        if (consultants.length > 0) setReferralReady(true);
      } else {
        // ─── بازیابی لینک ارجاع بعد از رفرش/ناوبری SPA ───
@@ -360,13 +345,11 @@ function App(){
      }
    }
  }, [location.pathname, location.search, cfg, applyReferral]);
- // پس از تطبیق موفق، هم نرمال‌سازی URL و هم هدایت به صفحه درست در یک‌جا انجام می‌شود
  useEffect(()=>{
    const rt = referralTarget;
    if (!rt) return;
    if (referralHandledRef.current === rt.raw) return;
    referralHandledRef.current = rt.raw;
-   // لینک پایه (فقط کد مشاور، بدون پسوند): URL را به / نرمال کن
    if (!rt.tabCode) {
      if (location.pathname !== '/') {
        try { navigate('/', { replace: true }); } catch {}
@@ -379,17 +362,20 @@ function App(){
    if (courseTab !== tab.id) setCourseTab(tab.id);
    // ─── آپدیت لینک ارجاع: هر سه حالت (پایه / تب / دوره) به صفحه هوم می‌روند ───
    // هوم بر اساس referralTarget دکمه‌ها، انیمیشن‌ها و متن راهنمای مناسب را نمایش می‌دهد.
-   // روند ثبت‌نام / تب / دوره فقط وقتی آغاز می‌شود که مخاطب روی CTA هوم یا منو بزند.
    if (location.pathname !== '/') {
      try { navigate('/', { replace: true }); } catch { setView('home'); }
    }
    // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [referralTarget, cfg]);
  // بازطراحی ظاهری: نئومورفیسم (سایه‌های نرم دوطرفه) + مینیمال (فضای باز، بدون شلوغی) + ممفیس (اشکال هندسی پاستلی در پس‌زمینه)
- const S=useMemo(()=>({page:{minHeight:'100dvh',fontFamily:"'Vazirmatn','Tahoma',Arial,sans-serif",direction:lang==='fa'?'rtl':'ltr',padding:'calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))',display:'flex',justifyContent:'center',alignItems:'flex-start',color:T.txt,position:'relative' as const,overflowX:'hidden' as const},card:{width:'100%',maxWidth:600,background:T.card,border:`1px solid ${T.brd}`,borderRadius:T.cardRadius||18,padding:T.cardPadding||20,boxShadow:T.shadowLight||T.neuOut,boxSizing:'border-box' as const,position:'relative' as const,zIndex:1},lbl:{display:'block',fontSize:14,color:T.mut,marginBottom:7,fontWeight:700},inp:{width:'100%',padding:T.inputPadding||'13px 14px',background:T.inp,border:`1px solid ${T.brd}`,borderRadius:T.inputRadius||12,minHeight:48,color:T.txt,fontSize:16,outline:'none',boxSizing:'border-box' as const,fontFamily:'inherit',boxShadow:T.neuIn,transition:'box-shadow .25s ease, border-color .25s ease'},ta:{width:'100%',padding:T.inputPadding||'12px 14px',background:T.inp,border:`1px solid ${T.brd}`,borderRadius:T.inputRadius||12,color:T.txt,fontSize:16,outline:'none',boxSizing:'border-box' as const,minHeight:100,resize:'vertical' as const,fontFamily:'inherit',boxShadow:T.neuIn},btn:{width:'100%',minHeight:48,padding:T.btnPadding||'14px 28px',background:T.grad,border:0,borderRadius:T.btnRadius||14,color:'#fff',fontSize:16,fontWeight:800,cursor:'pointer',boxShadow:T.shadowMedium||`4px 4px 10px rgba(0,0,0,.1),-2px -2px 8px rgba(255,255,255,.15), 0 6px 18px ${T.acc}2e`,fontFamily:'inherit',transition:'all .3s ease'},btnGhost:{width:'100%',minHeight:48,padding:T.btnPadding||'12px 26px',background:T.card,border:`1px solid ${T.brd}`,borderRadius:T.btnRadius||14,color:T.accText,fontSize:15,fontWeight:700,cursor:'pointer',boxShadow:T.neuOut,fontFamily:'inherit',transition:'all .3s ease'},sec:{fontSize:14,fontWeight:800,color:T.ttl,margin:'14px 0 11px',display:'flex',gap:8,alignItems:'center'},div:{height:1,background:`linear-gradient(to right,transparent,${T.brd},transparent)`,margin:'16px 0'}}),[T,lang]);
+ const __chipShadow = `0 2px 6px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06), -1px -1px 2px rgba(255,255,255,.55)`;
+ const __chipShadowActive = `inset 2px 2px 6px rgba(0,0,0,.08), inset -1px -1px 4px rgba(255,255,255,.55), 0 0 0 1.5px ${T.acc}2e`;
+ const __inpBorder = `1.5px solid color-mix(in srgb, ${T.brd} 88%, transparent)`;
+ const __inpFocusShadow = `0 0 0 3px ${T.acc}22, inset 2px 2px 5px rgba(0,0,0,.05), inset -1px -1px 3px rgba(255,255,255,.5)`;
+ const __inpRestShadow = `inset 2px 2px 6px rgba(0,0,0,.06), inset -1px -1px 4px rgba(255,255,255,.6), 0 1px 2px rgba(0,0,0,.04)`;
+ const S=useMemo(()=>({page:{minHeight:'100dvh',fontFamily:"'Vazirmatn','Tahoma',Arial,sans-serif",direction:lang==='fa'?'rtl':'ltr',padding:'calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))',display:'flex',justifyContent:'center',alignItems:'flex-start',color:T.txt,position:'relative' as const,overflowX:'hidden' as const},card:{width:'100%',maxWidth:600,background:T.card,border:`1px solid ${T.brd}`,borderRadius:T.cardRadius||18,padding:T.cardPadding||20,boxShadow:T.shadowLight||T.neuOut,boxSizing:'border-box' as const,position:'relative' as const,zIndex:1},lbl:{display:'block',fontSize:13,color:T.mut,marginBottom:8,fontWeight:700,letterSpacing:'0'},inp:{width:'100%',padding:T.inputPadding||'13px 14px',background:T.inp,border:__inpBorder,borderRadius:T.inputRadius||13,minHeight:48,color:T.txt,fontSize:16,outline:'none',boxSizing:'border-box' as const,fontFamily:'inherit',boxShadow:__inpRestShadow,transition:'box-shadow .22s ease, border-color .22s ease, transform .1s ease'},ta:{width:'100%',padding:T.inputPadding||'12px 14px',background:T.inp,border:__inpBorder,borderRadius:T.inputRadius||13,color:T.txt,fontSize:16,outline:'none',boxSizing:'border-box' as const,minHeight:110,resize:'vertical' as const,fontFamily:'inherit',boxShadow:__inpRestShadow,transition:'box-shadow .22s ease, border-color .22s ease'},btn:{width:'100%',minHeight:48,padding:T.btnPadding||'14px 28px',background:T.grad,border:0,borderRadius:T.btnRadius||14,color:'#fff',fontSize:16,fontWeight:800,cursor:'pointer',boxShadow:T.shadowMedium||`0 6px 14px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.08), 0 8px 22px ${T.acc}33`,fontFamily:'inherit',transition:'all .25s ease'},btnGhost:{width:'100%',minHeight:46,padding:T.btnPadding||'11px 22px',background:T.card,border:`1.5px solid color-mix(in srgb, ${T.brd} 75%, transparent)`,borderRadius:T.btnRadius||14,color:T.accText,fontSize:14.5,fontWeight:700,cursor:'pointer',boxShadow:__chipShadow,fontFamily:'inherit',transition:'all .25s ease'},chip:__chipShadow,chipActive:__chipShadowActive,inpFocus:__inpFocusShadow,sec:{fontSize:14,fontWeight:800,color:T.ttl,margin:'18px 0 11px',display:'flex',gap:8,alignItems:'center'},div:{height:1,background:`linear-gradient(to right,transparent,${T.brd},transparent)`,margin:'16px 0'}}),[T,lang]);
  const countries=cfg.countryCodes||baseCountries; const hasCt=Object.values(cfg.contacts||{}).some((v)=>Array.isArray(v)?v.length:v);
  // اصلاح ۱۸: هدایت به پروژه ثانویه (فرم مشاوره)
- // آپدیت لینک ارجاع: اگر مخاطب در حالت لینک ارجاع (قبلاً مشاوره شده) روی «درخواست مشاوره» بزند، به‌جای رفتن مستقیم به فرم، پاپ‌آپ «درخواست مشاوره مجدد» باز می‌شود.
  const goToSecondaryApp=()=>{
    if (referralConsultant) {
      setReferralConsultReason('');
@@ -481,7 +467,7 @@ const entry={id:uid(),trackingCode,type:'course',date:today(),time:now(),...data
   return()=>window.clearTimeout(t);
  },[view,flowDeadline]);
  // نکته: کلید APP_A_URL برای سازگاری با کدهای موجود صفحات نگه داشته شده، اما مقدار آن اکنون آدرس «پروژه ثانویه (B - فرم مشاوره)» است (VITE_APP_B_URL).
- const app:AppContextValue={cfg,saveCfg,mergeSettings,T,TH,S,css,lang,setLang,view,setView,fd,setFd,course,setCourse,courseResult,editChild,setEditChild,shipModal,setShipModal,courseTab,setCourseTab,expandedCourse,setExpandedCourse,countries,placeholder,PROFILE_PHOTO,APP_A_URL:APP_B_URL,APP_B_URL,publicText,trVal,showContactOn,goToAppA,goHome:()=>setView('home'),resetForm,onLogout:()=>{try{clearAdminSession()}catch{};setAdminAuthed(false);setView('admin-login')},CountrySelect,Field,SelectBox,Err,Stepper,Tag,Modal,ContactPanel,MiniIcon,TrustRotator,MemphisBg,Footer,activeTab,chooseDest,deliveryText,validateOptionalDate,finalizeCourseRegistration,phonePlaceholder,validPhone,fullPhone,fileToData,deleteStoredImage,uploadPdfFile,deleteStoredFile,uploadTonguePhoto,deleteStoredTonguePhoto,uploadReceiptWithProgress,uploadVoiceNote,adminTab,setAdminTab,adminAuthed,p2e,referralConsultant,setReferralConsultant,referralTarget,setReferralTarget,requestConsult,referralConsultOpen,setReferralConsultOpen,referralConsultReason,setReferralConsultReason,startConsult,consultPulse,findTabByCode:((tabs:DynamicRecord[],code:string)=>findTabByCode(tabs,code)), publicDesign: resolvePublicDesign(), publicColorMode: effectivePublicMode};
+ const app:AppContextValue={cfg,saveCfg,mergeSettings,T,TH,S,css, publicDesign: resolvePublicDesign(), publicColorMode: effectivePublicMode,lang,setLang,view,setView,fd,setFd,course,setCourse,courseResult,editChild,setEditChild,shipModal,setShipModal,courseTab,setCourseTab,expandedCourse,setExpandedCourse,countries,placeholder,PROFILE_PHOTO,APP_A_URL:APP_B_URL,APP_B_URL,publicText,trVal,showContactOn,goToAppA,goHome:()=>setView('home'),resetForm,onLogout:()=>{try{clearAdminSession()}catch{};setAdminAuthed(false);setView('admin-login')},CountrySelect,Field,SelectBox,Err,Stepper,Tag,Modal,ContactPanel,MiniIcon,TrustRotator,MemphisBg,Footer,activeTab,chooseDest,deliveryText,validateOptionalDate,finalizeCourseRegistration,phonePlaceholder,validPhone,fullPhone,fileToData,deleteStoredImage,uploadPdfFile,deleteStoredFile,uploadTonguePhoto,deleteStoredTonguePhoto,uploadReceiptWithProgress,uploadVoiceNote,adminTab,setAdminTab,adminAuthed,p2e,referralConsultant,setReferralConsultant,referralTarget,setReferralTarget,requestConsult,referralConsultOpen,setReferralConsultOpen,referralConsultReason,setReferralConsultReason,referralConsultShowReason,setReferralConsultShowReason,startConsult,consultPulse,findTabByCode:((tabs:DynamicRecord[],code:string)=>findTabByCode(tabs,code))};
  // R21: مسیرهای admin از اپ حذف شدند؛ ورود مستقیم هر آدرسِ حاوی admin با ۴۰۴ ایستا پاسخ داده می‌شود و پنل در /desk/app با گاردِ نشست محافظت می‌شود
  // اصلاح چانک-۱: Suspense برای Lazy Loading
  
@@ -497,21 +483,22 @@ const page=<AppRoutes app={app} adminAuthed={adminAuthed} referralReady={referra
  const noMenuViews=['courses','course-shipping','course-payment','course-confirm','track','portal','admin-login','admin'];
  const successView=view==='course-done'||(view==='form'&&consultationComplete);
  const sensitiveFlow=!successView&&['form','child-info','course-shipping','course-payment','payment-verify','course-confirm'].includes(view);
+ const showAssistant=successView||['home','courses','experience','licenses','education','about','faq','contact','products','privacy','track','portal','admin-login'].includes(view);
  // صفحات ویژه (پیگیری/پنل کاربر، ورود مدیریت) دقیقاً مثل صفحات عمومی منوی همبرگری را دارند
  const entryChromeViews=['track','portal','admin-login'];
  const showMenu=!sensitiveFlow&&(entryChromeViews.includes(view)||(!glassFullViews.includes(view)&&(successView||view==='courses'||(cfg.menuVisibility?.[view]!==undefined?!!cfg.menuVisibility[view]:!noMenuViews.includes(view)))));
  const headerOnFullViews=['admin-login','track','portal']; // پنل کاربر، پیگیری دوره و ورود مدیریت هم هدر صفحات عمومی را دارند
  const showHeader=view!=='admin'&&(!glassFullViews.includes(view)||headerOnFullViews.includes(view));
- const showAssistant=successView||['home','courses','experience','licenses','education','about','faq','contact','products','privacy','track','portal','admin-login'].includes(view);
  // بازطراحی: پس‌زمینه ممفیس تزئینی روی همه صفحات عمومی (به‌جز پنل مدیریت) رندر می‌شود
- // ─── گارد فلش: اگر URL لینک ارجاع دارد و هنوز referral مشخص نشده، صفحه عمومی را نشان نده تا مستقیم صفحه ارجاع بیاید ───
+ // ─── گارد فلش: اگر URL لینک ارجاع دارد و هنوز referral مشخص نشده، صفحه عمومی را نشان نده ───
  if(!referralReady && view!=='admin' && view!=='admin-login'){
    return <div style={{minHeight:'100dvh',background:'var(--zk-bg, #FDF8F3)'}}/>;
  }
  const canonicalPath=location.pathname==='/'?'/':location.pathname.replace(/\/+$/,'');
  const canonicalOrigin=typeof window!=='undefined'?window.location.origin:PUBLIC_SITE_URL;
  const canonicalUrl=`${canonicalOrigin}${canonicalPath}`;
- return <><Helmet><link rel="canonical" href={canonicalUrl}/><meta property="og:url" content={canonicalUrl}/></Helmet>{view!=='admin'&&<MemphisBg T={T}/>}{showHeader&&<Header T={T} lang={lang} setLang={setLang} adminAuthed={adminAuthed} onAdminQuestions={()=>{setView('admin');setAdminTab('userQuestions')}} portalMode={(cfg as any)?.entryMode!=='track'} assistantSlot={!!showAssistant}/>}{!showHeader&&showLangSwitcher&&<div style={{position:'fixed',left:8,top:8,zIndex:1000}}><LanguageSwitcher lang={lang} setLang={setLang} T={T}/></div>}{showMenu&&<HamburgerMenu T={T} lang={lang} setLang={setLang} cfg={cfg} publicText={publicText} APP_A_URL={APP_B_URL} setView={setView} referralConsultant={referralConsultant} referralTarget={referralTarget} findTabByCode={findTabByCode} onCoursesClick={()=>{
+ const themeVars = `:root{--zk-pri:${T.acc};--zk-pri-text:${T.accText};--zk-card:${T.card};--zk-inp:${T.inp};--zk-br:${T.brd};--zk-mut:${T.mut};--zk-err:${T.err};--zk-bg:${T.bg};}`;
+ return <><Helmet><link rel="canonical" href={canonicalUrl}/><meta property="og:url" content={canonicalUrl}/></Helmet><style>{themeVars}</style>{view!=='admin'&&<MemphisBg T={T}/>}{showHeader&&<Header T={T} lang={lang} setLang={setLang} adminAuthed={adminAuthed} onAdminQuestions={()=>{setView('admin');setAdminTab('userQuestions')}} portalMode={(cfg as any)?.entryMode!=='track'} assistantSlot={!!showAssistant}/>}{!showHeader&&showLangSwitcher&&<div style={{position:'fixed',left:8,top:8,zIndex:1000}}><LanguageSwitcher lang={lang} setLang={setLang} T={T}/></div>}{showMenu&&<HamburgerMenu T={T} lang={lang} setLang={setLang} cfg={cfg} publicText={publicText} APP_A_URL={APP_B_URL} setView={setView} referralConsultant={referralConsultant} referralTarget={referralTarget} findTabByCode={findTabByCode} onCoursesClick={()=>{
   if (referralTarget?.tabCode) {
     const tab = findTabByCode(cfg.courseTabs||[], referralTarget.tabCode);
     if (tab) {
@@ -584,5 +571,5 @@ const page=<AppRoutes app={app} adminAuthed={adminAuthed} referralReady={referra
 })()}{showAssistant&&<AssistantWidget T={T} lang={lang}/>}<ErrorAlertHost cfg={cfg} lang={lang} /><ZkDialog /><div style={{paddingTop:showHeader?72:0,position:'relative',zIndex:1}}>{(flowDeadline&&timerViews.includes(view))&&<div style={{maxWidth:600,margin:'0 auto',marginTop:showHeader?'calc(env(safe-area-inset-top, 0px) - 6px)':undefined,padding:showHeader?'0 14px 0':'calc(2px + env(safe-area-inset-top, 0px)) 14px 0',position:'relative',zIndex:5}}><CourseTimer deadline={flowDeadline} lang={lang}/></div>}<div style={(flowDeadline&&timerViews.includes(view))?{marginTop:'calc(-14px - env(safe-area-inset-top, 0px))'}:undefined}>{page}</div></div></>;
 }
 // اصلاح ۲۴: جلوگیری از رنگ آبی پیش‌فرض مرورگر در :visited/:active/:focus
-const css=`@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes floatSoft{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes zk-hero-pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(15,118,110,.35);box-shadow:0 0 0 0 color-mix(in srgb,var(--zk-primary) 40%,transparent)}50%{transform:scale(1.05);box-shadow:0 0 0 12px rgba(15,118,110,0);box-shadow:0 0 0 12px transparent}}@-webkit-keyframes fadeSlide{from{opacity:0;-webkit-transform:translateY(12px)}to{opacity:1;-webkit-transform:translateY(0)}}@-webkit-keyframes modalIn{from{opacity:0;-webkit-transform:translateY(20px) scale(.96)}to{opacity:1;-webkit-transform:translateY(0) scale(1)}}@-webkit-keyframes zk-hero-pulse{0%,100%{-webkit-transform:scale(1);box-shadow:0 0 0 0 rgba(15,118,110,.35);box-shadow:0 0 0 0 color-mix(in srgb,var(--zk-primary) 40%,transparent)}50%{-webkit-transform:scale(1.05);box-shadow:0 0 0 12px rgba(15,118,110,0);box-shadow:0 0 0 12px transparent}}@-webkit-keyframes zk-menu-pulse{0%,100%{box-shadow:0 0 0 0 rgba(15,118,110,.4)}50%{box-shadow:0 0 0 8px rgba(15,118,110,0)}}@keyframes zk-ring-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@-webkit-keyframes zk-ring-spin{from{-webkit-transform:rotate(0deg)}to{-webkit-transform:rotate(360deg)}}@keyframes zk-story-in{from{opacity:0;transform:scale(.96) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}@-webkit-keyframes zk-story-in{from{opacity:0;-webkit-transform:scale(.96) translateY(6px)}to{opacity:1;-webkit-transform:scale(1) translateY(0)}}@keyframes zk-story-slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}@-webkit-keyframes zk-story-slide{from{opacity:0;-webkit-transform:translateX(16px)}to{opacity:1;-webkit-transform:translateX(0)}}@keyframes zk-story-hl-next{0%{opacity:.4;transform:perspective(900px) translateX(90px) rotateY(-26deg)}100%{opacity:1;transform:perspective(900px) translateX(0) rotateY(0deg)}}@-webkit-keyframes zk-story-hl-next{0%{opacity:.4;-webkit-transform:perspective(900px) translateX(90px) rotateY(-26deg)}100%{opacity:1;-webkit-transform:perspective(900px) translateX(0) rotateY(0deg)}}@keyframes zk-story-hl-prev{0%{opacity:.4;transform:perspective(900px) translateX(-90px) rotateY(26deg)}100%{opacity:1;transform:perspective(900px) translateX(0) rotateY(0deg)}}@-webkit-keyframes zk-story-hl-prev{0%{opacity:.4;-webkit-transform:perspective(900px) translateX(-90px) rotateY(26deg)}100%{opacity:1;-webkit-transform:perspective(900px) translateX(0) rotateY(0deg)}}@keyframes zk-hint-pulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}@-webkit-keyframes zk-hint-pulse{0%,100%{opacity:.55;-webkit-transform:scale(1)}50%{opacity:1;-webkit-transform:scale(1.15)}}@keyframes zk-story-out{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(45vh) scale(.9)}}@-webkit-keyframes zk-story-out{from{opacity:1;-webkit-transform:translateY(0) scale(1)}to{opacity:0;-webkit-transform:translateY(45vh) scale(.9)}}@keyframes zk-fade-in{from{opacity:0}to{opacity:1}}@-webkit-keyframes zk-fade-in{from{opacity:0}to{opacity:1}}@keyframes zk-sheet-up{from{transform:translateY(100%);opacity:.4}to{transform:translateY(0);opacity:1}}@-webkit-keyframes zk-sheet-up{from{-webkit-transform:translateY(100%);opacity:.4}to{-webkit-transform:translateY(0);opacity:1}}.zk-overlay-fade{animation:zk-fade-in .25s ease both}.zk-sheet-up{animation:zk-sheet-up .32s cubic-bezier(.16,1,.3,1) both}.zk-pulse{-webkit-animation:zk-hero-pulse 1.6s ease-in-out infinite;animation:zk-hero-pulse 1.6s ease-in-out infinite}*{box-sizing:border-box}button,button:active,button:focus{color:inherit;-webkit-tap-highlight-color:transparent;outline:none;-webkit-appearance:none}button:hover{filter:brightness(1.035)}button:active{transform:scale(.98)}input,textarea,select{font-size:16px!important}a,a:visited,a:active,a:focus{color:inherit;text-decoration:none}button:focus,a:focus{outline:none}button::-moz-focus-inner{border:0} @media(max-width:520px){body{margin:0} }`;
+const css=`@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes floatSoft{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes zk-hero-pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(15,118,110,.35);box-shadow:0 0 0 0 color-mix(in srgb,var(--zk-primary) 40%,transparent)}50%{transform:scale(1.05);box-shadow:0 0 0 12px rgba(15,118,110,0);box-shadow:0 0 0 12px transparent}}@-webkit-keyframes fadeSlide{from{opacity:0;-webkit-transform:translateY(12px)}to{opacity:1;-webkit-transform:translateY(0)}}@-webkit-keyframes modalIn{from{opacity:0;-webkit-transform:translateY(20px) scale(.96)}to{opacity:1;-webkit-transform:translateY(0) scale(1)}}@-webkit-keyframes zk-hero-pulse{0%,100%{-webkit-transform:scale(1);box-shadow:0 0 0 0 rgba(15,118,110,.35);box-shadow:0 0 0 0 color-mix(in srgb,var(--zk-primary) 40%,transparent)}50%{-webkit-transform:scale(1.05);box-shadow:0 0 0 12px rgba(15,118,110,0);box-shadow:0 0 0 12px transparent}}@-webkit-keyframes zk-menu-pulse{0%,100%{box-shadow:0 0 0 0 rgba(15,118,110,.4)}50%{box-shadow:0 0 0 8px rgba(15,118,110,0)}}@keyframes zk-ring-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@-webkit-keyframes zk-ring-spin{from{-webkit-transform:rotate(0deg)}to{-webkit-transform:rotate(360deg)}}@keyframes zk-story-in{from{opacity:0;transform:scale(.96) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}@-webkit-keyframes zk-story-in{from{opacity:0;-webkit-transform:scale(.96) translateY(6px)}to{opacity:1;-webkit-transform:scale(1) translateY(0)}}@keyframes zk-story-slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}@-webkit-keyframes zk-story-slide{from{opacity:0;-webkit-transform:translateX(16px)}to{opacity:1;-webkit-transform:translateX(0)}}@keyframes zk-story-hl-next{0%{opacity:.4;transform:perspective(900px) translateX(90px) rotateY(-26deg)}100%{opacity:1;transform:perspective(900px) translateX(0) rotateY(0deg)}}@-webkit-keyframes zk-story-hl-next{0%{opacity:.4;-webkit-transform:perspective(900px) translateX(90px) rotateY(-26deg)}100%{opacity:1;-webkit-transform:perspective(900px) translateX(0) rotateY(0deg)}}@keyframes zk-story-hl-prev{0%{opacity:.4;transform:perspective(900px) translateX(-90px) rotateY(26deg)}100%{opacity:1;transform:perspective(900px) translateX(0) rotateY(0deg)}}@-webkit-keyframes zk-story-hl-prev{0%{opacity:.4;-webkit-transform:perspective(900px) translateX(-90px) rotateY(26deg)}100%{opacity:1;-webkit-transform:perspective(900px) translateX(0) rotateY(0deg)}}@keyframes zk-hint-pulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}@-webkit-keyframes zk-hint-pulse{0%,100%{opacity:.55;-webkit-transform:scale(1)}50%{opacity:1;-webkit-transform:scale(1.15)}}@keyframes zk-story-out{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(45vh) scale(.9)}}@-webkit-keyframes zk-story-out{from{opacity:1;-webkit-transform:translateY(0) scale(1)}to{opacity:0;-webkit-transform:translateY(45vh) scale(.9)}}@keyframes zk-fade-in{from{opacity:0}to{opacity:1}}@-webkit-keyframes zk-fade-in{from{opacity:0}to{opacity:1}}@keyframes zk-sheet-up{from{transform:translateY(100%);opacity:.4}to{transform:translateY(0);opacity:1}}@-webkit-keyframes zk-sheet-up{from{-webkit-transform:translateY(100%);opacity:.4}to{-webkit-transform:translateY(0);opacity:1}}.zk-overlay-fade{animation:zk-fade-in .25s ease both}.zk-sheet-up{animation:zk-sheet-up .32s cubic-bezier(.16,1,.3,1) both}.zk-pulse{-webkit-animation:zk-hero-pulse 1.6s ease-in-out infinite;animation:zk-hero-pulse 1.6s ease-in-out infinite}*{box-sizing:border-box}button,button:active,button:focus{color:inherit;-webkit-tap-highlight-color:transparent;outline:none;-webkit-appearance:none}button:hover{filter:brightness(1.035)}button:active{transform:scale(.98)}input,textarea,select{font-size:16px!important}a,a:visited,a:active,a:focus{color:inherit;text-decoration:none}button:focus,a:focus{outline:none}input:focus,textarea:focus,select:focus{border-color:var(--zk-pri)!important;box-shadow:0 0 0 3px color-mix(in srgb, var(--zk-pri) 22%, transparent), inset 2px 2px 5px rgba(0,0,0,.05), inset -1px -1px 3px rgba(255,255,255,.5)!important}input::placeholder,textarea::placeholder{color:color-mix(in srgb, var(--zk-mut) 80%, transparent)}button.zk-chip{transition:all .2s ease;background:var(--zk-card)!important;border:1.5px solid color-mix(in srgb, var(--zk-br) 85%, transparent)!important;box-shadow:0 2px 6px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06), -1px -1px 2px rgba(255,255,255,.55)}button.zk-chip[aria-pressed="true"],button.zk-chip.is-active{box-shadow:inset 2px 2px 6px rgba(0,0,0,.08), inset -1px -1px 4px rgba(255,255,255,.55), 0 0 0 2px color-mix(in srgb, var(--zk-pri) 25%, transparent)!important;border-color:var(--zk-pri)!important;background:color-mix(in srgb, var(--zk-pri) 10%, var(--zk-card))!important;color:var(--zk-pri-text)!important}button.zk-chip:active{transform:scale(.97)}button::-moz-focus-inner{border:0} @media(max-width:520px){body{margin:0} }`;
 export default App;

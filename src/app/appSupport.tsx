@@ -149,31 +149,7 @@ const adminPanelDefaults:Any={
 };
 
 export const TH:Any={
- // classic is the former "روشن" light theme — now canonical "دیزاین کلاسیک"
- classic:{
-  id: 'classic', name: 'دیزاین کلاسیک',
-  bg: '#eaf1f7',
-  card: '#fff',
-  brd: 'rgba(35,100,165,.16)',
-  acc: '#2564a8',
-  soft: 'rgba(35,100,165,.09)',
-  grad: 'linear-gradient(135deg,#1a4f8a,#2578c8)',
-  txt: '#162435',
-  mut: '#4E6472',
-  ttl: '#2564a8',
-  inp: '#f4f8fc',
-  sel: '#eaf1f7',
-  pop: '#fff',
-  err: '#B91C1C',
-  ok: '#047857',
-  warn: '#854D0E',
-  badge: '#f0f5fb',
-  hdr: 'rgba(234,241,247,.62)',
-  neuOut: '6px 6px 12px rgba(35,100,165,.14),-6px -6px 12px rgba(255,255,255,.75)',
-  neuIn: 'inset 3px 3px 7px rgba(35,100,165,.12),inset -3px -3px 7px rgba(255,255,255,.7)',
-  memphis: ['#bfdbfe','#93c5fd','#dbeafe'],
-  ...classicDefaults,
- },
+ light:{id:'light',name:'روشن',bg:'#eaf1f7',card:'#fff',brd:'rgba(35,100,165,.16)',acc:'#2564a8',soft:'rgba(35,100,165,.09)',grad:'linear-gradient(135deg,#1a4f8a,#2578c8)',txt:'#162435',mut:'#4E6472',ttl:'#2564a8',inp:'#f4f8fc',sel:'#eaf1f7',pop:'#fff',err:'#B91C1C',ok:'#047857',warn:'#854D0E',badge:'#f0f5fb',hdr:'rgba(234,241,247,.62)',neuOut:'6px 6px 12px rgba(35,100,165,.14),-6px -6px 12px rgba(255,255,255,.75)',neuIn:'inset 3px 3px 7px rgba(35,100,165,.12),inset -3px -3px 7px rgba(255,255,255,.7)',memphis:['#bfdbfe','#93c5fd','#dbeafe'],...classicDefaults},
  wellness:{
   id: 'wellness', name: 'Wellness',
   bg: '#FFFFFF',
@@ -253,12 +229,36 @@ export const TH:Any={
   topbarHeight: 56,
   fontFamily: "'Vazirmatn','Tahoma',Arial,sans-serif",
  },
+ classic:{
+  id: 'classic', name: 'کلاسیک',
+  bg: '#eaf1f7',
+  card: '#fff',
+  brd: 'rgba(35,100,165,.16)',
+  acc: '#2564a8',
+  soft: 'rgba(35,100,165,.09)',
+  grad: 'linear-gradient(135deg,#1a4f8a,#2578c8)',
+  txt: '#162435',
+  mut: '#4E6472',
+  ttl: '#2564a8',
+  inp: '#f4f8fc',
+  sel: '#eaf1f7',
+  pop: '#fff',
+  err: '#B91C1C',
+  ok: '#047857',
+  warn: '#854D0E',
+  badge: '#f0f5fb',
+  hdr: 'rgba(234,241,247,.62)',
+  neuOut: '6px 6px 12px rgba(35,100,165,.14),-6px -6px 12px rgba(255,255,255,.75)',
+  neuIn: 'inset 3px 3px 7px rgba(35,100,165,.12),inset -3px -3px 7px rgba(255,255,255,.7)',
+  memphis: ['#bfdbfe','#93c5fd','#dbeafe'],
+  ...classicDefaults,
+ },
 
 };
 
-// Add blend after TH is fully defined — fixed: spread classic (light) not removed light, ensure colors apply correctly
+// Add blend after TH is fully defined
 TH.blend = {
-  ...TH.classic,
+  ...TH.light,
   id: 'blend', name: 'ترکیبی',
   bg: '#f7fafb',
   card: '#fff',
@@ -282,9 +282,6 @@ TH.blend = {
   memphis: ['#e7f2fc','#fff0e8','#eaf5f3'],
   ...classicDefaults,
 };
-
-// backward compat: old 'light' theme now maps to classic (روشن -> دیزاین کلاسیک)
-TH.light = { ...TH.classic, id: 'light', name: 'روشن (قدیمی - کلاسیک)' };
 
 Object.assign(TH, {
  'admin-light':{
@@ -318,8 +315,8 @@ Object.assign(TH, {
   id:'kidlearn-dark',name:'KidLearn — تیره',
  },
  'motherly-trust':{
-  ...TH.classic,
-  id: 'motherly-trust', name: 'مادرانه-اعتمادساز (قدیمی)',
+  ...TH.light,
+  id: 'motherly-trust', name: 'مادرانه-اعتمادساز',
   bg: '#f8fbfa',
   card: '#fff',
   brd: '#d9e2ea',
@@ -363,9 +360,9 @@ const defTabs=[
  ]}
 ];
 const defaultSettings:Any={
- publicThemeMode:'auto',siteTitle:'فرزند من',browserTitle:'فرزند من',specialistName:'کارشناس رشد و تغذیه کودک و نوجوان فرزند من',showSpecialistPhoto:true,photoUrl:PROFILE_PHOTO,showProductsPage:true,showLicensesPage:true,adminLoginText:'ورود به پنل مدیریت',adminPhone:'',emergencyToken:'',
+ publicThemeMode:'auto',siteTitle:'زینالیکید',browserTitle:'زینالیکید',specialistName:'کارشناس رشد و تغذیه کودک و نوجوان زینالیکید',showSpecialistPhoto:true,photoUrl:PROFILE_PHOTO,showProductsPage:true,showLicensesPage:true,adminLoginText:'ورود به پنل مدیریت',adminPhone:'',emergencyToken:'',
  // اصلاح ۱-۶ (مرحله ۴): عناوین کنار عکس پروفایل — دو زبانه، قابل ویرایش از پنل مدیریت
- specialistTitle:'کارشناس رشد و تغذیه کودک و نوجوان فرزند من',specialistTitleEn:'Child and Adolescent Growth and Nutrition Specialist at Farzandman',heroSubtitle:'ضمن آرزوی اوقاتی خوش برای شما',heroSubtitleEn:'Wishing you a pleasant time',
+ specialistTitle:'کارشناس رشد و تغذیه کودک و نوجوان زینالیکید',specialistTitleEn:'Child and Adolescent Growth and Nutrition Specialist at Zeynalikid',heroSubtitle:'ضمن آرزوی اوقاتی خوش برای شما',heroSubtitleEn:'Wishing you a pleasant time',
  heroTitle:'ضمن آرزوی اوقاتی خوش برای شما',heroDesc:'این فرم برای بررسی شرایط فرزند شما و تعیین نوبت مشاوره خصوصی طراحی شده است.',noticeText:'این مشاوره فقط به والدین یا سرپرست قانونی فرزند ارائه می‌شود. لطفاً اطلاعات را با دقت تکمیل فرمایید.',phoneNote:'مشاوره فقط به‌صورت تلفنی',submitBtnText:'ثبت درخواست مشاوره',successMsg:'اطلاعات فرزند شما با موفقیت ثبت شد',successSubMsg:'طی ۲۴ الی ۴۸ ساعت آینده با شما تماس می‌گیریم',timeSlotLabel:'بازه زمانی مناسب برای تماس (اختیاری)',
  directCourseBtn:'معرفی و ثبت مستقیم دوره',newFormBtn:'ثبت فرم جدید',contactBtn:'ارتباط با ما',backToConsultation:'بازگشت به فرم مشاوره',currencyUnit:'تومان',
  // اصلاح ۲: چیدمان (ترتیب + نمایش/پنهان) میانبرهای صفحه هوم و آیتم‌های منوی همبرگری — قابل تنظیم از پنل مدیریت
@@ -427,17 +424,17 @@ const defaultSettings:Any={
   education:{showIntro:true,order:'contentFirst'},
   about:{showIntro:true,order:'contentFirst'}
  },
- coursesIntroText:'در این بخش، دوره‌های تخصصی فرزند من برای حمایت از رشد قد، افزایش اشتها و همراهی بدغذایی، و حمایت از تمرکز و یادگیری کودکان و نوجوانان معرفی شده‌اند. هر دوره بر اساس روش TC و با توجه به طبع و شرایط منحصربه‌فرد فرزند شما طراحی می‌شود. برای دریافت مشاوره رایگان، فرم مشاوره را تکمیل کنید.',
- coursesIntroTextEn:"In this section, Farzandman's specialized courses for improving height growth, increasing appetite, addressing picky eating, and boosting children's intelligence and focus are introduced. Each course is designed based on the TC method and according to your child's unique temperament and condition. For a free consultation, please complete the consultation form.",
+ coursesIntroText:'در این بخش، دوره‌های تخصصی زینالیکید برای حمایت از رشد قد، افزایش اشتها و همراهی بدغذایی، و حمایت از تمرکز و یادگیری کودکان و نوجوانان معرفی شده‌اند. هر دوره بر اساس روش TC و با توجه به طبع و شرایط منحصربه‌فرد فرزند شما طراحی می‌شود. برای دریافت مشاوره رایگان، فرم مشاوره را تکمیل کنید.',
+ coursesIntroTextEn:"In this section, Zeynalikid's specialized courses for improving height growth, increasing appetite, addressing picky eating, and boosting children's intelligence and focus are introduced. Each course is designed based on the TC method and according to your child's unique temperament and condition. For a free consultation, please complete the consultation form.",
  // اصلاح ۳: متن سئوی کامل (پایین صفحه دوره‌ها، بین سوالات متداول و ارتباط با ما)
- coursesSeoFullText:'در فرزند من، هر دوره ترکیبی از مشاوره تخصصی، برنامه مکمل و تغذیه اختصاصی، پشتیبانی مرحله‌ای و پیگیری رشد فرزند شماست. هدف ما کمک به والدین برای تصمیم‌گیری آگاهانه در مسیر رشد قد، همراهی بی‌اشتهایی و حمایت از تمرکز کودکان است.',
- coursesSeoFullTextEn:"At Farzandman, every course combines specialized consultation, a personalized supplement and nutrition plan, step-by-step support, and growth tracking for your child. Our goal is to help parents make informed decisions on the path of height growth, addressing picky eating, and boosting children's intelligence.",
+ coursesSeoFullText:'در زینالیکید، هر دوره ترکیبی از مشاوره تخصصی، برنامه مکمل و تغذیه اختصاصی، پشتیبانی مرحله‌ای و پیگیری رشد فرزند شماست. هدف ما کمک به والدین برای تصمیم‌گیری آگاهانه در مسیر رشد قد، همراهی بی‌اشتهایی و حمایت از تمرکز کودکان است.',
+ coursesSeoFullTextEn:"At Zeynalikid, every course combines specialized consultation, a personalized supplement and nutrition plan, step-by-step support, and growth tracking for your child. Our goal is to help parents make informed decisions on the path of height growth, addressing picky eating, and boosting children's intelligence.",
  experienceIntroText:'در این بخش، تجربه‌های واقعی والدین از دوره‌های رشد قد، همراهی بی‌اشتهایی و حمایت از تمرکز کودکان را مشاهده می‌کنید. این تجربه‌ها با رضایت والدین منتشر شده‌اند و نشان‌دهنده تأثیر مثبت روش TC بر سلامت و رشد فرزندان است.',
  experienceIntroTextEn:'In this section, real experiences of parents from height growth, appetite guidance, and intelligence boosting courses are shared. These experiences are published with parental consent and reflect the positive impact of the TC method on children\'s health and growth.',
  educationIntroText:'در این بخش، آموزش‌های تخصصی در زمینه تغذیه کودک، افزایش رشد قد، بهبود اشتها، تقویت تمرکز و هوش کودکان گردآوری شده است. محتوای این صفحه شامل ویدیو، ویس، عکس و مقالات آموزشی است.',
  educationIntroTextEn:"In this section, specialized educational content about child nutrition, height growth, appetite improvement, focus and learning support is collected. This page's content includes video, voice, photo, and educational articles.",
- aboutIntroText:'فرزند من یک سامانه مشاوره تخصصی در حوزه رشد و تغذیه کودکان و نوجوانان است. تیم ما با استفاده از روش TC و علم زبان‌شناسی، برنامه‌های اختصاصی برای همراهی بی‌اشتهایی، حمایت از رشد قد و تمرکز فرزندان طراحی می‌کند.',
- aboutIntroTextEn:"Farzandman is a specialized consultation system in the field of children's growth and nutrition. Our team, using the TC method and linguistics science, designs customized programs to treat picky eating, increase height growth, and boost children's intelligence and focus.",
+ aboutIntroText:'زینالیکید یک سامانه مشاوره تخصصی در حوزه رشد و تغذیه کودکان و نوجوانان است. تیم ما با استفاده از روش TC و علم زبان‌شناسی، برنامه‌های اختصاصی برای همراهی بی‌اشتهایی، حمایت از رشد قد و تمرکز فرزندان طراحی می‌کند.',
+ aboutIntroTextEn:"Zeynalikid is a specialized consultation system in the field of children's growth and nutrition. Our team, using the TC method and linguistics science, designs customized programs to treat picky eating, increase height growth, and boost children's intelligence and focus.",
  consultTopics:['رشد قد','بی‌اشتهایی / بدغذایی','هوش و ذهن','وزنگیری'],digestiveOptions:['ندارد','یبوست','اسهال','نفخ','رفلاکس','سایر'],appetiteOptions:['خوب','متوسط','ضعیف','بی‌اشتهایی شدید'],specialConditions:['سلیاک','فاویسم (باقلایی)','حساسیت به آجیل','کم‌خونی مینور'],timeSlots:['۹ تا ۱۲','۱۲ تا ۱۸','۱۸ تا ۲۲'],categories:['ثبتی','اصلاحی','پیگیری','آخر ماه','مشاوره اولیه'],
  formFields:{parentName:{label:'نام و نام خانوادگی',placeholder:'نام و نام خانوادگی',show:true,required:false},parentPhone:{label:'شماره تماس',placeholder:'09123456789',show:true,required:true},age:{label:'سن (سال)',placeholder:'مثلاً ۵',show:true,required:true,min:2,max:17},height:{label:'قد (سانتیمتر)',placeholder:'مثلاً ۱۱۰',show:true,required:false},weight:{label:'وزن (کیلوگرم)',placeholder:'مثلاً ۱۸',show:true,required:false},disease:{label:'بیماری خاص',placeholder:'نام بیماری...',show:true,required:false},notes:{label:'توضیحات تکمیلی',placeholder:'هر گونه توضیح اضافی، سابقه بیماری، دارو مصرفی یا نگرانی خاص را اینجا بنویسید',show:true,required:false}},
  countryCodes:baseCountries,
@@ -501,7 +498,7 @@ const defaultSettings:Any={
    {id:'ht9',title:'صفحه رشد یه درِ کشویی‌ست که یه روز برای همیشه بسته میشه.',description:'قبل از بسته شدنش، سوخت لازم رو بهش برسون.',order:9},
    {id:'ht10',title:'مکمل رشد قد، وقتی با طبع فرزندت هماهنگ باشه، بهتر جواب می‌ده.',description:'ما با تحلیل تخصصی عکس زبان، مسیر جذب و رشد رو بهتر می‌شناسیم.',order:10},
    {id:'ht11',title:'عکس زبون بچهات، نقشه گنج سلامتی و قد بلندشه.',description:'ما به جای حدس زدن، نقشه می‌خونیم. ریشه کندرشدی رو دقیقاً همونجا پیدا می‌کنیم.',order:11},
-   {id:'ht12',title:'نسخه منحصربه‌فرد برای رشد منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در فرزند من شبیه هم نیست. چون هیچ دو کودکی شبیه هم نیستن.',order:12},
+   {id:'ht12',title:'نسخه منحصربه‌فرد برای رشد منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در زینالیکید شبیه هم نیست. چون هیچ دو کودکی شبیه هم نیستن.',order:12},
    {id:'ht13',title:'تجربه‌های والدین می‌تواند به انتخاب آگاهانه‌تر مسیر رشد کمک کند.',description:'بازخوردها را ببینید و سپس متناسب با شرایط فرزندتان تصمیم بگیرید.',order:13},
    {id:'ht14',title:'هر هفته که بگذره و اقدام نکنی، یه قدم از هم‌سن و سالاش عقب‌تر میفته.',description:'کمبود وزن موندگار میشه و قد از دست میره. تصمیم سخت امروز، حسرت آسون فردا رو حذف می‌کنه.',order:14},
    {id:'ht15',title:'بچت قهرمان قدی میشه چون بدنش از درون ترمیم میشه.',description:'تفاوت بین یه کودک خسته و کم‌قد، با یه کودک پرانرژی و بلندقامت، ریشه‌اش تو ترمیم سلولیه.',order:15},
@@ -522,7 +519,7 @@ const defaultSettings:Any={
    {id:'ap12',title:'اگه سر سفره جنگ جهانی سوم راه میفته، مشکل از غذا نیست، از سیستم گوارش و طبعشه.',description:'قبل از دعوا، تیغه‌های زبانش رو بررسی کن.',order:12},
    {id:'ap13',title:'به جای این‌که توپ رو به گردن بچه بندازی، ببین بدنش چه ریزمغذی‌ای رو جذب نکرده.',description:'کمبود زینک و آهن، اولین مظنون بی‌اشتهایی بچه‌هاست.',order:13},
    {id:'ap14',title:'بی‌اشتهایی یعنی متابولیسم بدن قفل کرده. ما کلیدش رو داریم.',description:'کلیدش یه نسخه گیاهی پیچیده شده با طعم مورد علاقه بچه‌اته.',order:14},
-   {id:'ap15',title:'فرزند من بدغذاست؟ نه! بدنش هوشمندانه از چیزی که بلد نیست هضم کنه، فرار می‌کنه.',description:'به بدنش گوش بده، داره راه نجات رو نشون میده.',order:15},
+   {id:'ap15',title:'زینالیکید بدغذاست؟ نه! بدنش هوشمندانه از چیزی که بلد نیست هضم کنه، فرار می‌کنه.',description:'به بدنش گوش بده، داره راه نجات رو نشون میده.',order:15},
    {id:'ap16',title:'با اصلاح طبع، بچه‌ای که از قاشق فرار می‌کرد، خودش دنبال بشقاب میاد.',description:'این یه شعار نیست، نتیجه‌ای هست که ۱۰,۰۰۰ مادر دیدش.',order:16},
    {id:'ap17',title:'همراهی ریشه‌ای، نه مسکن موقت.',description:'ما با تحلیل زبان‌شناسی و اصلاح طبع، بی‌اشتهایی رو ریشه‌ای دنبال می‌کنیم؛ به‌جای راه‌حل‌های موقت.',order:17},
    {id:'ap18',title:'یه مادر آگاه، دنبال شربت اشتها نیست؛ دنبال ریشه‌یابیه.',description:'شربت فقط یه مُسکنه، روش TC جراحی تغذیه‌ایه برای بی‌اشتهایی.',order:18},
@@ -546,12 +543,12 @@ const defaultSettings:Any={
    {id:'m15',title:'فرزندت قرار نیست نابغه به دنیا بیاد؛ می‌تونه نابغه تغذیه بشه.',description:'پتانسیل واقعی مغز، با تغذیه بیدار میشه.',order:15},
    {id:'m16',title:'ذهن آروم، حافظه قوی و یادگیری سریع، محصول یه صبحانه مهندسی‌شده‌ست.',description:'ما مهندس تغذیه مغزیم.',order:16},
    {id:'m17',title:'همراهی ریشه‌ای، نه مسکن موقت.',description:'ما با تحلیل زبان‌شناسی و اصلاح طبع، تمرکز رو ریشه‌ای دنبال می‌کنیم؛ به‌جای راه‌حل‌های موقت.',order:17},
-   {id:'m18',title:'نسخه منحصربه‌فرد برای ذهن منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در فرزند من شبیه هم نیست. حتی برای تقویت هوش.',order:18}
+   {id:'m18',title:'نسخه منحصربه‌فرد برای ذهن منحصربه‌فرد فرزندت.',description:'هیچ دو نسخه‌ای در زینالیکید شبیه هم نیست. حتی برای تقویت هوش.',order:18}
   ]
  },
  // اصلاح ۴۴-۴۵: جملات اعتمادساز صفحات موفقیت (قابل مدیریت از پنل)
  successTrustSentences:[
-  {id:'st1',title:'به جمع خانواده فرزند من خوش آمدید',description:'به خانواده بزرگ فرزند من خوش آمدید - مسیر سلامت فرزند شما از اینجا شروع می‌شود',order:1},
+  {id:'st1',title:'به جمع خانواده زینالیکید خوش آمدید',description:'به خانواده بزرگ زینالیکید خوش آمدید - مسیر سلامت فرزند شما از اینجا شروع می‌شود',order:1},
   {id:'st2',title:'ثبت‌نام شما با موفقیت انجام شد',description:'اطلاعات شما ثبت شد و کارشناسان ما طی 24 تا 48 ساعت آینده با شما تماس می‌گیرند',order:2},
   {id:'st3',title:'یک قدم به سلامت فرزندتان نزدیک‌تر شدید',description:'از این لحظه، پشتیبانی ما 24 ساعته کنار شما و فرزندتان است',order:3},
   {id:'st4',title:'بیش از 10,000 مادر به ما اعتماد کرده‌اند',description:'شما نیز به جمع مادران آگاه و قهرمان پیوستید',order:4},
@@ -808,7 +805,9 @@ export const StableCountrySelect = memo(function StableCountrySelect({value,onCh
   const tt = T || {inp:'#fff',brd:'#ddd',acc:'#2564a8',soft:'#eaf1f7',pop:'#fff',txt:'#000'};
   const list = countries || [];
   const choose = useCallback((v:string)=>{ onChange(v); setOpen(false); },[onChange]);
-  return <Popup open={open} onClose={()=>setOpen(false)} T={tt} width={'33vw'} trigger={<button type="button" onClick={()=>setOpen(v=>!v)} style={{height:44,minWidth:small?68:120,padding:'0 8px',background:tt.inp,border:`1px solid ${tt.brd}`,borderRadius:10,color:tt.acc,cursor:'pointer',fontSize:14,fontFamily:'inherit',fontWeight:700,whiteSpace:'nowrap',order:-1}}>{shortCountry(list.find((x:any)=>x.code===value)||list[0])}</button>}>{list.map((c:any)=><button key={c.id || c.code} onClick={()=>choose(c.code)} style={{display:'block',width:'100%',padding:'9px 10px',background:value===c.code?tt.soft:'transparent',border:0,borderRadius:9,color:value===c.code?tt.acc:tt.txt,cursor:'pointer',textAlign:'right',fontFamily:'inherit',fontSize:13}}>{labelCountry(c,lang)}</button>)}</Popup>;
+  const __btnBd = `1.5px solid color-mix(in srgb, ${tt.brd} 85%, transparent)`;
+  const __btnShadow = `inset 2px 2px 6px rgba(0,0,0,.06), inset -1px -1px 4px rgba(255,255,255,.6), 0 1px 2px rgba(0,0,0,.04)`;
+  return <Popup open={open} onClose={()=>setOpen(false)} T={tt} width={'33vw'} trigger={<button type="button" onClick={()=>setOpen(v=>!v)} style={{height:48,minWidth:small?72:120,padding:'0 10px',background:tt.inp,border:__btnBd,borderRadius:13,color:tt.accText||tt.acc,cursor:'pointer',fontSize:14,fontFamily:'inherit',fontWeight:800,whiteSpace:'nowrap',order:-1,boxShadow:__btnShadow,transition:'all .2s ease'}}>{shortCountry(list.find((x:any)=>x.code===value)||list[0])}</button>}>{list.map((c:any)=><button key={c.id || c.code} onClick={()=>choose(c.code)} style={{display:'block',width:'100%',padding:'9px 10px',background:value===c.code?tt.soft:'transparent',border:0,borderRadius:9,color:value===c.code?tt.acc:tt.txt,cursor:'pointer',textAlign:'right',fontFamily:'inherit',fontSize:13}}>{labelCountry(c,lang)}</button>)}</Popup>;
 });
 
 export function MiniIcon({type,T}:{type:string,T:any}){const d:Any={check:'M20 6L9 17l-5-5',phone:'M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.8.3 1.6.6 2.4a2 2 0 0 1-.5 2.1L8 9.4a16 16 0 0 0 6.6 6.6l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.6.5 2.4.6A2 2 0 0 1 22 16.9z',course:'M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z',user:'M20 21a8 8 0 0 0-16 0M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',truck:'M10 17h4V5H2v12h3m12 0h2l3-5v5h-3m-9 0a2 2 0 1 1-4 0m14 0a2 2 0 1 1-4 0',card:'M3 6h18v12H3zM3 10h18',edit:'M12 20h9M16.5 3.5l4 4L8 20H4v-4z'};return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={T.acc} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{verticalAlign:'middle',flexShrink:0}}><path d={d[type]||d.check}/></svg>}
@@ -852,7 +851,7 @@ function PlatformIcon({type,color,size=18}:{type:string,color:string,size?:numbe
 // بازطراحی: فوتر سبک و مینیمال (کپی‌رایت + یک لینک ارتباطی) برای صفحات اصلی
 export function Footer({cfg,T,lang,setView,referralConsultant,requestConsult,onStartConsult}:{cfg:any,T:any,lang:Lang,setView:(v:string)=>void,referralConsultant?:any,requestConsult?:()=>void,onStartConsult?:()=>void}){
   const year = new Date().getFullYear();
-  const siteName = (cfg.browserTitle && String(cfg.browserTitle).trim()) ? String(cfg.browserTitle).trim().replace(/["“”]+/g,'') : (cfg.siteTitle || 'فرزند من');
+  const siteName = (cfg.browserTitle && String(cfg.browserTitle).trim()) ? String(cfg.browserTitle).trim().replace(/["“”]+/g,'') : (cfg.siteTitle || 'زینالیکید');
   const c = cfg.contacts || {};
   const whatsappAccessible = /(?:^|-)dark$/.test(String(T.id||'')) ? '#6EE7B7' : '#006B35';
   const telegramAccessible = /(?:^|-)dark$/.test(String(T.id||'')) ? '#7DD3FC' : '#0369A1';
