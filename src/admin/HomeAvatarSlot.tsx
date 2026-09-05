@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ZkStethoscopeIcon, ZkUploadIcon } from './adminIcons';
 import HomeAvatarCropper from './HomeAvatarCropper';
+import { zkAlert, zkConfirm } from '../components/ZkDialog';
 
 function isAllowed(f: File) {
   return ['image/jpeg', 'image/png', 'image/webp'].includes(f.type) && f.size <= 8 * 1024 * 1024;

@@ -23,6 +23,7 @@ import {
 import HomeAvatarSlot from './HomeAvatarSlot';
 import ImageCropper from './ImageCropper';
 import { uploadAdminFile } from '../lib/storageUpload';
+import { zkAlert, zkConfirm } from '../components/ZkDialog';
 
 // ─── بخش‌ها و پوشه هر بخش ──────────────────────────────────────────
 export const IMAGE_SECTIONS: { id: string; label: string; folder: string; target: string; hint: string }[] = [
@@ -576,7 +577,7 @@ function SingleImageEditor({
       setCropObjectUrl(true);
       setCropSrc(URL.createObjectURL(blob));
     } catch (err: any) {
-      alert(err?.message || 'آماده‌سازی تصویر انجام نشد');
+      void zkAlert(err?.message || 'آماده‌سازی تصویر انجام نشد');
     } finally {
       setBusy(false);
     }
@@ -600,7 +601,7 @@ function SingleImageEditor({
       }
       closeCrop();
     } catch (err: any) {
-      alert(err?.message || 'ذخیره تصویر انجام نشد');
+      void zkAlert(err?.message || 'ذخیره تصویر انجام نشد');
     } finally {
       setBusy(false);
     }

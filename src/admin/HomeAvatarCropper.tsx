@@ -1,4 +1,5 @@
 import ImageCropper from './ImageCropper';
+import { zkAlert, zkConfirm } from '../components/ZkDialog';
 
 type Props = {
   src: string;
