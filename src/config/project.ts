@@ -3,3 +3,7 @@ export const TRACKING_PREFIX='FM' as const;
 export const PUBLIC_SITE_URL='https://farzandman.vercel.app' as const;
 export const TURNSTILE_SITE_KEY='0x4AAAAAAEbgbC2Kbrj14Up5' as const;
 export const PAYMENT_APP_LAUNCHER_ENABLED=true as const;
+
+// Default author shown on education content (E-E-A-T).
+export const PROJECT_AUTHOR='امیر افرادی' as const;
+export const PROJECT_AUTHOR_EN='Amir Afradi' as const;
