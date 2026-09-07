@@ -1,3 +1,4 @@
+import { PrimaryButton } from "../components/ui/atoms";
 // src/admin/ImagesManager.tsx
 // بازطراحی کامل صفحه «تصاویر» در پنل مدیریت.
 //
@@ -19,9 +20,7 @@ import React, { useState } from 'react';
 import {
   ZkUploadIcon, ZkImageIcon, ZkPlusIcon, ZkTrashIcon, ZkCheckCircleIcon,
   ZkArrowUpIcon, ZkArrowDownIcon, ZkDownloadIcon,
-} from './adminIcons';
-import HomeAvatarSlot from './HomeAvatarSlot';
-import ImageCropper from './ImageCropper';
+} from './adminIcons';import ImageCropper from './ImageCropper';
 import { uploadAdminFile } from '../lib/storageUpload';
 import { zkAlert, zkConfirm } from '../components/ZkDialog';
 
@@ -367,16 +366,7 @@ export default function ImagesManager(props: Props) {
               T={T} S={S} AdminBtn={AdminBtn} editCfg={editCfg} setEditCfg={setEditCfg}
               supabase={supabase} isSupabaseConfigured={isSupabaseConfigured} deleteStoredImage={deleteStoredImage}
               field="trustBox" title="عکس باکس اعتماد (فرمولاسیون / مجوزها)" note="عکس کنار متن اعتمادساز در صفحه اصلی (مثل «فرمولاسیون آلمان»)" defaultAspectRatio="4 / 3" imgStyle={{ width: 200, maxHeight: 150, objectFit: 'cover', objectPosition: 'center', borderRadius: 10 }}
-            />
-            <HomeAvatarSlot
-              imgs={editCfg?.images || {}}
-              editCfg={editCfg}
-              setEditCfg={setEditCfg}
-              fileToData={fileToData}
-              T={T}
-              AdminBtn={AdminBtn}
-            />
-          </>
+            />          </>
         )}
 
         {/* منطقه آپلود */}
@@ -467,7 +457,7 @@ export default function ImagesManager(props: Props) {
         )}
 
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 16, flexWrap: 'wrap' }}>
-          <button style={S.btn} onClick={() => setSave(editCfg)}><ZkCheckCircleIcon size={14} /> ذخیره تنظیمات تصاویر</button>
+          <PrimaryButton type="button" onClick={() => setSave(editCfg)}><ZkCheckCircleIcon size={14} /> ذخیره تنظیمات تصاویر</PrimaryButton>
           <span style={{ fontSize: 11, color: T.mut }}>
             عکس‌های تَب «{sectionInfo.label}» در {sectionInfo.target} قابل انتخاب‌اند.
           </span>
