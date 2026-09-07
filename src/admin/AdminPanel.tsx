@@ -1,4 +1,5 @@
 import { useAppContext } from '../app/AppContext';
+import { PrimaryButton } from '../components/ui/atoms';
 // --- مدیریت دیزاین (مرحله  - بازطراحی تدریجی) ---
 
 import { lazy,memo,useCallback,useEffect,useLayoutEffect,useMemo,useRef,useState } from 'react';
@@ -434,7 +435,7 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
     .zkad-storage-banner{padding:12px 14px}
   }
   `}</style><AdminLayout lang={lang} groups={navGroups} active={aTab} onNavigate={(id:string)=>{setATab(id);setEditCfg(JSON.parse(JSON.stringify(cfg)))}} onLogout={onLogout} onHome={goHome} version="1.0.0">
-  <div className="admin-main"><div style={{maxWidth:1100,margin:'0 auto'}}>{aTab!=='dashboard'&&aTab!=='data'&&<div className="zkad-page-head"><div><h2>{(navGroups.find(g=>g.id===aTab||(g.items||[]).some(i=>i.id===aTab))||{}).label||''}</h2><p>{({assistant:'آموزش، آزمایش و مدیریت پاسخ‌های دستیار راهنمای فرزند من',userQuestions:'مدیریت سوالات و درخواست‌های تماس مخاطبین (بخش سوال دارم) همراه با شماره تماس، ویس و متن سوال',settings:'پیکربندی فرم‌ها، فیلدها و رفتار سایت',content:'متن‌های صفحات، سوالات متداول و ترجمه‌ها',consultants:'مدیریت مشاورین، لینک‌های ارجاع اختصاصی، اطلاعات بانکی/کیف پول و نمایش در صفحه درباره ما و صفحه هوم',contacts:'شماره‌ها، شبکه‌های اجتماعی و راه‌های ارتباطی',courses:'تب‌ها، دوره‌ها و واحد پول',featured:'بخش دوره‌های ویژه صفحه اصلی',tagged:'دوره‌های ویژه با تگ',trustbox:'جملات اعتمادساز باکس صفحه اصلی',trust:'جملات صفحات موفقیت',shipping:'روش‌های ارسال، حساب‌های بانکی و درگاه‌ها',analytics:'بازدید صفحات به تفکیک زمان',security:'شماره تماس و رمز عبور پنل',products:'محصولات فروشگاه',highlights:'هایلایت استوری‌ها',licenses:'مجوزها و گواهی‌ها',services:'خدمات و کاروسل صفحه اصلی',images:'تصاویر صفحه اصلی و فرم مشاوره',design:'دیزاین هر بخش از سایت',trash:'موارد حذف‌شده قابل بازیابی'} as any)[aTab]||''}</p></div></div>}
+  <div className="admin-main"><div style={{maxWidth:1100,margin:'0 auto'}}>{aTab!=='dashboard'&&aTab!=='data'&&<div className="zkad-page-head"><div><h2>{(navGroups.find(g=>g.id===aTab||(g.items||[]).some(i=>i.id===aTab))||{}).label||''}</h2><p>{({assistant:'آموزش، آزمایش و مدیریت پاسخ‌های دستیار راهنمای زینالیکید',userQuestions:'مدیریت سوالات و درخواست‌های تماس مخاطبین (بخش سوال دارم) همراه با شماره تماس، ویس و متن سوال',settings:'پیکربندی فرم‌ها، فیلدها و رفتار سایت',content:'متن‌های صفحات، سوالات متداول و ترجمه‌ها',consultants:'مدیریت مشاورین، لینک‌های ارجاع اختصاصی، اطلاعات بانکی/کیف پول و نمایش در صفحه درباره ما و صفحه هوم',contacts:'شماره‌ها، شبکه‌های اجتماعی و راه‌های ارتباطی',courses:'تب‌ها، دوره‌ها و واحد پول',featured:'بخش دوره‌های ویژه صفحه اصلی',tagged:'دوره‌های ویژه با تگ',trustbox:'جملات اعتمادساز باکس صفحه اصلی',trust:'جملات صفحات موفقیت',shipping:'روش‌های ارسال، حساب‌های بانکی و درگاه‌ها',analytics:'بازدید صفحات به تفکیک زمان',security:'شماره تماس و رمز عبور پنل',products:'محصولات فروشگاه',highlights:'هایلایت استوری‌ها',licenses:'مجوزها و گواهی‌ها',services:'خدمات و کاروسل صفحه اصلی',images:'تصاویر صفحه اصلی و فرم مشاوره',design:'دیزاین هر بخش از سایت',trash:'موارد حذف‌شده قابل بازیابی'} as any)[aTab]||''}</p></div></div>}
   {aTab==='dashboard'&&<><div className="zkad-page-head"><div><h2>داشبورد</h2><p>نمای کلی عملکرد و درخواست‌های امروز</p></div><button type="button" className="zkad-head-btn" onClick={goHome}><ZkHomeIcon size={14}/> بازدید از سایت</button></div>
 
 {/* بنر هوشمند پایش و هشدار ظرفیت دیتابیس و استوریج (هایلایت قرمز بولد در صورت کمبود فضا) */}
@@ -687,7 +688,7 @@ function FAQEditor(){
      <button style={AdminBtn()} onClick={addEn}>+ Add New Question (English)</button>
     </div>
    </div>
-   <button style={{...S.btn,marginTop:12}} onClick={()=>setSave(editCfg)}>ذخیره سوالات متداول</button>
+   <PrimaryButton style={{marginTop:12}} onClick={()=>setSave(editCfg)}>ذخیره سوالات متداول</PrimaryButton>
   </Box>;
  }
 
@@ -734,7 +735,7 @@ function FAQEditor(){
      <button style={AdminBtn()} onClick={addEn}>+ Add New Question (English)</button>
     </div>
    </div>
-   <button style={{...S.btn,marginTop:12}} onClick={()=>setSave(editCfg)}>ذخیره سوالات دوره‌ها</button>
+   <PrimaryButton style={{marginTop:12}} onClick={()=>setSave(editCfg)}>ذخیره سوالات دوره‌ها</PrimaryButton>
   </Box>;
  }
 
@@ -1140,7 +1141,7 @@ function DesignManagerEditor(){
   {value:'wellness',label:'Wellness (بنفش)'},
   {value:'kidlearn',label:'KidLearn (کودکان)'},
   {value:'blend',label:'Blend (ترکیبی)'},
-  {value:'classic',label:'دیزاین کلاسیک (روشن)'},
+  {value:'classic',label:'کلاسیک'},
  ];
 
  return <><Box title="نمای ظاهری سایت برای کاربران"><p style={{fontSize:12,color:T.mut,lineHeight:1.8,marginTop:0}}>این تنظیم عمومی برای کاربرانی اعمال می‌شود که در مرورگرشان انتخاب شخصی روشن/تاریک ندارند.</p><label style={{...S.lbl}}>حالت نمایش سایت عمومی</label><select style={S.inp} value={publicThemeMode} onChange={e=>setEditCfg({...editCfg,publicThemeMode:e.target.value})}><option value="dark">همیشه دارک</option><option value="light">همیشه وایت</option><option value="auto">سفارشی بر اساس ساعت — دارک از ۲۳ تا ۰۷</option></select><p style={{fontSize:11,color:T.mut,lineHeight:1.7}}>انتخاب شخصی ماه/خورشید در هدر پنل، پنل و صفحات عمومی همین مرورگر را با هم تغییر می‌دهد و بر این تنظیم اولویت دارد.</p></Box>
