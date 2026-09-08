@@ -1,7 +1,7 @@
 import {parseServerReferral} from './validation.js';
 import {renderNotFoundPage} from './notFoundPage.js';
-const BRAND="زینالیکید";
-const SITE_URL='https://zeynalikid.vercel.app';
+const BRAND="فرزند من";
+const SITE_URL='https://farzandman.vercel.app';
 const SUPABASE_URL=String(process.env.VITE_SUPABASE_URL||'https://kkdrvexwzuuumjezipnd.supabase.co').replace(/\/$/,'');
 let cache={expiresAt:0,consultants:[],tabs:[],publicThemeMode:'auto'};
 
