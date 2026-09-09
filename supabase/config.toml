@@ -50,3 +50,6 @@ verify_jwt = false
 
 [functions.user-portal]
 verify_jwt = false
+
+[functions.content-api]
+verify_jwt = false
