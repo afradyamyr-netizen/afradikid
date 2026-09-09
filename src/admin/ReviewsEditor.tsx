@@ -376,12 +376,12 @@ export default function ReviewsEditor({ app }: { app: any }) {
       return;
     }
     const targetReviews = reviews.filter((r) => selectedIds.includes(r.id));
-    downloadReviewsAsCSV(targetReviews, `zeynalikid-selected-reviews-${selectedIds.length}.csv`);
+    downloadReviewsAsCSV(targetReviews, `farzandman-selected-reviews-${selectedIds.length}.csv`);
     showToast(`فایل اکسل ${selectedIds.length} نظر انتخابی دانلود شد.`);
   };
 
   const handleDownloadAllCSV = () => {
-    downloadReviewsAsCSV(reviews, `zeynalikid-all-reviews-${reviews.length}.csv`);
+    downloadReviewsAsCSV(reviews, `farzandman-all-reviews-${reviews.length}.csv`);
     showToast(`فایل اکسل کل نظرات (${reviews.length} مورد) دانلود شد.`);
   };
 

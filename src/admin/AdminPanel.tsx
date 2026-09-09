@@ -12,7 +12,7 @@ import { biometricSupported, enrollAdminBiometric, hasAdminBiometric, removeAdmi
 // Phase 7: خروج واقعی از همه نشست‌ها از طریق admin-session (revoke_all)
 import { revokeAllAdminSessions, clearAdminSession, listAdminDevices, revokeAdminDevice, getAdminDeviceId, getAdminCredsInfo, changeAdminCredentials, isAdminPasswordUpgradeRequired } from '../utils/adminSession';
 import { generateFormImage } from '../utils/exportFormToImage';
-import { exportSubsBackup, exportFullBackup, requestTelegramBackup, maybeAutoBackupToTelegram } from '../utils/backupUtils';
+import { exportSubsBackup, exportFullBackup, exportSubsPdfBackup, requestTelegramBackup, maybeAutoBackupToTelegram } from '../utils/backupUtils';
 import AdminSpeedDialFAB from './AdminSpeedDialFAB';
 import { ZkArrowUpIcon, ZkArrowDownIcon, ZkChevronUpIcon, ZkChevronDownIcon, ZkCheckIcon, ZkCloseIcon,
  ZkCheckCircleIcon, ZkXCircleIcon, ZkEyeIcon, ZkEyeOffIcon, ZkCameraIcon, ZkDocIcon,
@@ -302,12 +302,13 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
   const setPersistentImageFormat=(f:'webp'|'jpg')=>{setImageFormat(f);try{localStorage.setItem('zkid_form_image_format',f)}catch{}};
   const [backupProgress,setBackupProgress]=useState<string>('');
   const downloadFormImage=async (item:any)=>{try{const blob=await generateFormImage(item,imageFormat);const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=`پرونده_${String(item.pName||item.fullPhone||item.id).replace(/\s+/g,'_')}.${imageFormat}`;a.click();setTimeout(()=>URL.revokeObjectURL(u),800)}catch(e){console.error('image export failed',e);void zkAlert('خطا در ساخت تصویر پرونده')}};
-  const runBackup = async (target:'subs'|'full', fmt?:'excel'|'txt'|'image') => {
+  const runBackup = async (target:'subs'|'full', fmt?:'excel'|'txt'|'image'|'pdf') => {
     try {
       setMsg('');
       if (target === 'subs') {
         const items = selectedCount > 0 ? filteredAll.filter((x:any)=> selectedIds.has(x.id)) : subs;
-        await exportSubsBackup(items, fmt || 'excel', { imageFormat, onProgress: (m) => setBackupProgress(m) });
+        if (fmt === 'pdf') await exportSubsPdfBackup(items, { onProgress: (m) => setBackupProgress(m) });
+        else await exportSubsBackup(items, (fmt as any) || 'excel', { imageFormat, onProgress: (m) => setBackupProgress(m) });
       } else {
         await exportFullBackup({ subs, cfg: editCfg || cfg, imageFormat, onProgress: (m) => setBackupProgress(m) });
       }
@@ -359,7 +360,7 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
   const isAllSelected = filteredAll.length>0 && filteredAll.every((x:any)=> selectedIds.has(x.id));
   const rows=filtered.map(s=>({نام:s.pName||'',شماره:s.fullPhone||'',موضوع:(s.topics||[]).join('|'),کشور:getCountry(s),دوره:getCourse(s),پرداخت:getPay(s),وضعیت:getStatus(s),تاریخ:s.date||'',شهر:s.shipping?.city||'',یادداشت:s.adminNotes||'',دسته‌بندی:getCategory(s)}));
   const download=(name:string,content:string,type='text/plain;charset=utf-8')=>{const url=URL.createObjectURL(new Blob([content],{type}));const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500)};
-  const exportExcel=()=>{const keys=Object.keys(rows[0]||{نام:'',شماره:'',موضوع:'',کشور:'',دوره:'',پرداخت:'',وضعیت:'',تاریخ:''});const html=`<html><meta charset="utf-8"><body><table border="1"><thead><tr>${keys.map(k=>`<th>${k}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${keys.map(k=>`<td>${String((r as any)[k]||'')}</td>`).join('')}</tr>`).join('')}</tbody></table></body></html>`;download('zeynalikid-export.xls',html,'application/vnd.ms-excel;charset=utf-8')};
+  const exportExcel=()=>{const keys=Object.keys(rows[0]||{نام:'',شماره:'',موضوع:'',کشور:'',دوره:'',پرداخت:'',وضعیت:'',تاریخ:''});const html=`<html><meta charset="utf-8"><body><table border="1"><thead><tr>${keys.map(k=>`<th>${k}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${keys.map(k=>`<td>${String((r as any)[k]||'')}</td>`).join('')}</tr>`).join('')}</tbody></table></body></html>`;download('farzandman-export.xls',html,'application/vnd.ms-excel;charset=utf-8')};
   const exportPhones=()=>download('phones.txt',filtered.map(s=>s.fullPhone).filter(Boolean).join('\n'));
   const exportWhatsApp=()=>{const links=filtered.map(s=>digits(s.fullPhone||'')).filter(Boolean).map(n=>`<p><a href="https://wa.me/${n}">${n}</a></p>`).join('');download('whatsapp-links.html',`<html><meta charset="utf-8"><body>${links}</body></html>`,'text/html;charset=utf-8')};
   // ─── بکاپ کامل: دانلود ZIP شامل تمام بخش‌ها و فایل‌های رسانه‌ای ───
@@ -639,6 +640,7 @@ const Field=useCallback(({label,value,onChange,ph,type='text',required=false,inp
         <button type="button" className="zkad-toolbtn" style={{width:'100%',justifyContent:'flex-start',border:0,background:'transparent',color:T.txt,padding:'9px 10px'}} onClick={()=>runBackup('subs','excel')}>📊 Excel (فقط انتخاب‌شده‌ها{!selectedCount?' / همه':''})</button>
         <button type="button" className="zkad-toolbtn" style={{width:'100%',justifyContent:'flex-start',border:0,background:'transparent',color:T.txt,padding:'9px 10px'}} onClick={()=>runBackup('subs','txt')}>📝 متن (TXT)</button>
         <button type="button" className="zkad-toolbtn" style={{width:'100%',justifyContent:'flex-start',border:0,background:'transparent',color:T.txt,padding:'9px 10px'}} onClick={()=>runBackup('subs','image')}>🖼️ {imageFormat.toUpperCase()} {selectedCount>10||!selectedCount?'(زیپ)':'(تکی)'}</button>
+        <button type="button" className="zkad-toolbtn" style={{width:'100%',justifyContent:'flex-start',border:0,background:'transparent',color:T.txt,padding:'9px 10px'}} onClick={()=>runBackup('subs','pdf')}>📕 PDF — هر فرم یک صفحه A4</button>
         <div style={{height:1,background:T.brd,margin:'4px 0'}}/>
         <button type="button" className="zkad-toolbtn" style={{width:'100%',justifyContent:'flex-start',border:0,background:'transparent',color:T.acc,padding:'9px 10px',fontWeight:800}} onClick={()=>{runBackup('full')}}>📦 بک‌آپ کامل (همه‌چیز)</button>
         <button type="button" className="zkad-toolbtn" style={{width:'100%',justifyContent:'flex-start',border:0,background:'transparent',color:T.ok,padding:'9px 10px'}} onClick={sendBackupToTelegram}>📨 ارسال به ربات تلگرام</button>
@@ -1661,7 +1663,7 @@ function DesignManagerEditor(){
     items.forEach((it:any,i:number)=>{if(!used.has(i)&&!mergedDefaults.some((x:any)=>x.id===it?.id))mergedDefaults.push(normalizeItem({...it,isDefault:false}))});
     return {...defCol,...existing,items:mergedDefaults};
    });
-   columns.slice(defaultCarouselColumns.length).forEach((col:any,ci:number)=>out.push({...col,id:col.id||`col-extra-${ci+1}`,items:(col.items||[]).map(async (it:any)=>normalizeItem({...it,isDefault:false}))}));
+   columns.slice(defaultCarouselColumns.length).forEach((col:any,ci:number)=>out.push({...col,id:col.id||`col-extra-${ci+1}`,items:(col.items||[]).map((it:any)=>normalizeItem({...it,isDefault:false}))}));
    return out;
   };
   const dm=editCfg.servicesDisplayMode||{home:'carousel',courses:'carousel'};

@@ -1,8 +1,8 @@
 // supabase/functions/_shared/cors.ts
-// Shared CORS helpers for all Zeynalikid Edge Functions.
+// Shared CORS helpers for all Farzandman Edge Functions.
 // Allowed origins:
 //   - Production: https://farzandman.vercel.app
-//   - Zeynalikid-owned Vercel aliases/previews beginning with zeynalikid-
+//   - Farzandman-owned Vercel aliases/previews beginning with farzandman-
 //   - Local dev: http://localhost:5173 (Vite default)
 // Other projects' *.vercel.app origins are intentionally rejected.
 
