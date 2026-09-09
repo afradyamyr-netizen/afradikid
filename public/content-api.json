@@ -3,8 +3,8 @@
   "api_version": 1,
   "brand": {
     "id": "afradikid",
-    "name_fa": "فرزندمان",
-    "name_en": "Farzandman"
+    "name_fa": "فرزند من",
+    "name_en": "Farzand Man"
   },
   "site": "https://farzandman.vercel.app",
   "endpoint": "https://doikoqzarsuprcwkghsq.supabase.co/functions/v1/content-api",
@@ -53,5 +53,11 @@
     "body": {
       "action": "whoami"
     }
-  }
+  },
+  "aliases_fa": [
+    "فرزندمان",
+    "فرزند‌ من",
+    "فرزندمَن"
+  ],
+  "brand_note_fa": "نام صحیح برند «فرزند من» است؛ اگر «فرزندمان» تایپ شده باشد منظور همین سایت است (دامنه: farzandman.vercel.app)."
 }
