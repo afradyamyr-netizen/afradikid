@@ -463,7 +463,7 @@ function MediaLibraryManager(props: any) {
     }));
   }, [setItems, sourceDestination]);
   const add = useCallback(() => {
-    const PROJECT_AUTHOR = 'آرمین زینالی';
+    const PROJECT_AUTHOR = 'امیر افرادی';
     const PROJECT_AUTHOR_EN = 'Armin Zeinali';
     setItems((prev: any[]) => [...prev, { id: sectionKey[0] + uid(), title: 'آیتم جدید', description: '', keywords: sectionKey === 'education' ? [] : undefined, type: isEdu ? 'article' : 'video', body: isEdu ? '' : undefined, images: isEdu ? [] : undefined, author: isEdu ? PROJECT_AUTHOR : undefined, authorEn: isEdu ? PROJECT_AUTHOR_EN : undefined, sourceUrl: isEdu ? '' : undefined, quote: isEdu ? '' : undefined, youtubeCode: '', aparatCode: '', manualCode: '', platform: 'other', phone: '', active: true, order: prev.length + 1, mediaCategories: [sourceDestination], mediaCategory: sourceDestination }]);
   }, [setItems, uid, sectionKey, sourceDestination, isEdu]);
