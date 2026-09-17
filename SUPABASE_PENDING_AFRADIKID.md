@@ -143,6 +143,30 @@ supabase functions deploy user-portal --no-verify-jwt --project-ref doikoqzarsup
 
 ---
 
+## ۱/۵) آیتم معوق شمارهٔ ۲ — انتشار دوبارهٔ Edge Function «پرداخت» (کپچا حذف شد) 🔶
+
+**وضعیت:** ❌ کد در ریپو به‌روز شده ولی روی سوپابیس منتشر نشده (کلید Management نداشتیم).
+**تاریخ:** ۲۰۲۶-۰۹-۱۷ (هم‌زمان با حذف حالت «پیگیری دوره»)
+
+در تغییرات این commit، بررسی امنیتی (کپچا) از صفحهٔ پرداخت حذف شد — هم در کلاینت و هم در
+Edge Function `checkout-session`. نسخهٔ **منتشرشده** روی پروژهٔ فرزند من هنوز قدیمی است.
+
+**آیا همین الان مشکلی ایجاد می‌کند؟** خیر. تابع فقط وقتی کپچا می‌خواست که
+`settings.entryMode !== 'user'` باشد؛ مقدار فعلیِ دیتابیس برابر `user` است
+(بررسی‌شده در ۲۰۲۶-۰۹-۱۷)، پس رفتارِ زنده درست است. این فقط یک عقب‌ماندگیِ نسخه است.
+
+**چه باید کرد (با اولین کلید معتبر):**
+
+```bash
+cd /home/user/projects/afradikid
+export SUPABASE_ACCESS_TOKEN="<PAT_معتبر_فرزند_من>"
+npx --yes supabase functions deploy checkout-session --project-ref doikoqzarsuprcwkghsq
+```
+
+**معیار پایان:** خروجیِ CLI «Deployed Functions …: checkout-session» را نشان دهد.
+
+---
+
 ## ۲) مواردی که باید **بررسی** شوند (تأیید نشده — اولویت دوم)
 
 این‌ها را نمی‌شد بدون PAT تأیید کرد. با اولین کلید معتبر چک کن:
