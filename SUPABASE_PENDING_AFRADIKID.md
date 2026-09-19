@@ -629,7 +629,7 @@ curl -s -o /dev/null -w "%{http_code}\n" -H "Authorization: Bearer $SUPABASE_ACC
 curl -s https://farzandman.vercel.app/sitemap.xml | grep -c "/track"
 ```
 
-**نکتهٔ مهم:** کلیدی که در هندآف آمده (`sbp_fce49…`) برای این پروژه **۴۰۳** می‌دهد و فقط
+**نکتهٔ مهم:** کلیدِ مدیریتی که در فایلِ هندآف آمده برای این پروژه **۴۰۳** می‌دهد و فقط
 به زینالیکید دسترسی دارد؛ با آن این کار انجام نمی‌شود.
 
 ---
